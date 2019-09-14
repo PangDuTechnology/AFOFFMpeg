@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "AFOFFMpeg"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "decoding."
 
   # This description is used to generate tags and improve search results.
@@ -63,10 +63,10 @@ Pod::Spec.new do |s|
   #
 
   # s.platform     = :ios
-  # s.platform     = :ios, "7.0"
+  s.platform     = :ios, "8.0"
 
   #  When using multiple platforms
-  s.ios.deployment_target = '7.0'
+  s.ios.deployment_target = '8.0'
 
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
@@ -85,10 +85,10 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "AFOFFMpeg/**/*.{h,m}"
+  s.source_files  = "AFOFFMpeg/*.{h,m}"
   #s.exclude_files = "AFOFFMpeg/*.{h,m}"
 
-  s.public_header_files = "AFOFFMpeg/**/*.h"
+  s.public_header_files = "AFOFFMpeg/*.h"
 
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -127,6 +127,10 @@ Pod::Spec.new do |s|
    s.requires_arc = true
 
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
-  # s.dependency "AFOViews","AFOGitHub","AFOFoundation","AFORouter" ,"AFOUIKIT"
+  s.dependency "AFOViews"
+  s.dependency "AFOGitHub"
+  s.dependency "AFOFoundation"
+  s.dependency "AFORouter"
+  s.dependency "AFOUIKIT"
 
 end
