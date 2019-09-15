@@ -235,6 +235,7 @@
 		24D1B0CE2061029B0028680A /* AFOAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 24D1B0CC2061029B0028680A /* AFOAudioManager.m */; };
 		24F928F6200CE940007ADAA4 /* AFOMediaThumbnail.h in Headers */ = {isa = PBXBuildFile; fileRef = 24F928F4200CE940007ADAA4 /* AFOMediaThumbnail.h */; };
 		24F928F7200CE940007ADAA4 /* AFOMediaThumbnail.m in Sources */ = {isa = PBXBuildFile; fileRef = 24F928F5200CE940007ADAA4 /* AFOMediaThumbnail.m */; };
+		922E6559DEB8E99FA090F6B5 /* libPods-AFOFFMpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C3DF97E31429DA00550B5A /* libPods-AFOFFMpeg.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -486,6 +487,9 @@
 		24D1B0CC2061029B0028680A /* AFOAudioManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFOAudioManager.m; sourceTree = "<group>"; };
 		24F928F4200CE940007ADAA4 /* AFOMediaThumbnail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaThumbnail.h; sourceTree = "<group>"; };
 		24F928F5200CE940007ADAA4 /* AFOMediaThumbnail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaThumbnail.m; sourceTree = "<group>"; };
+		8D4CA313006449D6B479D8FD /* Pods-AFOFFMpeg.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AFOFFMpeg.release.xcconfig"; path = "Target Support Files/Pods-AFOFFMpeg/Pods-AFOFFMpeg.release.xcconfig"; sourceTree = "<group>"; };
+		C215BB64AD96FF0492A70BBA /* Pods-AFOFFMpeg.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AFOFFMpeg.debug.xcconfig"; path = "Target Support Files/Pods-AFOFFMpeg/Pods-AFOFFMpeg.debug.xcconfig"; sourceTree = "<group>"; };
+		E6C3DF97E31429DA00550B5A /* libPods-AFOFFMpeg.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AFOFFMpeg.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -517,6 +521,7 @@
 				24BAFECA1FF4BCD200D2EAB9 /* OpenGLES.framework in Frameworks */,
 				24BAFEC81FF4BCBF00D2EAB9 /* AVFoundation.framework in Frameworks */,
 				24BAFEC61FF4BCB400D2EAB9 /* AudioToolbox.framework in Frameworks */,
+				922E6559DEB8E99FA090F6B5 /* libPods-AFOFFMpeg.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -873,6 +878,7 @@
 				24BAFDBD1FF4B12900D2EAB9 /* AFOFFMpeg */,
 				24BAFDBC1FF4B12900D2EAB9 /* Products */,
 				24BAFEC41FF4BCB400D2EAB9 /* Frameworks */,
+				D355983552DD45887E11029F /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -921,6 +927,7 @@
 				24BAFEC91FF4BCD200D2EAB9 /* OpenGLES.framework */,
 				24BAFEC71FF4BCBF00D2EAB9 /* AVFoundation.framework */,
 				24BAFEC51FF4BCB400D2EAB9 /* AudioToolbox.framework */,
+				E6C3DF97E31429DA00550B5A /* libPods-AFOFFMpeg.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1141,6 +1148,15 @@
 			name = category;
 			sourceTree = "<group>";
 		};
+		D355983552DD45887E11029F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C215BB64AD96FF0492A70BBA /* Pods-AFOFFMpeg.debug.xcconfig */,
+				8D4CA313006449D6B479D8FD /* Pods-AFOFFMpeg.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1330,6 +1346,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 24BAFDC31FF4B12900D2EAB9 /* Build configuration list for PBXNativeTarget "AFOFFMpeg" */;
 			buildPhases = (
+				2C4FF7EA286325D2E2E38260 /* [CP] Check Pods Manifest.lock */,
 				24BAFDB61FF4B12900D2EAB9 /* Sources */,
 				24BAFDB71FF4B12900D2EAB9 /* Frameworks */,
 				24BAFDB81FF4B12900D2EAB9 /* Headers */,
@@ -1386,6 +1403,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2C4FF7EA286325D2E2E38260 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AFOFFMpeg-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		24BAFDB61FF4B12900D2EAB9 /* Sources */ = {
@@ -1546,6 +1588,7 @@
 		};
 		24BAFDC41FF4B12900D2EAB9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C215BB64AD96FF0492A70BBA /* Pods-AFOFFMpeg.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
@@ -1555,15 +1598,14 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/AFOFFMpeg.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(inherited)",
 					"$(PROJECT_DIR)/AFOFFMpeg/FFmpeg/include",
 					"$(PROJECT_DIR)/AFOFFMpeg/libYUV/include",
+					"$(inherited)",
 				);
 				INFOPLIST_FILE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1591,6 +1633,7 @@
 		};
 		24BAFDC51FF4B12900D2EAB9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8D4CA313006449D6B479D8FD /* Pods-AFOFFMpeg.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
@@ -1600,15 +1643,14 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/AFOFFMpeg.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(inherited)",
 					"$(PROJECT_DIR)/AFOFFMpeg/FFmpeg/include",
 					"$(PROJECT_DIR)/AFOFFMpeg/libYUV/include",
+					"$(inherited)",
 				);
 				INFOPLIST_FILE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";

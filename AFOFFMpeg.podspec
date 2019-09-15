@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "AFOFFMpeg"
-  s.version      = "0.0.4"
+  s.version      = "0.0.5"
   s.summary      = "decoding."
 
   # This description is used to generate tags and improve search results.
@@ -132,4 +132,5 @@ Pod::Spec.new do |s|
   s.dependency "AFOFoundation"
   s.dependency "AFORouter"
   s.dependency "AFOUIKIT"
+  s.dependency "AFOSQLite"
 end
