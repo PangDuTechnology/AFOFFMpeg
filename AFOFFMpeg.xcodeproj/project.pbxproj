@@ -510,11 +510,11 @@
 				246289E821BDFACD00E14172 /* libyuv.a in Frameworks */,
 				2408BAFE20085E930049060F /* libx264.a in Frameworks */,
 				24814F6721B4FC06001B2388 /* libfdk-aac.a in Frameworks */,
+				2413B77B21CFD20A0073F742 /* libxvidcore.a in Frameworks */,
 				242F4575201C74E400830BF3 /* AFOViews.framework in Frameworks */,
 				24AF6757201B4BCB00AB5537 /* AFOGitHub.framework in Frameworks */,
 				2488594A201AC3F500623E66 /* AFOFoundation.framework in Frameworks */,
 				240487512008453600D369FB /* AFORouter.framework in Frameworks */,
-				2413B77B21CFD20A0073F742 /* libxvidcore.a in Frameworks */,
 				240487522008453600D369FB /* AFOUIKit.framework in Frameworks */,
 				24BAFED21FF4BD1D00D2EAB9 /* VideoToolbox.framework in Frameworks */,
 				24BAFED01FF4BD0700D2EAB9 /* CoreMedia.framework in Frameworks */,
@@ -579,6 +579,33 @@
 				2413B77921CFD20A0073F742 /* libxvidcore.a */,
 			);
 			path = lib;
+			sourceTree = "<group>";
+		};
+		242F0714232F29EF006DF335 /* libyuv */ = {
+			isa = PBXGroup;
+			children = (
+				246289BD21BDFACD00E14172 /* scale_row.h */,
+				246289BE21BDFACD00E14172 /* scale.h */,
+				246289BF21BDFACD00E14172 /* version.h */,
+				246289C021BDFACD00E14172 /* cpu_id.h */,
+				246289C121BDFACD00E14172 /* video_common.h */,
+				246289C221BDFACD00E14172 /* compare_row.h */,
+				246289C321BDFACD00E14172 /* mjpeg_decoder.h */,
+				246289C421BDFACD00E14172 /* rotate_row.h */,
+				246289C521BDFACD00E14172 /* planar_functions.h */,
+				246289C621BDFACD00E14172 /* scale_argb.h */,
+				246289C721BDFACD00E14172 /* compare.h */,
+				246289C821BDFACD00E14172 /* convert_argb.h */,
+				246289C921BDFACD00E14172 /* rotate.h */,
+				246289CA21BDFACD00E14172 /* convert_from_argb.h */,
+				246289CB21BDFACD00E14172 /* basic_types.h */,
+				246289CC21BDFACD00E14172 /* convert_from.h */,
+				246289CD21BDFACD00E14172 /* convert.h */,
+				246289CE21BDFACD00E14172 /* rotate_argb.h */,
+				246289CF21BDFACD00E14172 /* macros_msa.h */,
+				246289D021BDFACD00E14172 /* row.h */,
+			);
+			path = libyuv;
 			sourceTree = "<group>";
 		};
 		244E31141FFE64340094C6BB /* FFmpeg */ = {
@@ -797,26 +824,7 @@
 			isa = PBXGroup;
 			children = (
 				246289BB21BDFACD00E14172 /* libyuv.h */,
-				246289BD21BDFACD00E14172 /* scale_row.h */,
-				246289BE21BDFACD00E14172 /* scale.h */,
-				246289BF21BDFACD00E14172 /* version.h */,
-				246289C021BDFACD00E14172 /* cpu_id.h */,
-				246289C121BDFACD00E14172 /* video_common.h */,
-				246289C221BDFACD00E14172 /* compare_row.h */,
-				246289C321BDFACD00E14172 /* mjpeg_decoder.h */,
-				246289C421BDFACD00E14172 /* rotate_row.h */,
-				246289C521BDFACD00E14172 /* planar_functions.h */,
-				246289C621BDFACD00E14172 /* scale_argb.h */,
-				246289C721BDFACD00E14172 /* compare.h */,
-				246289C821BDFACD00E14172 /* convert_argb.h */,
-				246289C921BDFACD00E14172 /* rotate.h */,
-				246289CA21BDFACD00E14172 /* convert_from_argb.h */,
-				246289CB21BDFACD00E14172 /* basic_types.h */,
-				246289CC21BDFACD00E14172 /* convert_from.h */,
-				246289CD21BDFACD00E14172 /* convert.h */,
-				246289CE21BDFACD00E14172 /* rotate_argb.h */,
-				246289CF21BDFACD00E14172 /* macros_msa.h */,
-				246289D021BDFACD00E14172 /* row.h */,
+				242F0714232F29EF006DF335 /* libyuv */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -1600,7 +1608,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/AFOFFMpeg.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/AFOFFMpeg/libyuv/include",
-					"$(PROJECT_DIR)/AFOFFMpeg/FFmpeg/include",
+					"$(SRCROOT)/AFOFFMpeg/FFmpeg/include",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "";
@@ -1646,7 +1654,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/AFOFFMpeg.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/AFOFFMpeg/libyuv/include",
-					"$(PROJECT_DIR)/AFOFFMpeg/FFmpeg/include",
+					"$(SRCROOT)/AFOFFMpeg/FFmpeg/include",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "";
