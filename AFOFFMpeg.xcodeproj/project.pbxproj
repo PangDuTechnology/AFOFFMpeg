@@ -511,6 +511,7 @@
 				2408BAFE20085E930049060F /* libx264.a in Frameworks */,
 				24814F6721B4FC06001B2388 /* libfdk-aac.a in Frameworks */,
 				2413B77B21CFD20A0073F742 /* libxvidcore.a in Frameworks */,
+				922E6559DEB8E99FA090F6B5 /* libPods-AFOFFMpeg.a in Frameworks */,
 				242F4575201C74E400830BF3 /* AFOViews.framework in Frameworks */,
 				24AF6757201B4BCB00AB5537 /* AFOGitHub.framework in Frameworks */,
 				2488594A201AC3F500623E66 /* AFOFoundation.framework in Frameworks */,
@@ -523,7 +524,6 @@
 				24BAFECA1FF4BCD200D2EAB9 /* OpenGLES.framework in Frameworks */,
 				24BAFEC81FF4BCBF00D2EAB9 /* AVFoundation.framework in Frameworks */,
 				24BAFEC61FF4BCB400D2EAB9 /* AudioToolbox.framework in Frameworks */,
-				922E6559DEB8E99FA090F6B5 /* libPods-AFOFFMpeg.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1607,9 +1607,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/AFOFFMpeg.pch";
 				HEADER_SEARCH_PATHS = (
+					"${SRCROOT}",
 					"$(SRCROOT)/AFOFFMpeg/libyuv/include",
 					"$(SRCROOT)/AFOFFMpeg/FFmpeg/include",
-					"$(inherited)",
 				);
 				INFOPLIST_FILE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1633,6 +1633,7 @@
 				REZ_SEARCH_PATHS = "$(PROJECT)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 1;
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT)";
 			};
 			name = Debug;
 		};
@@ -1653,9 +1654,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/AFOFFMpeg.pch";
 				HEADER_SEARCH_PATHS = (
+					"${SRCROOT}",
 					"$(SRCROOT)/AFOFFMpeg/libyuv/include",
 					"$(SRCROOT)/AFOFFMpeg/FFmpeg/include",
-					"$(inherited)",
 				);
 				INFOPLIST_FILE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1679,6 +1680,7 @@
 				REZ_SEARCH_PATHS = "$(PROJECT)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 1;
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT)";
 			};
 			name = Release;
 		};
