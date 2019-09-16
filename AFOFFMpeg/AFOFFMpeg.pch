@@ -28,13 +28,6 @@
 #import <AFOSQLite/AFOSQLite.h>
 #import <AFOViews/AFOViews.h>
 /*****************/
-#import "libYUV/include/libyuv.h"
-#import <libavcodec/avcodec.h>
-#import <libavformat/avformat.h>
-#import <libswscale/swscale.h>
-#import <libavutil/imgutils.h>
-#import <libswresample/swresample.h>
-/*****************/
 #import "AFOMediaErrorString.h"
 #import "AFOMediaErrorCodeManager.h"
 #import "AFOMediaTimer.h"
