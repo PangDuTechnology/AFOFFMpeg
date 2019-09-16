@@ -784,27 +784,19 @@
 			path = lib;
 			sourceTree = "<group>";
 		};
-		246289B921BDFACD00E14172 /* libYUV */ = {
+		246289B921BDFACD00E14172 /* libyuv */ = {
 			isa = PBXGroup;
 			children = (
 				246289BA21BDFACD00E14172 /* include */,
 				246289D121BDFACD00E14172 /* lib */,
 			);
-			path = libYUV;
+			path = libyuv;
 			sourceTree = "<group>";
 		};
 		246289BA21BDFACD00E14172 /* include */ = {
 			isa = PBXGroup;
 			children = (
 				246289BB21BDFACD00E14172 /* libyuv.h */,
-				246289BC21BDFACD00E14172 /* libyuv */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		246289BC21BDFACD00E14172 /* libyuv */ = {
-			isa = PBXGroup;
-			children = (
 				246289BD21BDFACD00E14172 /* scale_row.h */,
 				246289BE21BDFACD00E14172 /* scale.h */,
 				246289BF21BDFACD00E14172 /* version.h */,
@@ -826,7 +818,7 @@
 				246289CF21BDFACD00E14172 /* macros_msa.h */,
 				246289D021BDFACD00E14172 /* row.h */,
 			);
-			path = libyuv;
+			path = include;
 			sourceTree = "<group>";
 		};
 		246289D121BDFACD00E14172 /* lib */ = {
@@ -901,7 +893,7 @@
 				24E7270C232D113B00C850C0 /* media */,
 				244E31141FFE64340094C6BB /* FFmpeg */,
 				2408BAF820085E190049060F /* x264 */,
-				246289B921BDFACD00E14172 /* libYUV */,
+				246289B921BDFACD00E14172 /* libyuv */,
 				24814F5821B4FC06001B2388 /* aac */,
 				2413B77521CFD20A0073F742 /* libxvidcore */,
 				240487AC2008460800D369FB /* AFOFFMpeg.pch */,
@@ -1607,8 +1599,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/AFOFFMpeg.pch";
 				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/AFOFFMpeg/libyuv/include",
 					"$(PROJECT_DIR)/AFOFFMpeg/FFmpeg/include",
-					"$(PROJECT_DIR)/AFOFFMpeg/libYUV/include",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "";
@@ -1619,7 +1611,7 @@
 					"$(PROJECT_DIR)/AFOFFMpeg/FFmpeg/lib",
 					"$(PROJECT_DIR)/AFOFFMpeg/x264/lib",
 					"$(PROJECT_DIR)/AFOFFMpeg/aac/lib",
-					"$(PROJECT_DIR)/AFOFFMpeg/libYUV/lib",
+					"$(PROJECT_DIR)/AFOFFMpeg/libyuv/lib",
 					"$(PROJECT_DIR)/AFOFFMpeg/libxvidcore/lib",
 				);
 				MACH_O_TYPE = staticlib;
@@ -1653,8 +1645,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/AFOFFMpeg.pch";
 				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/AFOFFMpeg/libyuv/include",
 					"$(PROJECT_DIR)/AFOFFMpeg/FFmpeg/include",
-					"$(PROJECT_DIR)/AFOFFMpeg/libYUV/include",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "";

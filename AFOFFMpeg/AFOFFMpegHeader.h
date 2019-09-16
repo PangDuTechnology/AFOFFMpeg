@@ -8,8 +8,7 @@
 
 #ifndef AFOFFMpegHeader_h
 #define AFOFFMpegHeader_h
-
-#import "libYUV/include/libyuv.h"
+#import "libyuv/include/libyuv.h"
 #import <libavcodec/avcodec.h>
 #import <libavformat/avformat.h>
 #import <libswscale/swscale.h>
