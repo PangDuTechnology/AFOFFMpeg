@@ -8,15 +8,15 @@
 
 #ifndef AFOFFMpegHeader_h
 #define AFOFFMpegHeader_h
-#import "libavcodec/avcodec.h"
+#import "avcodec.h"
 //#import <libavcodec/avcodec.h>
-#import "libavformat/avformat.h"
+#import "avformat.h"
 //#import <libavformat/avformat.h>
-#import "libswscale/swscale.h"
+#import "swscale.h"
 //#import <libswscale/swscale.h>
-#import "libavutil/imgutils.h"
+#import "imgutils.h"
 //#import <libavutil/imgutils.h>
-#import "libswresample/swresample.h"
+#import "swresample.h"
 //#import <libswresample/swresample.h>
 
 #endif /* AFOFFMpegHeader_h */
