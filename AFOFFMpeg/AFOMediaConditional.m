@@ -6,7 +6,6 @@
 //  Copyright © 2018年 AFO Science Technology Ltd. All rights reserved.
 //
 #import "AFOMediaConditional.h"
-#import "AFOFFMpegHeader.h"
 @implementation AFOMediaConditional
 #pragma mark ------------ 
 + (void)mediaSesourcesConditionalPath:(NSString *)path

@@ -7,7 +7,6 @@
 //
 
 #import "AFOVideoAudioManager.h"
-#import "AFOFFMpegHeader.h"
 #import "AFOMediaConditional.h"
 #import "AFOPlayMediaManager.h"
 #import "AFOAudioManager.h"

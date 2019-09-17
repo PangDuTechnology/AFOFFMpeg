@@ -6,7 +6,6 @@
 //  Copyright © 2017年 AFO. All rights reserved.
 //
 #import "AFOGenerateImages.h"
-#import "AFOFFMpegHeader.h"
 #import "AFOMediaErrorCodeManager.h"
 #import "AFOMediaYUV.h"
 @interface AFOGenerateImages ()

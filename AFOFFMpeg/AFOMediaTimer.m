@@ -7,7 +7,6 @@
 //
 
 #import "AFOMediaTimer.h"
-#import "AFOFFMpegHeader.h"
 @implementation AFOMediaTimer
 #pragma mark ------------
 + (NSInteger)microseconds:(int64_t)douration{

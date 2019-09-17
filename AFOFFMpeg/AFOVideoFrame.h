@@ -7,7 +7,6 @@
 //
 
 #import "AFOMediaFrame.h"
-#import "AFOFFMpegHeader.h"
 typedef NS_ENUM(NSInteger, AFOVideoFrameFormatType) {
     AFOVideoFrameFormatRGB       =   0,
     AFOVideoFrameFormatYUV       =   1,

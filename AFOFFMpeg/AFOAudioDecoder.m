@@ -7,7 +7,6 @@
 //
 
 #import "AFOAudioDecoder.h"
-#import "AFOFFMpegHeader.h"
 #define STMAX(a, b)  (((a) > (b)) ? (a) : (b))
 #define STMIN(a, b)  (((a) < (b)) ? (a) : (b))
 @interface AFOAudioDecoder (){

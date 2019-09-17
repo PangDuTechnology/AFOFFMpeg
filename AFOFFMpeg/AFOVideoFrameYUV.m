@@ -7,7 +7,6 @@
 //
 
 #import "AFOVideoFrameYUV.h"
-
 @interface  AFOVideoFrameYUV ()
 @property (nonatomic, strong, readwrite) NSData *luma;
 @property (nonatomic, strong, readwrite) NSData *chromaB;
