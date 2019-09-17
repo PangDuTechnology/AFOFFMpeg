@@ -646,9 +646,9 @@
 				24BAFDBE1FF4B12900D2EAB9 /* AFOFFMpeg.h */,
 				2404875B2008459600D369FB /* AFOMediaForeignInterface.h */,
 				240487562008459600D369FB /* AFOMediaForeignInterface.m */,
+				24E7270C232D113B00C850C0 /* media */,
 				24E5931323310AFA00682DF7 /* libyuv */,
 				24E5921A23310ADB00682DF7 /* FFmpeg */,
-				24E7270C232D113B00C850C0 /* media */,
 				2408BAF820085E190049060F /* x264 */,
 				24814F5821B4FC06001B2388 /* aac */,
 				2413B77521CFD20A0073F742 /* libxvidcore */,
@@ -1617,8 +1617,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/AFOFFMpeg.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/AFOFFMpeg/libyuv/include",
-					"$(SRCROOT)/AFOFFMpeg/FFmpeg/include",
+					"$(SRCROOT)/AFOFFMpeg/libyuv/include/**",
+					"$(SRCROOT)/AFOFFMpeg/FFmpeg/include/**",
 				);
 				INFOPLIST_FILE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1665,8 +1665,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/AFOFFMpeg.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/AFOFFMpeg/libyuv/include",
-					"$(SRCROOT)/AFOFFMpeg/FFmpeg/include",
+					"$(SRCROOT)/AFOFFMpeg/libyuv/include/**",
+					"$(SRCROOT)/AFOFFMpeg/FFmpeg/include/**",
 				);
 				INFOPLIST_FILE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
