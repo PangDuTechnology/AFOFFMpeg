@@ -91,14 +91,14 @@
     WeakObject(self);
     dispatch_async(self.queue_t, ^{
         StrongObject(self);
-            while (av_read_frame(avFormatContext, &packet) >= 0) {
-                if (packet.stream_index == self.videoStream) {
-                    int ret = avcodec_send_packet(avCodecContext, &packet);
+        while (av_read_frame(self->avFormatContext, &self->packet) >= 0) {
+                if (self->packet.stream_index == self.videoStream) {
+                    int ret = avcodec_send_packet(self->avCodecContext, &self->packet);
                     if (ret == 0) {
-                        while (!avcodec_receive_frame(avCodecContext, avFrame)){
-                            [self.mediaManager mediaVideoStream:avFrame codecContext:avCodecContext block:^(AFOVideoFrame *videoFrame) {
+                        while (!avcodec_receive_frame(self->avCodecContext, self->avFrame)){
+                            [self.mediaManager mediaVideoStream:self->avFrame codecContext:self->avCodecContext block:^(AFOVideoFrame *videoFrame) {
                             } ];
-                            av_packet_unref(&packet);
+                            av_packet_unref(&self->packet);
                         }
                     }
                 }
