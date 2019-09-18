@@ -51,6 +51,7 @@
 		24DAD34A23321115001D2CE4 /* AFOMediaFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD31723321115001D2CE4 /* AFOMediaFrame.m */; };
 		24DAD34B23321115001D2CE4 /* AFOMediaTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD31823321115001D2CE4 /* AFOMediaTimer.m */; };
 		24DAD34E23321151001D2CE4 /* AFOMediaPlayController.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2492331CA6F001D2CE4 /* AFOMediaPlayController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		24EBB092233214C000B95E25 /* AFOFFMpeg.pch in Headers */ = {isa = PBXBuildFile; fileRef = 24E5942423311A2500682DF7 /* AFOFFMpeg.pch */; };
 		922E6559DEB8E99FA090F6B5 /* libPods-AFOFFMpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C3DF97E31429DA00550B5A /* libPods-AFOFFMpeg.a */; };
 /* End PBXBuildFile section */
 
@@ -393,7 +394,6 @@
 			isa = PBXGroup;
 			children = (
 				24BAFDBD1FF4B12900D2EAB9 /* AFOFFMpeg */,
-				24E5942423311A2500682DF7 /* AFOFFMpeg.pch */,
 				24BAFDBC1FF4B12900D2EAB9 /* Products */,
 				24BAFEC41FF4BCB400D2EAB9 /* Frameworks */,
 				D355983552DD45887E11029F /* Pods */,
@@ -414,6 +414,7 @@
 				24BAFDBE1FF4B12900D2EAB9 /* AFOFFMpeg.h */,
 				2404875B2008459600D369FB /* AFOMediaForeignInterface.h */,
 				24DAD2492331CA6F001D2CE4 /* AFOMediaPlayController.h */,
+				24E5942423311A2500682DF7 /* AFOFFMpeg.pch */,
 				24DAD2C723320FC5001D2CE4 /* media */,
 				24DAD34F23321178001D2CE4 /* x264 */,
 				24E593C52331189A00682DF7 /* libyuv */,
@@ -818,6 +819,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				24BAFDC01FF4B12900D2EAB9 /* AFOFFMpeg.h in Headers */,
+				24EBB092233214C000B95E25 /* AFOFFMpeg.pch in Headers */,
 				240487632008459600D369FB /* AFOMediaForeignInterface.h in Headers */,
 				24DAD34E23321151001D2CE4 /* AFOMediaPlayController.h in Headers */,
 			);
