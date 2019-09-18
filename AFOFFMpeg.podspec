@@ -88,7 +88,7 @@ Pod::Spec.new do |s|
   s.source_files  = "AFOFFMpeg/**/*.{h,m}"
   #s.exclude_files = "AFOFFMpeg/*.{h,m}"
 
-  s.public_header_files = "AFOFFMpeg/**/*.h"
+  s.public_header_files = "AFOFFMpeg/**/*.h",'AFOFFMpey/libyuv/include/libyuv.h','AFOFFMpey/libyuv/include/libyuv/*.h'
   s.prefix_header_file = 'AFOFFMpeg/AFOFFMpeg.pch'
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -103,13 +103,6 @@ Pod::Spec.new do |s|
   # s.resources = "Resources/*.png"
 
   # s.preserve_paths = "FilesToSave", "MoreFilesToSave"
-
-  s.subspec 'libyuv' do |libyuv
-    libyuv.source_files = 'libyuv/include/libyuv.h','libyuv/include/libyuv/*.{h,m}'
-    libyuv.xcconfig = { 
-      'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) SD_WEBP=1',
-      'USER_HEADER_SEARCH_PATHS' => '$(inherited) $(SRCROOT)/libyuv/include/libyuv'
-    }
 
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
