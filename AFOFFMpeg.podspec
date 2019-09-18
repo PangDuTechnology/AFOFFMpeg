@@ -89,7 +89,7 @@ Pod::Spec.new do |s|
   #s.exclude_files = "AFOFFMpeg/*.{h,m}"
 
   s.public_header_files = "AFOFFMpeg/**/*.h"
-  s.prefix_header_file = 'AFOFFMpeg/AFOFFMpeg.pch'
+  #s.prefix_header_file = 'AFOFFMpeg/AFOFFMpeg.pch'
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
