@@ -32,11 +32,4 @@
 #import <AFOFoundation/AFOFoundation.h>
 #import <AFOGitHub/AFOGitHub.h>
 #import <AFORouter/AFORouter.h>
-#import <AFOSQLite/AFOSQLite.h>
-#import <AFOViews/AFOViews.h>
-/*****************/
-#import "AFOMediaErrorString.h"
-#import "AFOMediaErrorCodeManager.h"
-#import "AFOMediaTimer.h"
-#import "AFOMediaConditional.h"
 #endif /* AFOFFMpeg_pch */
