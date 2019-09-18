@@ -85,10 +85,10 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "AFOFFMpeg/**/*.{h,m}"
+  s.source_files  = "AFOFFMpeg/*.{h,m}"
   #s.exclude_files = "AFOFFMpeg/*.{h,m}"
 
-  s.public_header_files = "AFOFFMpeg/*.h","AFOFFMpeg/libyuv/libyuv.h","AFOFFMpeg/libyuv/include/*.h"
+  s.public_header_files = "AFOFFMpeg/*.h"
   #s.prefix_header_file = 'AFOFFMpeg/AFOFFMpeg.pch'
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
