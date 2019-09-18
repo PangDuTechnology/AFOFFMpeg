@@ -7,6 +7,8 @@
 //
 
 #import "AFOMediaPlayController.h"
+#import <AFOFoundation/AFOFoundation.h>
+#import <AFORouter/AFORouter.h>
 #import "AFOMediaPlayControllerCategory.h"
 #import "AFOVideoAudioManager.h"
 #import "AFOMediaOpenGLView.h"

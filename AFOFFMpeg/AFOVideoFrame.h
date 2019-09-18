@@ -7,6 +7,7 @@
 //
 
 #import "AFOMediaFrame.h"
+#import <libavformat/avformat.h>
 typedef NS_ENUM(NSInteger, AFOVideoFrameFormatType) {
     AFOVideoFrameFormatRGB       =   0,
     AFOVideoFrameFormatYUV       =   1,

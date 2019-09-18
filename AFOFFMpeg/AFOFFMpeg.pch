@@ -22,15 +22,12 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 /*****************/
-#import "libyuv/include/libyuv.h"
-#import <libavcodec/avcodec.h>
-#import <libavformat/avformat.h>
-#import <libswscale/swscale.h>
-#import <libavutil/imgutils.h>
-#import <libswresample/swresample.h>
+//#import <libavcodec/avcodec.h>
+//#import <libavutil/imgutils.h>
+//#import <libswresample/swresample.h>
 /*****************/
-#import <AFOFoundation/AFOFoundation.h>
-#import <AFOGitHub/AFOGitHub.h>
-#import <AFORouter/AFORouter.h>
-#import <AFOViews/AFOViews.h>
+//#import <AFOFoundation/AFOFoundation.h>
+//#import <AFOGitHub/AFOGitHub.h>
+//#import <AFORouter/AFORouter.h>
+//#import <AFOViews/AFOViews.h>
 #endif /* AFOFFMpeg_pch */

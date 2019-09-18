@@ -7,7 +7,8 @@
 //
 
 #import "AFOMediaQueueManager.h"
-
+#import <AFOFoundation/AFOFoundation.h>
+#import <AFOGitHub/AFOGitHub.h>
 @interface AFOMediaQueueManager ()
 @property (nonatomic, strong)     dispatch_source_t    sourceTimer;
 @end

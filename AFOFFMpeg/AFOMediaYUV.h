@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <libswresample/swresample.h>
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AFOMediaYUV : NSObject

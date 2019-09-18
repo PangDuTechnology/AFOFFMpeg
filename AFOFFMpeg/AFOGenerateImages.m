@@ -6,6 +6,10 @@
 //  Copyright © 2017年 AFO. All rights reserved.
 //
 #import "AFOGenerateImages.h"
+#import <AFOFoundation/AFOFoundation.h>
+#import <libavformat/avformat.h>
+#import <libswscale/swscale.h>
+#import <libavutil/imgutils.h>
 #import "AFOMediaErrorCodeManager.h"
 #import "AFOMediaYUV.h"
 @interface AFOGenerateImages ()

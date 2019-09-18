@@ -7,6 +7,9 @@
 //
 
 #import "AFOPlayMediaManager.h"
+#import <AFOFoundation/AFOFoundation.h>
+#import <AFOGitHub/AFOGitHub.h>
+#import <libavformat/avformat.h>
 #import "AFOMediaTimer.h"
 #import "AFOGenerateImages.h"
 #import "AFOMediaErrorCodeManager.h"

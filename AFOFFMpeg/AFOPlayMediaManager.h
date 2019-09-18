@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <libavformat/avformat.h>
 @protocol AFOPlayMediaManager <NSObject>
 @optional
 - (void)videoTimeStamp:(float)videoTime

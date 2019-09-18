@@ -6,6 +6,7 @@
 //  Copyright © 2018年 AFO Science Technology Ltd. All rights reserved.
 //
 #import "AFOMediaSeekFrame.h"
+#import <AFOFoundation/AFOFoundation.h>
 #import "AFOMediaSeekFrame+Conditional.h"
 #import "AFOMediaThumbnail.h"
 #import "AFOMediaConditional.h"

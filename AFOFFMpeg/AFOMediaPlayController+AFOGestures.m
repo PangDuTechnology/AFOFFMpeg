@@ -7,6 +7,8 @@
 //
 
 #import "AFOMediaPlayController+AFOGestures.h"
+#import <AFOFoundation/AFOFoundation.h>
+#import <AFOGitHub/AFOGitHub.h>
 #import "AFOMediaView.h"
 
 @interface AFOMediaPlayController ()<AFOMediaViewDelegate>

@@ -7,7 +7,7 @@
 //
 
 #import "AFOMediaOpenGLView.h"
-
+#import <AFOFoundation/AFOFoundation.h>
 #define VERTEX_ATTRIBUTE_POSITION   0
 #define VERTEX_ATTRIBUTE_TEXCOORD   1
 

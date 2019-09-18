@@ -6,6 +6,7 @@
 //  Copyright © 2018年 AFO Science Technology Ltd. All rights reserved.
 //
 #import "AFOMediaConditional.h"
+#import <libavformat/avformat.h>
 #import "AFOMediaErrorCodeManager.h"
 @implementation AFOMediaConditional
 #pragma mark ------------ 

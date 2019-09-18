@@ -7,7 +7,7 @@
 //
 
 #import "AFOMediaSeekFrame.h"
-
+#import <libavformat/avformat.h>
 NS_ASSUME_NONNULL_BEGIN
 typedef void(^MediaSeekFrameBlock)(NSError * error,
                                    NSInteger videoIndex,

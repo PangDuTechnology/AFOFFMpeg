@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <libswscale/swscale.h>
+#import <libavformat/avformat.h>
 /**
  <#Description#>
 

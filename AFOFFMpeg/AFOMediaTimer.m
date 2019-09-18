@@ -7,6 +7,7 @@
 //
 
 #import "AFOMediaTimer.h"
+#import <libswresample/swresample.h>
 @implementation AFOMediaTimer
 #pragma mark ------------
 + (NSInteger)microseconds:(int64_t)douration{
