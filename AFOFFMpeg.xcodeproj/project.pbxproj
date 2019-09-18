@@ -481,39 +481,21 @@
 				2404875B2008459600D369FB /* AFOMediaForeignInterface.h */,
 				240487562008459600D369FB /* AFOMediaForeignInterface.m */,
 				24E5942423311A2500682DF7 /* AFOFFMpeg.pch */,
-				24DAD2C02331CA9C001D2CE4 /* media */,
-				24E593C52331189A00682DF7 /* libyuv */,
-				24E593432331188800682DF7 /* FFmpeg */,
-				2408BAF820085E190049060F /* x264 */,
-				24814F5821B4FC06001B2388 /* aac */,
-				2413B77521CFD20A0073F742 /* libxvidcore */,
-			);
-			path = AFOFFMpeg;
-			sourceTree = "<group>";
-		};
-		24BAFEC41FF4BCB400D2EAB9 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				2408BB3C200877D80049060F /* libsqlite3.tbd */,
-				24A59FBC2008387200311ACB /* libiconv.tbd */,
-				24A59FBA2008386B00311ACB /* libbz2.tbd */,
-				24A59FB82008382B00311ACB /* libz.tbd */,
-				24BAFED11FF4BD1D00D2EAB9 /* VideoToolbox.framework */,
-				24BAFECF1FF4BD0700D2EAB9 /* CoreMedia.framework */,
-				24BAFECD1FF4BCF800D2EAB9 /* CoreGraphics.framework */,
-				24BAFECB1FF4BCEB00D2EAB9 /* CoreImage.framework */,
-				24BAFEC91FF4BCD200D2EAB9 /* OpenGLES.framework */,
-				24BAFEC71FF4BCBF00D2EAB9 /* AVFoundation.framework */,
-				24BAFEC51FF4BCB400D2EAB9 /* AudioToolbox.framework */,
-				E6C3DF97E31429DA00550B5A /* libPods-AFOFFMpeg.a */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		24DAD2C02331CA9C001D2CE4 /* media */ = {
-			isa = PBXGroup;
-			children = (
-				24DAD2C12331CAE2001D2CE4 /* audio */,
+				24DAD26E2331CA71001D2CE4 /* AFOAudioCache.h */,
+				24DAD24E2331CA6F001D2CE4 /* AFOAudioCache.m */,
+				24DAD2612331CA70001D2CE4 /* AFOAudioDecoder.h */,
+				24DAD24B2331CA6F001D2CE4 /* AFOAudioDecoder.m */,
+				24DAD2502331CA6F001D2CE4 /* AFOAudioManager.h */,
+				24DAD2412331CA6F001D2CE4 /* AFOAudioManager.m */,
+				24DAD25E2331CA70001D2CE4 /* AFOAudioOutPut.h */,
+				24DAD24C2331CA6F001D2CE4 /* AFOAudioOutPut.m */,
+				24DAD2702331CA71001D2CE4 /* AFOAudioPacket.h */,
+				24DAD2562331CA70001D2CE4 /* AFOAudioPacket.m */,
+				24DAD2602331CA70001D2CE4 /* AFOAudioQueue.h */,
+				24DAD23E2331CA6E001D2CE4 /* AFOAudioQueue.m */,
+				24DAD2752331CA72001D2CE4 /* AFOAudioSession.h */,
+				24DAD25F2331CA70001D2CE4 /* AFOAudioSession.m */,
+				24DAD23B2331CA6E001D2CE4 /* AFOAudioThreadDecoder.m */,
 				24DAD2672331CA71001D2CE4 /* AFOGenerateImages.h */,
 				24DAD25A2331CA70001D2CE4 /* AFOGenerateImages.m */,
 				24DAD2432331CA6F001D2CE4 /* AFOMediaSeekFrame.h */,
@@ -564,30 +546,32 @@
 				24DAD2662331CA71001D2CE4 /* AFOVideoFrameRGB.m */,
 				24DAD23C2331CA6E001D2CE4 /* AFOVideoFrameYUV.h */,
 				24DAD26F2331CA71001D2CE4 /* AFOVideoFrameYUV.m */,
+				24E593C52331189A00682DF7 /* libyuv */,
+				24E593432331188800682DF7 /* FFmpeg */,
+				2408BAF820085E190049060F /* x264 */,
+				24814F5821B4FC06001B2388 /* aac */,
+				2413B77521CFD20A0073F742 /* libxvidcore */,
 			);
-			path = media;
+			path = AFOFFMpeg;
 			sourceTree = "<group>";
 		};
-		24DAD2C12331CAE2001D2CE4 /* audio */ = {
+		24BAFEC41FF4BCB400D2EAB9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				24DAD26E2331CA71001D2CE4 /* AFOAudioCache.h */,
-				24DAD24E2331CA6F001D2CE4 /* AFOAudioCache.m */,
-				24DAD2612331CA70001D2CE4 /* AFOAudioDecoder.h */,
-				24DAD24B2331CA6F001D2CE4 /* AFOAudioDecoder.m */,
-				24DAD2502331CA6F001D2CE4 /* AFOAudioManager.h */,
-				24DAD2412331CA6F001D2CE4 /* AFOAudioManager.m */,
-				24DAD25E2331CA70001D2CE4 /* AFOAudioOutPut.h */,
-				24DAD24C2331CA6F001D2CE4 /* AFOAudioOutPut.m */,
-				24DAD2702331CA71001D2CE4 /* AFOAudioPacket.h */,
-				24DAD2562331CA70001D2CE4 /* AFOAudioPacket.m */,
-				24DAD2602331CA70001D2CE4 /* AFOAudioQueue.h */,
-				24DAD23E2331CA6E001D2CE4 /* AFOAudioQueue.m */,
-				24DAD2752331CA72001D2CE4 /* AFOAudioSession.h */,
-				24DAD25F2331CA70001D2CE4 /* AFOAudioSession.m */,
-				24DAD23B2331CA6E001D2CE4 /* AFOAudioThreadDecoder.m */,
+				2408BB3C200877D80049060F /* libsqlite3.tbd */,
+				24A59FBC2008387200311ACB /* libiconv.tbd */,
+				24A59FBA2008386B00311ACB /* libbz2.tbd */,
+				24A59FB82008382B00311ACB /* libz.tbd */,
+				24BAFED11FF4BD1D00D2EAB9 /* VideoToolbox.framework */,
+				24BAFECF1FF4BD0700D2EAB9 /* CoreMedia.framework */,
+				24BAFECD1FF4BCF800D2EAB9 /* CoreGraphics.framework */,
+				24BAFECB1FF4BCEB00D2EAB9 /* CoreImage.framework */,
+				24BAFEC91FF4BCD200D2EAB9 /* OpenGLES.framework */,
+				24BAFEC71FF4BCBF00D2EAB9 /* AVFoundation.framework */,
+				24BAFEC51FF4BCB400D2EAB9 /* AudioToolbox.framework */,
+				E6C3DF97E31429DA00550B5A /* libPods-AFOFFMpeg.a */,
 			);
-			path = audio;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		24E593432331188800682DF7 /* FFmpeg */ = {
