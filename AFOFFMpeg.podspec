@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "AFOFFMpeg"
-  s.version      = "0.0.17"
+  s.version      = "0.0.18"
   s.summary      = "decoding."
 
   # This description is used to generate tags and improve search results.
@@ -104,6 +104,12 @@ Pod::Spec.new do |s|
 
   # s.preserve_paths = "FilesToSave", "MoreFilesToSave"
 
+  s.subspec 'libyuv' do |libyuv
+    libyuv.source_files = 'libyuv/include/libyuv.h','libyuv/include/libyuv/*.{h,m}'
+    libyuv.xcconfig = { 
+      'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) SD_WEBP=1',
+      'USER_HEADER_SEARCH_PATHS' => '$(inherited) $(SRCROOT)/libyuv/include/libyuv'
+    }
 
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
