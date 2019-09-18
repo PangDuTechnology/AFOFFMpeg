@@ -7,7 +7,7 @@
 //
 
 #import "AFOMediaSeekFrame+Conditional.h"
-
+#import "AFOMediaErrorCodeManager.h"
 @implementation AFOMediaSeekFrame (Conditional)
 + (void)mediaSesourcesConditionalPath:(NSString *)path
                         formatContext:(AVFormatContext *)avFormatContext

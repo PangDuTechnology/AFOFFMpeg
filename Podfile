@@ -4,4 +4,6 @@ target 'AFOFFMpeg' do
   pod 'AFOFoundation'
   pod 'AFORouter'
   pod 'AFOUIKIT'
+  pod 'AFOGitHub'
+  pod 'AFOViews'
 end

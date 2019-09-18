@@ -1,8 +1,8 @@
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFOFoundation" "${PODS_ROOT}/Headers/Public/AFORouter" "${PODS_ROOT}/Headers/Public/AFOUIKIT"
-LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/AFOFoundation" "${PODS_CONFIGURATION_BUILD_DIR}/AFORouter" "${PODS_CONFIGURATION_BUILD_DIR}/AFOUIKIT"
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/AFOFoundation" -isystem "${PODS_ROOT}/Headers/Public/AFORouter" -isystem "${PODS_ROOT}/Headers/Public/AFOUIKIT"
-OTHER_LDFLAGS = $(inherited) -ObjC -l"AFOFoundation" -l"AFORouter" -l"AFOUIKIT"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFOFoundation" "${PODS_ROOT}/Headers/Public/AFOGitHub" "${PODS_ROOT}/Headers/Public/AFORouter" "${PODS_ROOT}/Headers/Public/AFOUIKIT" "${PODS_ROOT}/Headers/Public/AFOViews"
+LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/AFOFoundation" "${PODS_CONFIGURATION_BUILD_DIR}/AFOGitHub" "${PODS_CONFIGURATION_BUILD_DIR}/AFORouter" "${PODS_CONFIGURATION_BUILD_DIR}/AFOUIKIT" "${PODS_CONFIGURATION_BUILD_DIR}/AFOViews"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/AFOFoundation" -isystem "${PODS_ROOT}/Headers/Public/AFOGitHub" -isystem "${PODS_ROOT}/Headers/Public/AFORouter" -isystem "${PODS_ROOT}/Headers/Public/AFOUIKIT" -isystem "${PODS_ROOT}/Headers/Public/AFOViews"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"AFOFoundation" -l"AFOGitHub" -l"AFORouter" -l"AFOUIKIT" -l"AFOViews"
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_PODFILE_DIR_PATH = ${SRCROOT}/.
