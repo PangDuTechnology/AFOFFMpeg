@@ -10,6 +10,11 @@
 		240487632008459600D369FB /* AFOMediaForeignInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 2404875B2008459600D369FB /* AFOMediaForeignInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2413B77B21CFD20A0073F742 /* libxvidcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2413B77921CFD20A0073F742 /* libxvidcore.a */; };
 		24814F6721B4FC06001B2388 /* libfdk-aac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24814F6121B4FC06001B2388 /* libfdk-aac.a */; };
+		24B08EB7233257F5007225ED /* libAFOFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24B08EB6233257F5007225ED /* libAFOFoundation.a */; };
+		24B08EB9233257F5007225ED /* libAFOGitHub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24B08EB8233257F5007225ED /* libAFOGitHub.a */; };
+		24B08EBB233257F5007225ED /* libAFORouter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24B08EBA233257F5007225ED /* libAFORouter.a */; };
+		24B08EBD233257F5007225ED /* libAFOUIKIT.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24B08EBC233257F5007225ED /* libAFOUIKIT.a */; };
+		24B08EBF233257F5007225ED /* libAFOViews.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24B08EBE233257F5007225ED /* libAFOViews.a */; };
 		24BAFDC01FF4B12900D2EAB9 /* AFOFFMpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 24BAFDBE1FF4B12900D2EAB9 /* AFOFFMpeg.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24BAFEC61FF4BCB400D2EAB9 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BAFEC51FF4BCB400D2EAB9 /* AudioToolbox.framework */; };
 		24BAFEC81FF4BCBF00D2EAB9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BAFEC71FF4BCBF00D2EAB9 /* AVFoundation.framework */; };
@@ -49,6 +54,11 @@
 		24A59FB82008382B00311ACB /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		24A59FBA2008386B00311ACB /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		24A59FBC2008387200311ACB /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		24B08EB6233257F5007225ED /* libAFOFoundation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAFOFoundation.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		24B08EB8233257F5007225ED /* libAFOGitHub.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAFOGitHub.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		24B08EBA233257F5007225ED /* libAFORouter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAFORouter.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		24B08EBC233257F5007225ED /* libAFOUIKIT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAFOUIKIT.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		24B08EBE233257F5007225ED /* libAFOViews.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAFOViews.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		24BAFDBB1FF4B12900D2EAB9 /* AFOFFMpeg.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AFOFFMpeg.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		24BAFDBE1FF4B12900D2EAB9 /* AFOFFMpeg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFOFFMpeg.h; sourceTree = "<group>"; };
 		24BAFEC51FF4BCB400D2EAB9 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -279,6 +289,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24B08EB7233257F5007225ED /* libAFOFoundation.a in Frameworks */,
+				24B08EB9233257F5007225ED /* libAFOGitHub.a in Frameworks */,
+				24B08EBB233257F5007225ED /* libAFORouter.a in Frameworks */,
+				24B08EBD233257F5007225ED /* libAFOUIKIT.a in Frameworks */,
+				24B08EBF233257F5007225ED /* libAFOViews.a in Frameworks */,
 				24814F6721B4FC06001B2388 /* libfdk-aac.a in Frameworks */,
 				2413B77B21CFD20A0073F742 /* libxvidcore.a in Frameworks */,
 				922E6559DEB8E99FA090F6B5 /* libPods-AFOFFMpeg.a in Frameworks */,
@@ -395,6 +410,11 @@
 		24BAFEC41FF4BCB400D2EAB9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				24B08EB6233257F5007225ED /* libAFOFoundation.a */,
+				24B08EB8233257F5007225ED /* libAFOGitHub.a */,
+				24B08EBA233257F5007225ED /* libAFORouter.a */,
+				24B08EBC233257F5007225ED /* libAFOUIKIT.a */,
+				24B08EBE233257F5007225ED /* libAFOViews.a */,
 				2408BB3C200877D80049060F /* libsqlite3.tbd */,
 				24A59FBC2008387200311ACB /* libiconv.tbd */,
 				24A59FBA2008386B00311ACB /* libbz2.tbd */,
