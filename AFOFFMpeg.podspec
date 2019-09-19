@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "AFOFFMpeg"
-  s.version      = "0.0.21"
+  s.version      = "0.0.22"
   s.summary      = "decoding."
 
   # This description is used to generate tags and improve search results.
@@ -85,10 +85,10 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "AFOFFMpeg/*.{h,m}"
+  s.source_files  = "AFOFFMpeg/**/*.{h,m}"
   #s.exclude_files = "AFOFFMpeg/*.{h,m}"
 
-  s.public_header_files = "AFOFFMpeg/*.h"
+  s.public_header_files = "AFOFFMpeg/**/*.h"
   #s.prefix_header_file = 'AFOFFMpeg/AFOFFMpeg.pch'
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

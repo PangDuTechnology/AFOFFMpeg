@@ -28,6 +28,14 @@
 		24BBD96A23335E36006F920E /* AFOMediaSeekFrame+Conditional.m in Sources */ = {isa = PBXBuildFile; fileRef = 24EBB1022332236400B95E25 /* AFOMediaSeekFrame+Conditional.m */; };
 		24BBD97223335FB9006F920E /* AFOPlayMediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 24EBB0F62332236400B95E25 /* AFOPlayMediaManager.m */; };
 		24BBD97323335FC2006F920E /* AFOMediaPlayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24EBB1112332236400B95E25 /* AFOMediaPlayController.m */; };
+		24BBD975233360F8006F920E /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24E593BF2331188800682DF7 /* libavcodec.a */; };
+		24BBD976233360F8006F920E /* libavdevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24E593C22331188800682DF7 /* libavdevice.a */; };
+		24BBD977233360F8006F920E /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24E593BE2331188800682DF7 /* libavfilter.a */; };
+		24BBD978233360F8006F920E /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24E593C12331188800682DF7 /* libavformat.a */; };
+		24BBD979233360F8006F920E /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24E593BD2331188800682DF7 /* libavutil.a */; };
+		24BBD97A233360F8006F920E /* libpostproc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24E593C02331188800682DF7 /* libpostproc.a */; };
+		24BBD97B233360F8006F920E /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24E593C32331188800682DF7 /* libswresample.a */; };
+		24BBD97C233360F8006F920E /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24E593C42331188800682DF7 /* libswscale.a */; };
 		24DAD34E23321151001D2CE4 /* AFOMediaPlayController.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2492331CA6F001D2CE4 /* AFOMediaPlayController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24EBB092233214C000B95E25 /* AFOFFMpeg.pch in Headers */ = {isa = PBXBuildFile; fileRef = 24E5942423311A2500682DF7 /* AFOFFMpeg.pch */; };
 		922E6559DEB8E99FA090F6B5 /* libPods-AFOFFMpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C3DF97E31429DA00550B5A /* libPods-AFOFFMpeg.a */; };
@@ -299,6 +307,14 @@
 				24B08EBB233257F5007225ED /* libAFORouter.a in Frameworks */,
 				24B08EBD233257F5007225ED /* libAFOUIKIT.a in Frameworks */,
 				24B08EBF233257F5007225ED /* libAFOViews.a in Frameworks */,
+				24BBD975233360F8006F920E /* libavcodec.a in Frameworks */,
+				24BBD976233360F8006F920E /* libavdevice.a in Frameworks */,
+				24BBD977233360F8006F920E /* libavfilter.a in Frameworks */,
+				24BBD978233360F8006F920E /* libavformat.a in Frameworks */,
+				24BBD979233360F8006F920E /* libavutil.a in Frameworks */,
+				24BBD97A233360F8006F920E /* libpostproc.a in Frameworks */,
+				24BBD97B233360F8006F920E /* libswresample.a in Frameworks */,
+				24BBD97C233360F8006F920E /* libswscale.a in Frameworks */,
 				24814F6721B4FC06001B2388 /* libfdk-aac.a in Frameworks */,
 				2413B77B21CFD20A0073F742 /* libxvidcore.a in Frameworks */,
 				922E6559DEB8E99FA090F6B5 /* libPods-AFOFFMpeg.a in Frameworks */,
@@ -1143,8 +1159,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/AFOFFMpeg.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/AFOFFMpeg/libyuv/include/**",
-					"$(SRCROOT)/AFOFFMpeg/FFmpeg/include/**",
+					"$(inherited)",
+					"$(SRCROOT)/AFOFFMpeg/libyuv/include",
+					"$(SRCROOT)/AFOFFMpeg/FFmpeg/include",
 				);
 				INFOPLIST_FILE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1191,8 +1208,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/AFOFFMpeg.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/AFOFFMpeg/libyuv/include/**",
-					"$(SRCROOT)/AFOFFMpeg/FFmpeg/include/**",
+					"$(inherited)",
+					"$(SRCROOT)/AFOFFMpeg/libyuv/include",
+					"$(SRCROOT)/AFOFFMpeg/FFmpeg/include",
 				);
 				INFOPLIST_FILE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
