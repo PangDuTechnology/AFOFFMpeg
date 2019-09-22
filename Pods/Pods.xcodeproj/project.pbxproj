@@ -11,10 +11,12 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = 784CB4D41D66BC5A4882C47DCB48FDE3 /* Build configuration list for PBXAggregateTarget "AFOFFMpegLib" */;
 			buildPhases = (
+				72D63FDC2337575A00369780 /* Copy Files */,
 			);
 			dependencies = (
 			);
 			name = AFOFFMpegLib;
+			productName = AFOFFMpegLib;
 		};
 /* End PBXAggregateTarget section */
 
@@ -191,6 +193,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		72D63FDC2337575A00369780 /* Copy Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			name = "Copy Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0057B09ECFAC96A4DDC723CE66BD1E05 /* MASLayoutConstraint.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MASLayoutConstraint.h; path = AFOGitHub/Masonry/MASLayoutConstraint.h; sourceTree = "<group>"; };
 		006618422FB2D2FFCA7A3B41EC05F206 /* JLRRouteHandler.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JLRRouteHandler.m; path = AFORouter/JLRRouteHandler.m; sourceTree = "<group>"; };
@@ -245,7 +260,7 @@
 		314C4BE060B8DAC6F368C23D384295ED /* libavformat.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = libavformat.a; path = AFOFFMpegLib/FFmpeg/lib/libavformat.a; sourceTree = "<group>"; };
 		32151D612629930B490B918D27D1D010 /* random_seed.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = random_seed.h; path = AFOFFMpegLib/FFmpeg/include/libavutil/random_seed.h; sourceTree = "<group>"; };
 		32C7BA6306E448449148C99756B14722 /* version.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = version.h; path = AFOFFMpegLib/FFmpeg/include/libswscale/version.h; sourceTree = "<group>"; };
-		33C33CB8F63806FB0FBF806619C91D16 /* libPods-AFOFFMpeg.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-AFOFFMpeg.a"; path = "libPods-AFOFFMpeg.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		33C33CB8F63806FB0FBF806619C91D16 /* libPods-AFOFFMpeg.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AFOFFMpeg.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		33E9BA762093BA529F01E73059E29EFA /* View+MASAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "View+MASAdditions.h"; path = "AFOGitHub/Masonry/View+MASAdditions.h"; sourceTree = "<group>"; };
 		34009A6EE761600A95314F80CBA97ADE /* avfft.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = avfft.h; path = AFOFFMpegLib/FFmpeg/include/libavcodec/avfft.h; sourceTree = "<group>"; };
 		342744858868AEE36ACEFF3BB55EF6E3 /* AFONavigationController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFONavigationController.m; path = AFOUIKIT/AFONavigationController.m; sourceTree = "<group>"; };
@@ -273,11 +288,11 @@
 		49BF84CCC05FF108C043DD67FA8FE933 /* mem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = mem.h; path = AFOFFMpegLib/FFmpeg/include/libavutil/mem.h; sourceTree = "<group>"; };
 		4A2DD19ACDE8CD86030F37380B397B83 /* intfloat.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = intfloat.h; path = AFOFFMpegLib/FFmpeg/include/libavutil/intfloat.h; sourceTree = "<group>"; };
 		4DAD551E515CD32FD69F2018F284896F /* samplefmt.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = samplefmt.h; path = AFOFFMpegLib/FFmpeg/include/libavutil/samplefmt.h; sourceTree = "<group>"; };
-		4EB0959E61EAC889D51F90641FD082AC /* libAFOFoundation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libAFOFoundation.a; path = libAFOFoundation.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4EB0959E61EAC889D51F90641FD082AC /* libAFOFoundation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAFOFoundation.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		517C56F891261EDD57E8A36725336C47 /* lzo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = lzo.h; path = AFOFFMpegLib/FFmpeg/include/libavutil/lzo.h; sourceTree = "<group>"; };
 		5227FBB91D8C9B65A41B7083127719AF /* AFOViews-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AFOViews-prefix.pch"; sourceTree = "<group>"; };
 		55D6726AF087D9F8D70A7F5B55735360 /* AFOTabBarController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFOTabBarController.h; path = AFOUIKIT/AFOTabBarController.h; sourceTree = "<group>"; };
-		562A169AA4BA10FE6156E2CB62F760B8 /* libAFORouter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libAFORouter.a; path = libAFORouter.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		562A169AA4BA10FE6156E2CB62F760B8 /* libAFORouter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAFORouter.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		564E4F6B3A0E193D7B5EF546C9685628 /* AFOViews.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFOViews.h; path = AFOViews/AFOViews.h; sourceTree = "<group>"; };
 		574C7DCD3686309C543F05705CD22980 /* AFOCollectionView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFOCollectionView.m; path = AFOUIKIT/AFOCollectionView.m; sourceTree = "<group>"; };
 		5834866BD8C401442AD4E3842AC9CDCD /* Aspects.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Aspects.m; path = AFOGitHub/Aspects.m; sourceTree = "<group>"; };
@@ -350,8 +365,8 @@
 		9BCCFC1865A933F64508A378FF5B86C9 /* AFOFoundation-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AFOFoundation-prefix.pch"; sourceTree = "<group>"; };
 		9C5AA9E3A3ADD77EB854604A9EBF1A17 /* NSLayoutConstraint+MASDebugAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSLayoutConstraint+MASDebugAdditions.m"; path = "AFOGitHub/Masonry/NSLayoutConstraint+MASDebugAdditions.m"; sourceTree = "<group>"; };
 		9D5B7ADEADCEB1122488380055677253 /* Pods-AFOFFMpeg-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AFOFFMpeg-dummy.m"; sourceTree = "<group>"; };
-		9D74159E198798B12AEB9839BA39BEC0 /* libAFOViews.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libAFOViews.a; path = libAFOViews.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D74159E198798B12AEB9839BA39BEC0 /* libAFOViews.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAFOViews.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9DC3E7A7596C98D76C54BB5C85BE8A22 /* ripemd.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ripemd.h; path = AFOFFMpegLib/FFmpeg/include/libavutil/ripemd.h; sourceTree = "<group>"; };
 		9E62AA732B024C1D668A761963BC37FD /* MASViewConstraint.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MASViewConstraint.h; path = AFOGitHub/Masonry/MASViewConstraint.h; sourceTree = "<group>"; };
 		9EB98AD0072DB58794E564396812CCEC /* NSArray+MASAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSArray+MASAdditions.m"; path = "AFOGitHub/Masonry/NSArray+MASAdditions.m"; sourceTree = "<group>"; };
@@ -392,7 +407,7 @@
 		BA0F2969E6DA53EB10312D06D8B96AF3 /* AFOFoundation-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AFOFoundation-dummy.m"; sourceTree = "<group>"; };
 		BD80FBF76C88B230FA94542CA46E1D2A /* version.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = version.h; path = AFOFFMpegLib/FFmpeg/include/libavutil/version.h; sourceTree = "<group>"; };
 		BE66CC0BFCDE20255C4A80735E433151 /* eval.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = eval.h; path = AFOFFMpegLib/FFmpeg/include/libavutil/eval.h; sourceTree = "<group>"; };
-		C178D7E0ED386D3B5510D37B21C3504B /* libAFOGitHub.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libAFOGitHub.a; path = libAFOGitHub.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C178D7E0ED386D3B5510D37B21C3504B /* libAFOGitHub.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAFOGitHub.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1A6CA6ACE0ED4D135F94BB5CC455E72 /* libswresample.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = libswresample.a; path = AFOFFMpegLib/FFmpeg/lib/libswresample.a; sourceTree = "<group>"; };
 		C3805CB49F4909C5E652ACB8C882F429 /* NSFileManager+AFOSandBox.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+AFOSandBox.h"; path = "AFOFoundation/sandbox/NSFileManager+AFOSandBox.h"; sourceTree = "<group>"; };
 		C7E49DF699A6A774439F8E5D75AB25DB /* AFOWindow.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFOWindow.h; path = AFOUIKIT/AFOWindow.h; sourceTree = "<group>"; };
@@ -446,7 +461,7 @@
 		EF737581624CD29F72DC64209EC6FA8F /* UIButton+WebCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIButton+WebCache.h"; path = "AFOGitHub/SDWebImage/include/UIButton+WebCache.h"; sourceTree = "<group>"; };
 		EFBC3E3D7EA0DB8E99C56115878CFB7D /* buffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = buffer.h; path = AFOFFMpegLib/FFmpeg/include/libavutil/buffer.h; sourceTree = "<group>"; };
 		F2CFD1CD158D956DFC0989BB9EE31E5B /* cpu.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = cpu.h; path = AFOFFMpegLib/FFmpeg/include/libavutil/cpu.h; sourceTree = "<group>"; };
-		F39383F0AADA6BCF727C03C26374B1B7 /* libAFOUIKIT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libAFOUIKIT.a; path = libAFOUIKIT.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F39383F0AADA6BCF727C03C26374B1B7 /* libAFOUIKIT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAFOUIKIT.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8942A966841724DB65ACF5A04091B40 /* parseutils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = parseutils.h; path = AFOFFMpegLib/FFmpeg/include/libavutil/parseutils.h; sourceTree = "<group>"; };
 		F956A83E7906286F6ED053AC9D7AA737 /* d3d11va.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = d3d11va.h; path = AFOFFMpegLib/FFmpeg/include/libavcodec/d3d11va.h; sourceTree = "<group>"; };
 		FD21E4D7DB2DFB6C774A38A6B7F9C118 /* AFOGitHub-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AFOGitHub-dummy.m"; sourceTree = "<group>"; };
@@ -528,7 +543,6 @@
 				4867B14F9C43C6C2207F1BFE62EA58EB /* NSString+Formatting.m */,
 				667286F6F9306CD18AA108B33AF303FD /* Support Files */,
 			);
-			name = AFOFoundation;
 			path = AFOFoundation;
 			sourceTree = "<group>";
 		};
@@ -649,7 +663,6 @@
 				C07C59822B8DE2B951446135CB38B504 /* Frameworks */,
 				56C1220E0CCA6BB1A85A80C2BCAAFEA3 /* Support Files */,
 			);
-			name = AFOFFMpegLib;
 			path = AFOFFMpegLib;
 			sourceTree = "<group>";
 		};
@@ -687,7 +700,6 @@
 				A8DF84066D435D8DD1F1E7F35B1E7DBB /* JLRRouteResponse.m */,
 				4FC4E836666A9B7929E388D8B3DD4EFA /* Support Files */,
 			);
-			name = AFORouter;
 			path = AFORouter;
 			sourceTree = "<group>";
 		};
@@ -769,7 +781,6 @@
 				564E4F6B3A0E193D7B5EF546C9685628 /* AFOViews.h */,
 				DAD6B1331352AA3C112D195681BF7845 /* Support Files */,
 			);
-			name = AFOViews;
 			path = AFOViews;
 			sourceTree = "<group>";
 		};
@@ -894,7 +905,6 @@
 				73D7244894DC092BEF48CFFFE71845E7 /* ViewController+MASAdditions.m */,
 				5582C89C3C6934770994A1821F0E6084 /* Support Files */,
 			);
-			name = AFOGitHub;
 			path = AFOGitHub;
 			sourceTree = "<group>";
 		};
@@ -916,7 +926,6 @@
 				2671B4102E7E27240FC3E6501F2F6C9A /* AFOWindow.m */,
 				CB81FF7E33678E678C30BB88E102E16F /* Support Files */,
 			);
-			name = AFOUIKIT;
 			path = AFOUIKIT;
 			sourceTree = "<group>";
 		};
@@ -1472,8 +1481,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};
