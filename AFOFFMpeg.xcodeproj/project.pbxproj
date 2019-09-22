@@ -9,15 +9,6 @@
 /* Begin PBXBuildFile section */
 		2404875E2008459600D369FB /* AFOMediaForeignInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 240487562008459600D369FB /* AFOMediaForeignInterface.m */; };
 		240487632008459600D369FB /* AFOMediaForeignInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 2404875B2008459600D369FB /* AFOMediaForeignInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2408BAFE20085E930049060F /* libx264.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2408BAFD20085E4D0049060F /* libx264.a */; };
-		2413B77A21CFD20A0073F742 /* xvid.h in Headers */ = {isa = PBXBuildFile; fileRef = 2413B77721CFD20A0073F742 /* xvid.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		2413B77B21CFD20A0073F742 /* libxvidcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2413B77921CFD20A0073F742 /* libxvidcore.a */; };
-		24814F6221B4FC06001B2388 /* aacdecoder_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = 24814F5B21B4FC06001B2388 /* aacdecoder_lib.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		24814F6321B4FC06001B2388 /* machine_type.h in Headers */ = {isa = PBXBuildFile; fileRef = 24814F5C21B4FC06001B2388 /* machine_type.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		24814F6421B4FC06001B2388 /* aacenc_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = 24814F5D21B4FC06001B2388 /* aacenc_lib.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		24814F6521B4FC06001B2388 /* genericStds.h in Headers */ = {isa = PBXBuildFile; fileRef = 24814F5E21B4FC06001B2388 /* genericStds.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		24814F6621B4FC06001B2388 /* FDK_audio.h in Headers */ = {isa = PBXBuildFile; fileRef = 24814F5F21B4FC06001B2388 /* FDK_audio.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		24814F6721B4FC06001B2388 /* libfdk-aac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24814F6121B4FC06001B2388 /* libfdk-aac.a */; };
 		24BAFDC01FF4B12900D2EAB9 /* AFOFFMpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 24BAFDBE1FF4B12900D2EAB9 /* AFOFFMpeg.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24BAFEC61FF4BCB400D2EAB9 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BAFEC51FF4BCB400D2EAB9 /* AudioToolbox.framework */; };
 		24BAFEC81FF4BCBF00D2EAB9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BAFEC71FF4BCBF00D2EAB9 /* AVFoundation.framework */; };
@@ -109,18 +100,7 @@
 /* Begin PBXFileReference section */
 		240487562008459600D369FB /* AFOMediaForeignInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaForeignInterface.m; sourceTree = "<group>"; };
 		2404875B2008459600D369FB /* AFOMediaForeignInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaForeignInterface.h; sourceTree = "<group>"; };
-		2408BAFA20085E4D0049060F /* x264_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = x264_config.h; sourceTree = "<group>"; };
-		2408BAFB20085E4D0049060F /* x264.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = x264.h; sourceTree = "<group>"; };
-		2408BAFD20085E4D0049060F /* libx264.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libx264.a; sourceTree = "<group>"; };
 		2408BB3C200877D80049060F /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		2413B77721CFD20A0073F742 /* xvid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xvid.h; sourceTree = "<group>"; };
-		2413B77921CFD20A0073F742 /* libxvidcore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libxvidcore.a; sourceTree = "<group>"; };
-		24814F5B21B4FC06001B2388 /* aacdecoder_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aacdecoder_lib.h; sourceTree = "<group>"; };
-		24814F5C21B4FC06001B2388 /* machine_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = machine_type.h; sourceTree = "<group>"; };
-		24814F5D21B4FC06001B2388 /* aacenc_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aacenc_lib.h; sourceTree = "<group>"; };
-		24814F5E21B4FC06001B2388 /* genericStds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = genericStds.h; sourceTree = "<group>"; };
-		24814F5F21B4FC06001B2388 /* FDK_audio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDK_audio.h; sourceTree = "<group>"; };
-		24814F6121B4FC06001B2388 /* libfdk-aac.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libfdk-aac.a"; sourceTree = "<group>"; };
 		24A59FB82008382B00311ACB /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		24A59FBA2008386B00311ACB /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		24A59FBC2008387200311ACB /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -231,9 +211,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2408BAFE20085E930049060F /* libx264.a in Frameworks */,
-				24814F6721B4FC06001B2388 /* libfdk-aac.a in Frameworks */,
-				2413B77B21CFD20A0073F742 /* libxvidcore.a in Frameworks */,
 				922E6559DEB8E99FA090F6B5 /* libPods-AFOFFMpeg.a in Frameworks */,
 				24BAFED21FF4BD1D00D2EAB9 /* VideoToolbox.framework in Frameworks */,
 				24BAFED01FF4BD0700D2EAB9 /* CoreMedia.framework in Frameworks */,
@@ -248,94 +225,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2408BAF820085E190049060F /* x264 */ = {
-			isa = PBXGroup;
-			children = (
-				2408BAF920085E4D0049060F /* include */,
-				2408BAFC20085E4D0049060F /* lib */,
-			);
-			path = x264;
-			sourceTree = "<group>";
-		};
-		2408BAF920085E4D0049060F /* include */ = {
-			isa = PBXGroup;
-			children = (
-				2408BAFA20085E4D0049060F /* x264_config.h */,
-				2408BAFB20085E4D0049060F /* x264.h */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		2408BAFC20085E4D0049060F /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				2408BAFD20085E4D0049060F /* libx264.a */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
-		2413B77521CFD20A0073F742 /* libxvidcore */ = {
-			isa = PBXGroup;
-			children = (
-				2413B77621CFD20A0073F742 /* include */,
-				2413B77821CFD20A0073F742 /* lib */,
-			);
-			path = libxvidcore;
-			sourceTree = "<group>";
-		};
-		2413B77621CFD20A0073F742 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				2413B77721CFD20A0073F742 /* xvid.h */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		2413B77821CFD20A0073F742 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				2413B77921CFD20A0073F742 /* libxvidcore.a */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
-		24814F5821B4FC06001B2388 /* aac */ = {
-			isa = PBXGroup;
-			children = (
-				24814F5921B4FC06001B2388 /* include */,
-				24814F6021B4FC06001B2388 /* lib */,
-			);
-			path = aac;
-			sourceTree = "<group>";
-		};
-		24814F5921B4FC06001B2388 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				24814F5A21B4FC06001B2388 /* fdk-aac */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		24814F5A21B4FC06001B2388 /* fdk-aac */ = {
-			isa = PBXGroup;
-			children = (
-				24814F5B21B4FC06001B2388 /* aacdecoder_lib.h */,
-				24814F5C21B4FC06001B2388 /* machine_type.h */,
-				24814F5D21B4FC06001B2388 /* aacenc_lib.h */,
-				24814F5E21B4FC06001B2388 /* genericStds.h */,
-				24814F5F21B4FC06001B2388 /* FDK_audio.h */,
-			);
-			path = "fdk-aac";
-			sourceTree = "<group>";
-		};
-		24814F6021B4FC06001B2388 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				24814F6121B4FC06001B2388 /* libfdk-aac.a */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
 		24BAFDB11FF4B12900D2EAB9 = {
 			isa = PBXGroup;
 			children = (
@@ -363,9 +252,6 @@
 				240487562008459600D369FB /* AFOMediaForeignInterface.m */,
 				24DAD2C02331CA9C001D2CE4 /* media */,
 				24E593C52331189A00682DF7 /* libyuv */,
-				2408BAF820085E190049060F /* x264 */,
-				24814F5821B4FC06001B2388 /* aac */,
-				2413B77521CFD20A0073F742 /* libxvidcore */,
 			);
 			path = AFOFFMpeg;
 			sourceTree = "<group>";
@@ -545,29 +431,23 @@
 				24DAD2BC2331CA72001D2CE4 /* AFOMediaPlayControllerCategory.h in Headers */,
 				24DAD2BB2331CA72001D2CE4 /* AFOAudioThreadDecoder.h in Headers */,
 				24DAD2B02331CA72001D2CE4 /* AFOMediaControlView.h in Headers */,
-				24814F6221B4FC06001B2388 /* aacdecoder_lib.h in Headers */,
 				24DAD2AC2331CA72001D2CE4 /* AFOGenerateImages.h in Headers */,
-				24814F6621B4FC06001B2388 /* FDK_audio.h in Headers */,
 				24DAD2952331CA72001D2CE4 /* AFOAudioManager.h in Headers */,
 				24DAD27B2331CA72001D2CE4 /* AFOPlayMediaManager.h in Headers */,
-				24814F6521B4FC06001B2388 /* genericStds.h in Headers */,
 				24DAD28D2331CA72001D2CE4 /* AFOMediaPlayController+AFOOrientation.h in Headers */,
 				24DAD2B52331CA72001D2CE4 /* AFOAudioPacket.h in Headers */,
 				24DAD2B62331CA72001D2CE4 /* AFOVideoFrameRGB.h in Headers */,
 				24DAD2B82331CA72001D2CE4 /* AFOMediaErrorCodeManager.h in Headers */,
-				24814F6321B4FC06001B2388 /* machine_type.h in Headers */,
 				24DAD2992331CA72001D2CE4 /* AFOMediaFrameImport.h in Headers */,
 				24DAD2842331CA72001D2CE4 /* AFOMediaConditional.h in Headers */,
 				24DAD2892331CA72001D2CE4 /* AFOMediaPlayController+AFOGestures.h in Headers */,
 				24DAD2A62331CA72001D2CE4 /* AFOAudioDecoder.h in Headers */,
 				24DAD2B32331CA72001D2CE4 /* AFOAudioCache.h in Headers */,
-				2413B77A21CFD20A0073F742 /* xvid.h in Headers */,
 				24DAD2BE2331CA72001D2CE4 /* AFOMediaSeekFrame+Conditional.h in Headers */,
 				24DAD2BD2331CA72001D2CE4 /* AFOMediaYUV.h in Headers */,
 				24DAD2822331CA72001D2CE4 /* AFOMediaQueueManager.h in Headers */,
 				24DAD28B2331CA72001D2CE4 /* AFOVideoAudioManager.h in Headers */,
 				24DAD28E2331CA72001D2CE4 /* AFOMediaPlayController.h in Headers */,
-				24814F6421B4FC06001B2388 /* aacenc_lib.h in Headers */,
 				24DAD28A2331CA72001D2CE4 /* AFOMediaThumbnail.h in Headers */,
 				24DAD27D2331CA72001D2CE4 /* AFOMediaManager.h in Headers */,
 				24DAD2A32331CA72001D2CE4 /* AFOAudioOutPut.h in Headers */,
