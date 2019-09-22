@@ -1,0 +1,1 @@
+../../../../AFOFFMpegLib/AFOFFMpegLib/FFmpeg/include/libavdevice/version.h

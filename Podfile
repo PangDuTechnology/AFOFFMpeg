@@ -6,4 +6,5 @@ target 'AFOFFMpeg' do
   pod 'AFOUIKIT'
   pod 'AFOGitHub'
   pod 'AFOViews'
+  pod 'AFOFFMpegLib'
 end
