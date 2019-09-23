@@ -178,28 +178,6 @@
 		24DAD2782331CA72001D2CE4 /* AFOMediaYUV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaYUV.h; sourceTree = "<group>"; };
 		24DAD2792331CA72001D2CE4 /* AFOMediaSeekFrame+Conditional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFOMediaSeekFrame+Conditional.h"; sourceTree = "<group>"; };
 		24DAD27A2331CA72001D2CE4 /* AFOMediaControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaControlView.m; sourceTree = "<group>"; };
-		24E593C72331189A00682DF7 /* libyuv.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libyuv.h; sourceTree = "<group>"; };
-		24E593C92331189A00682DF7 /* scale_row.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scale_row.h; sourceTree = "<group>"; };
-		24E593CA2331189A00682DF7 /* scale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scale.h; sourceTree = "<group>"; };
-		24E593CB2331189A00682DF7 /* version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
-		24E593CC2331189A00682DF7 /* cpu_id.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cpu_id.h; sourceTree = "<group>"; };
-		24E593CD2331189A00682DF7 /* video_common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = video_common.h; sourceTree = "<group>"; };
-		24E593CE2331189A00682DF7 /* compare_row.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = compare_row.h; sourceTree = "<group>"; };
-		24E593CF2331189A00682DF7 /* mjpeg_decoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mjpeg_decoder.h; sourceTree = "<group>"; };
-		24E593D02331189A00682DF7 /* rotate_row.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rotate_row.h; sourceTree = "<group>"; };
-		24E593D12331189A00682DF7 /* planar_functions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = planar_functions.h; sourceTree = "<group>"; };
-		24E593D22331189A00682DF7 /* scale_argb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scale_argb.h; sourceTree = "<group>"; };
-		24E593D32331189A00682DF7 /* compare.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = compare.h; sourceTree = "<group>"; };
-		24E593D42331189A00682DF7 /* convert_argb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = convert_argb.h; sourceTree = "<group>"; };
-		24E593D52331189A00682DF7 /* rotate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rotate.h; sourceTree = "<group>"; };
-		24E593D62331189A00682DF7 /* convert_from_argb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = convert_from_argb.h; sourceTree = "<group>"; };
-		24E593D72331189A00682DF7 /* basic_types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = basic_types.h; sourceTree = "<group>"; };
-		24E593D82331189A00682DF7 /* convert_from.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = convert_from.h; sourceTree = "<group>"; };
-		24E593D92331189A00682DF7 /* convert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = convert.h; sourceTree = "<group>"; };
-		24E593DA2331189A00682DF7 /* rotate_argb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rotate_argb.h; sourceTree = "<group>"; };
-		24E593DB2331189A00682DF7 /* macros_msa.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = macros_msa.h; sourceTree = "<group>"; };
-		24E593DC2331189A00682DF7 /* row.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = row.h; sourceTree = "<group>"; };
-		24E593DE2331189A00682DF7 /* libyuv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libyuv.a; sourceTree = "<group>"; };
 		24E5942423311A2500682DF7 /* AFOFFMpeg.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AFOFFMpeg.pch; path = AFOFFMpeg/AFOFFMpeg.pch; sourceTree = "<group>"; };
 		8D4CA313006449D6B479D8FD /* Pods-AFOFFMpeg.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AFOFFMpeg.release.xcconfig"; path = "Target Support Files/Pods-AFOFFMpeg/Pods-AFOFFMpeg.release.xcconfig"; sourceTree = "<group>"; };
 		C215BB64AD96FF0492A70BBA /* Pods-AFOFFMpeg.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AFOFFMpeg.debug.xcconfig"; path = "Target Support Files/Pods-AFOFFMpeg/Pods-AFOFFMpeg.debug.xcconfig"; sourceTree = "<group>"; };
@@ -229,9 +207,9 @@
 			isa = PBXGroup;
 			children = (
 				24BAFDBD1FF4B12900D2EAB9 /* AFOFFMpeg */,
-				24E5942423311A2500682DF7 /* AFOFFMpeg.pch */,
 				24BAFDBC1FF4B12900D2EAB9 /* Products */,
 				24BAFEC41FF4BCB400D2EAB9 /* Frameworks */,
+				24E5942423311A2500682DF7 /* AFOFFMpeg.pch */,
 				D355983552DD45887E11029F /* Pods */,
 			);
 			sourceTree = "<group>";
@@ -251,7 +229,6 @@
 				2404875B2008459600D369FB /* AFOMediaForeignInterface.h */,
 				240487562008459600D369FB /* AFOMediaForeignInterface.m */,
 				24DAD2C02331CA9C001D2CE4 /* media */,
-				24E593C52331189A00682DF7 /* libyuv */,
 			);
 			path = AFOFFMpeg;
 			sourceTree = "<group>";
@@ -353,59 +330,6 @@
 				24DAD23B2331CA6E001D2CE4 /* AFOAudioThreadDecoder.m */,
 			);
 			path = audio;
-			sourceTree = "<group>";
-		};
-		24E593C52331189A00682DF7 /* libyuv */ = {
-			isa = PBXGroup;
-			children = (
-				24E593C62331189A00682DF7 /* include */,
-				24E593DD2331189A00682DF7 /* lib */,
-			);
-			path = libyuv;
-			sourceTree = "<group>";
-		};
-		24E593C62331189A00682DF7 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				24E593C72331189A00682DF7 /* libyuv.h */,
-				24E593C82331189A00682DF7 /* libyuv */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		24E593C82331189A00682DF7 /* libyuv */ = {
-			isa = PBXGroup;
-			children = (
-				24E593C92331189A00682DF7 /* scale_row.h */,
-				24E593CA2331189A00682DF7 /* scale.h */,
-				24E593CB2331189A00682DF7 /* version.h */,
-				24E593CC2331189A00682DF7 /* cpu_id.h */,
-				24E593CD2331189A00682DF7 /* video_common.h */,
-				24E593CE2331189A00682DF7 /* compare_row.h */,
-				24E593CF2331189A00682DF7 /* mjpeg_decoder.h */,
-				24E593D02331189A00682DF7 /* rotate_row.h */,
-				24E593D12331189A00682DF7 /* planar_functions.h */,
-				24E593D22331189A00682DF7 /* scale_argb.h */,
-				24E593D32331189A00682DF7 /* compare.h */,
-				24E593D42331189A00682DF7 /* convert_argb.h */,
-				24E593D52331189A00682DF7 /* rotate.h */,
-				24E593D62331189A00682DF7 /* convert_from_argb.h */,
-				24E593D72331189A00682DF7 /* basic_types.h */,
-				24E593D82331189A00682DF7 /* convert_from.h */,
-				24E593D92331189A00682DF7 /* convert.h */,
-				24E593DA2331189A00682DF7 /* rotate_argb.h */,
-				24E593DB2331189A00682DF7 /* macros_msa.h */,
-				24E593DC2331189A00682DF7 /* row.h */,
-			);
-			path = libyuv;
-			sourceTree = "<group>";
-		};
-		24E593DD2331189A00682DF7 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				24E593DE2331189A00682DF7 /* libyuv.a */,
-			);
-			path = lib;
 			sourceTree = "<group>";
 		};
 		D355983552DD45887E11029F /* Pods */ = {
@@ -728,21 +652,11 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/AFOFFMpeg.pch";
-				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/AFOFFMpeg/libyuv/include/**",
-					"$(SRCROOT)/AFOFFMpeg/FFmpeg/include/**",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/AFOFFMpeg/FFmpeg/lib",
-					"$(PROJECT_DIR)/AFOFFMpeg/x264/lib",
-					"$(PROJECT_DIR)/AFOFFMpeg/aac/lib",
-					"$(PROJECT_DIR)/AFOFFMpeg/libyuv/lib",
-					"$(PROJECT_DIR)/AFOFFMpeg/libxvidcore/lib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -776,22 +690,11 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/AFOFFMpeg.pch";
-				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/AFOFFMpeg/libyuv/include/**",
-					"$(SRCROOT)/AFOFFMpeg/FFmpeg/include/**",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/AFOFFMpeg/FFmpeg/lib",
-					"$(PROJECT_DIR)/AFOFFMpeg/x264/lib",
-					"$(PROJECT_DIR)/AFOFFMpeg/aac/lib",
-					"$(PROJECT_DIR)/AFOFFMpeg/libYUV/lib",
-					"$(PROJECT_DIR)/AFOFFMpeg/libxvidcore/lib",
-					"$(PROJECT_DIR)/AFOFFMpeg/libyuv/lib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACH_O_TYPE = staticlib;
 				OTHER_LDFLAGS = (
 					"-ObjC",

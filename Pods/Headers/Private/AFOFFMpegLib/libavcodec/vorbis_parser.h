@@ -1,1 +1,1 @@
-../../../../AFOFFMpegLib/AFOFFMpegLib/FFmpeg/include/libavcodec/vorbis_parser.h
+../../../../AFOFFMpegLib/AFOFFMpegLib/AFOFFMpegLib/FFmpeg/include/libavcodec/vorbis_parser.h

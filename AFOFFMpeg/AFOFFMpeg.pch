@@ -22,7 +22,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 /*****************/
-#import "libyuv/include/libyuv.h"
+//#import "libyuv/include/libyuv.h"
 #import <libavcodec/avcodec.h>
 #import <libavformat/avformat.h>
 #import <libswscale/swscale.h>

@@ -1,1 +1,1 @@
-../../../../AFOFFMpegLib/AFOFFMpegLib/FFmpeg/include/libavcodec/jni.h
+../../../../AFOFFMpegLib/AFOFFMpegLib/AFOFFMpegLib/FFmpeg/include/libavcodec/jni.h
