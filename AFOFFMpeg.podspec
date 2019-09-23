@@ -20,13 +20,13 @@ Pod::Spec.new do |s|
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   s.source       = { :git => "https://github.com/PangDuTechnology/AFOFFMpeg.git", :tag => s.version.to_s }
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
-  s.source_files  = "AFOFFMpeg/*.{h,m}"
-  s.public_header_files = "AFOFFMpeg/*.h"
+  s.source_files  = "AFOFFMpeg/**/*.{h,m}"
+  s.public_header_files = "AFOFFMpeg/*/*.h"
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
-  s.pod_target_xcconfig  =  {  'OTHER_LDFLAGS'  =>  '-lObjC'  }
+  s.pod_target_xcconfig  =  {'OTHER_LDFLAGS'  =>  '-lObjC' }
   s.requires_arc = true
   s.dependency "AFOFoundation"
   s.dependency "AFORouter"
