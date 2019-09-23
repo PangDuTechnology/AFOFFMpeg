@@ -7,7 +7,9 @@
 //
 
 #import "AFOMediaControlView.h"
-
+#import <AFOViews/AFOViews.h>
+#import <AFOGitHub/AFOGitHub.h>
+#import <AFOFoundation/AFOFoundation.h>
 @interface AFOMediaControlView ()
 @property (nonnull,nonatomic, strong) UIButton                  *playButton;
 @property (nonnull,nonatomic, strong) UILabel                   *timeLabel;

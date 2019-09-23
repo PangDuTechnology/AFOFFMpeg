@@ -7,7 +7,7 @@
 //
 
 #import "AFOMediaFrame.h"
-
+#import <UIKit/UIKit.h>
 @interface  AFOMediaFrame ()
 @property (nonatomic, assign, readwrite) AFOMediaFrameType  type;
 @property (nonatomic, assign, readwrite) CGFloat            position;

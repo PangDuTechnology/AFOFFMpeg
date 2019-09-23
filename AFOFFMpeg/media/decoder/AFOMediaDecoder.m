@@ -7,6 +7,7 @@
 //
 
 #import "AFOMediaDecoder.h"
+#import <AFOFoundation/AFOFoundation.h>
 #import "AFOMediaManager.h"
 @interface AFOMediaDecoder (){
     AVCodec             *avCodec;

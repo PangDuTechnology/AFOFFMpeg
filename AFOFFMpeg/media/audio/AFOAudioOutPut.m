@@ -7,6 +7,7 @@
 //
 
 #import "AFOAudioOutPut.h"
+#import <AudioToolbox/AudioToolbox.h>
 static const AudioUnitElement inputElement = 1;
 @interface AFOAudioOutPut (){
     SInt16 *outData;

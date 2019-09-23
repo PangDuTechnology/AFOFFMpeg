@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <libavformat/avformat.h>
 @class AFOVideoFrame;
 @interface AFOMediaManager : NSObject
 - (void)mediaVideoStream:(AVFrame *)frame

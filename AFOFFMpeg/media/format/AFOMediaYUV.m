@@ -7,6 +7,7 @@
 //
 #import "AFOMediaYUV.h"
 #import <AFOlibyuv/libyuv.h>
+#import <libavutil/imgutils.h>
 @interface AFOMediaYUV ()
 @property (nonatomic, assign) CVPixelBufferPoolRef pixelBufferPool;
 @property (nonatomic, assign) CVPixelBufferRef     pixelBuffer;

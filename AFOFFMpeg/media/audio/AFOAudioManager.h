@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <libavformat/avformat.h>
 @protocol AFOAudioManagerDelegate <NSObject>
 @optional
 - (void)audioTimeStamp:(float)audioTime;

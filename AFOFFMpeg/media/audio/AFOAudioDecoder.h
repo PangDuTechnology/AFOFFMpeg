@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <libavformat/avformat.h>
 typedef void(^audioTimeStampBlock)(float timeStamp);
 NS_ASSUME_NONNULL_BEGIN
 @interface AFOAudioDecoder : NSObject

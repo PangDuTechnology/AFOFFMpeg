@@ -7,6 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <libavformat/avformat.h>
+#import <libswscale/swscale.h>
 /**
  <#Description#>
 

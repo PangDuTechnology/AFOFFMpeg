@@ -7,6 +7,8 @@
 //
 
 #import "AFOMediaView.h"
+#import <AFOGitHub/AFOGitHub.h>
+#import <AFOFoundation/AFOFoundation.h>
 #import "AFOMediaControlView.h"
 @interface AFOMediaView ()<AFOMediaControlViewDelegate>
 @property (nonnull,nonatomic, strong) UIImageView           *playImageView;

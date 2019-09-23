@@ -7,6 +7,7 @@
 //
 
 #import "AFOMediaTimer.h"
+#import <libswresample/swresample.h>
 @implementation AFOMediaTimer
 #pragma mark ------------
 + (NSInteger)microseconds:(int64_t)douration{
@@ -44,7 +45,7 @@
 #pragma mark ------------
 + (NSString *)timeFormatShort:(int64_t)douration{
     douration = [self timeFormicroseconds:douration];
-    return [NSString stringWithFormat:@"%02ld:%02ld:%02ld",[AFOMediaTimer hourDuration:douration],[AFOMediaTimer minutesDuration:douration],[AFOMediaTimer secondsDuration:douration]];
+    return [NSString stringWithFormat:@"%02ld:%02ld:%02ld",(long)[AFOMediaTimer hourDuration:douration],(long)[AFOMediaTimer minutesDuration:douration],[AFOMediaTimer secondsDuration:douration]];
 }
 #pragma mark ------------
 + (NSString *)currentTime:(int64_t)douration{
