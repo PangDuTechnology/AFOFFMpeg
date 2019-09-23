@@ -26,6 +26,7 @@ Pod::Spec.new do |s|
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
+  s.pod_target_xcconfig  =  {  'OTHER_LDFLAGS'  =>  '-lObjC'  }
   s.requires_arc = true
   s.dependency "AFOFoundation"
   s.dependency "AFORouter"
