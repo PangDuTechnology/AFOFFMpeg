@@ -8,4 +8,6 @@ target 'AFOFFMpeg' do
   pod 'AFOViews'
   pod 'AFOFFMpegLib'
   pod 'AFOlibyuv'
+  pod 'libxvidcore'
+  pod 'AFOx264'
 end
