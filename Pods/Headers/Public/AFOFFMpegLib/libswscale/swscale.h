@@ -1,1 +1,1 @@
-../../../../AFOFFMpegLib/AFOFFMpegLib/AFOFFMpegLib/FFmpeg/include/libswscale/swscale.h
+../../../../AFOFFMpegLib/contains/FFmpeg/include/libswscale/swscale.h

@@ -1,1 +1,1 @@
-../../../../AFOFFMpegLib/AFOFFMpegLib/AFOFFMpegLib/FFmpeg/include/libavcodec/dirac.h
+../../../../AFOFFMpegLib/contains/FFmpeg/include/libavcodec/dirac.h

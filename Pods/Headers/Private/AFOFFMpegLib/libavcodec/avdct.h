@@ -1,1 +1,1 @@
-../../../../AFOFFMpegLib/AFOFFMpegLib/AFOFFMpegLib/FFmpeg/include/libavcodec/avdct.h
+../../../../AFOFFMpegLib/contains/FFmpeg/include/libavcodec/avdct.h

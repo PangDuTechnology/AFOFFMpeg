@@ -1,1 +1,1 @@
-../../../../AFOFFMpegLib/AFOFFMpegLib/AFOFFMpegLib/FFmpeg/include/libavutil/stereo3d.h
+../../../../AFOFFMpegLib/contains/FFmpeg/include/libavutil/stereo3d.h

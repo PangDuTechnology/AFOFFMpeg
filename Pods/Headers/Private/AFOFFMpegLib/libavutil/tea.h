@@ -1,1 +1,1 @@
-../../../../AFOFFMpegLib/AFOFFMpegLib/AFOFFMpegLib/FFmpeg/include/libavutil/tea.h
+../../../../AFOFFMpegLib/contains/FFmpeg/include/libavutil/tea.h

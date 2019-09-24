@@ -1,1 +1,1 @@
-../../../../AFOFFMpegLib/AFOFFMpegLib/AFOFFMpegLib/FFmpeg/include/libavutil/avconfig.h
+../../../../AFOFFMpegLib/contains/FFmpeg/include/libavutil/avconfig.h
