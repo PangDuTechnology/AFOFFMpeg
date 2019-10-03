@@ -89,8 +89,11 @@
         block(error,image,totalTime,currentTime,totalSeconds,cuttentSeconds);
     }];
     ///------ play audio
-    [self.audioManager audioFormatContext:self->avFormatContext codecContext:avCcodecContextAudio index:self.audioStream];
-    [self playAudio];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self.audioManager audioFormatContext:self->avFormatContext codecContext:self->avCcodecContextAudio index:self.audioStream];
+        [self playAudio];
+    });
+
 }
 - (void)playAudio{
     [self.audioManager playAudio];
