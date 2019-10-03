@@ -86,10 +86,10 @@
     [self registerBaseMethod:strPath];
     ///------ display video
     [self.videoManager displayVedioFormatContext:avFormatContext codecContext:avCodecContextVideo index:self.videoStream block:^(NSError *error, UIImage *image, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
-        //block(error,image,totalTime,currentTime,totalSeconds,cuttentSeconds);
+        block(error,image,totalTime,currentTime,totalSeconds,cuttentSeconds);
     }];
     ///------ play audio
-    [self.audioManager audioFormatContext:avFormatContext codecContext:avCcodecContextAudio index:self.audioStream];
+    //[self.audioManager audioFormatContext:avFormatContext codecContext:avCcodecContextAudio index:self.audioStream];
 }
 - (void)playAudio{
     [self.audioManager playAudio];
@@ -107,7 +107,7 @@
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [self correctionTime];
     });
-//    [self playAudio];
+    [self playAudio];
 }
 - (CGFloat)tickCorrection{
     const NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
