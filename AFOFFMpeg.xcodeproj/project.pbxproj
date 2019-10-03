@@ -19,22 +19,18 @@
 		24BAFED21FF4BD1D00D2EAB9 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BAFED11FF4BD1D00D2EAB9 /* VideoToolbox.framework */; };
 		24DAD27B2331CA72001D2CE4 /* AFOPlayMediaManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2362331CA6E001D2CE4 /* AFOPlayMediaManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD27C2331CA72001D2CE4 /* AFOMediaSeekFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD2372331CA6E001D2CE4 /* AFOMediaSeekFrame.m */; };
-		24DAD27D2331CA72001D2CE4 /* AFOMediaManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2382331CA6E001D2CE4 /* AFOMediaManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		24DAD27E2331CA72001D2CE4 /* AFOMediaOpenGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2392331CA6E001D2CE4 /* AFOMediaOpenGLView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD27F2331CA72001D2CE4 /* AFOMediaTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD23A2331CA6E001D2CE4 /* AFOMediaTimer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD2802331CA72001D2CE4 /* AFOAudioThreadDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD23B2331CA6E001D2CE4 /* AFOAudioThreadDecoder.m */; };
 		24DAD2812331CA72001D2CE4 /* AFOVideoFrameYUV.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD23C2331CA6E001D2CE4 /* AFOVideoFrameYUV.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD2822331CA72001D2CE4 /* AFOMediaQueueManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD23D2331CA6E001D2CE4 /* AFOMediaQueueManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD2832331CA72001D2CE4 /* AFOAudioQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD23E2331CA6E001D2CE4 /* AFOAudioQueue.m */; };
 		24DAD2842331CA72001D2CE4 /* AFOMediaConditional.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD23F2331CA6E001D2CE4 /* AFOMediaConditional.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		24DAD2852331CA72001D2CE4 /* AFOMediaOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD2402331CA6E001D2CE4 /* AFOMediaOpenGLView.m */; };
 		24DAD2862331CA72001D2CE4 /* AFOAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD2412331CA6F001D2CE4 /* AFOAudioManager.m */; };
 		24DAD2872331CA72001D2CE4 /* AFOMediaPlayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD2422331CA6F001D2CE4 /* AFOMediaPlayController.m */; };
 		24DAD2882331CA72001D2CE4 /* AFOMediaSeekFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2432331CA6F001D2CE4 /* AFOMediaSeekFrame.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD2892331CA72001D2CE4 /* AFOMediaPlayController+AFOGestures.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2442331CA6F001D2CE4 /* AFOMediaPlayController+AFOGestures.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD28A2331CA72001D2CE4 /* AFOMediaThumbnail.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2452331CA6F001D2CE4 /* AFOMediaThumbnail.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD28B2331CA72001D2CE4 /* AFOVideoAudioManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2462331CA6F001D2CE4 /* AFOVideoAudioManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		24DAD28C2331CA72001D2CE4 /* AFOMediaDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2472331CA6F001D2CE4 /* AFOMediaDecoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD28D2331CA72001D2CE4 /* AFOMediaPlayController+AFOOrientation.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2482331CA6F001D2CE4 /* AFOMediaPlayController+AFOOrientation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD28E2331CA72001D2CE4 /* AFOMediaPlayController.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2492331CA6F001D2CE4 /* AFOMediaPlayController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD28F2331CA72001D2CE4 /* AFOVideoFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD24A2331CA6F001D2CE4 /* AFOVideoFrame.m */; };
@@ -45,14 +41,12 @@
 		24DAD2942331CA72001D2CE4 /* AFOMediaErrorString.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD24F2331CA6F001D2CE4 /* AFOMediaErrorString.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD2952331CA72001D2CE4 /* AFOAudioManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2502331CA6F001D2CE4 /* AFOAudioManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD2962331CA72001D2CE4 /* AFOMediaFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2512331CA6F001D2CE4 /* AFOMediaFrame.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		24DAD2972331CA72001D2CE4 /* AFOMediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD2522331CA6F001D2CE4 /* AFOMediaManager.m */; };
 		24DAD2982331CA72001D2CE4 /* AFOMediaSeekFrame+Conditional.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD2532331CA70001D2CE4 /* AFOMediaSeekFrame+Conditional.m */; };
 		24DAD2992331CA72001D2CE4 /* AFOMediaFrameImport.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2542331CA70001D2CE4 /* AFOMediaFrameImport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD29A2331CA72001D2CE4 /* AFOMediaFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD2552331CA70001D2CE4 /* AFOMediaFrame.m */; };
 		24DAD29B2331CA72001D2CE4 /* AFOAudioPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD2562331CA70001D2CE4 /* AFOAudioPacket.m */; };
 		24DAD29C2331CA72001D2CE4 /* AFOMediaThumbnail.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD2572331CA70001D2CE4 /* AFOMediaThumbnail.m */; };
 		24DAD29D2331CA72001D2CE4 /* AFOMediaErrorCodeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD2582331CA70001D2CE4 /* AFOMediaErrorCodeManager.m */; };
-		24DAD29E2331CA72001D2CE4 /* AFOMediaDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD2592331CA70001D2CE4 /* AFOMediaDecoder.m */; };
 		24DAD29F2331CA72001D2CE4 /* AFOGenerateImages.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD25A2331CA70001D2CE4 /* AFOGenerateImages.m */; };
 		24DAD2A12331CA72001D2CE4 /* AFOMediaPlayController+AFOOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD25C2331CA70001D2CE4 /* AFOMediaPlayController+AFOOrientation.m */; };
 		24DAD2A22331CA72001D2CE4 /* AFOMediaTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD25D2331CA70001D2CE4 /* AFOMediaTimer.m */; };
@@ -115,22 +109,18 @@
 		24BAFED11FF4BD1D00D2EAB9 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		24DAD2362331CA6E001D2CE4 /* AFOPlayMediaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOPlayMediaManager.h; sourceTree = "<group>"; };
 		24DAD2372331CA6E001D2CE4 /* AFOMediaSeekFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaSeekFrame.m; sourceTree = "<group>"; };
-		24DAD2382331CA6E001D2CE4 /* AFOMediaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaManager.h; sourceTree = "<group>"; };
-		24DAD2392331CA6E001D2CE4 /* AFOMediaOpenGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaOpenGLView.h; sourceTree = "<group>"; };
 		24DAD23A2331CA6E001D2CE4 /* AFOMediaTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaTimer.h; sourceTree = "<group>"; };
 		24DAD23B2331CA6E001D2CE4 /* AFOAudioThreadDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOAudioThreadDecoder.m; sourceTree = "<group>"; };
 		24DAD23C2331CA6E001D2CE4 /* AFOVideoFrameYUV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOVideoFrameYUV.h; sourceTree = "<group>"; };
 		24DAD23D2331CA6E001D2CE4 /* AFOMediaQueueManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaQueueManager.h; sourceTree = "<group>"; };
 		24DAD23E2331CA6E001D2CE4 /* AFOAudioQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOAudioQueue.m; sourceTree = "<group>"; };
 		24DAD23F2331CA6E001D2CE4 /* AFOMediaConditional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaConditional.h; sourceTree = "<group>"; };
-		24DAD2402331CA6E001D2CE4 /* AFOMediaOpenGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaOpenGLView.m; sourceTree = "<group>"; };
 		24DAD2412331CA6F001D2CE4 /* AFOAudioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOAudioManager.m; sourceTree = "<group>"; };
 		24DAD2422331CA6F001D2CE4 /* AFOMediaPlayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaPlayController.m; sourceTree = "<group>"; };
 		24DAD2432331CA6F001D2CE4 /* AFOMediaSeekFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaSeekFrame.h; sourceTree = "<group>"; };
 		24DAD2442331CA6F001D2CE4 /* AFOMediaPlayController+AFOGestures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFOMediaPlayController+AFOGestures.h"; sourceTree = "<group>"; };
 		24DAD2452331CA6F001D2CE4 /* AFOMediaThumbnail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaThumbnail.h; sourceTree = "<group>"; };
 		24DAD2462331CA6F001D2CE4 /* AFOVideoAudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOVideoAudioManager.h; sourceTree = "<group>"; };
-		24DAD2472331CA6F001D2CE4 /* AFOMediaDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaDecoder.h; sourceTree = "<group>"; };
 		24DAD2482331CA6F001D2CE4 /* AFOMediaPlayController+AFOOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFOMediaPlayController+AFOOrientation.h"; sourceTree = "<group>"; };
 		24DAD2492331CA6F001D2CE4 /* AFOMediaPlayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaPlayController.h; sourceTree = "<group>"; };
 		24DAD24A2331CA6F001D2CE4 /* AFOVideoFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOVideoFrame.m; sourceTree = "<group>"; };
@@ -141,14 +131,12 @@
 		24DAD24F2331CA6F001D2CE4 /* AFOMediaErrorString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaErrorString.h; sourceTree = "<group>"; };
 		24DAD2502331CA6F001D2CE4 /* AFOAudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOAudioManager.h; sourceTree = "<group>"; };
 		24DAD2512331CA6F001D2CE4 /* AFOMediaFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaFrame.h; sourceTree = "<group>"; };
-		24DAD2522331CA6F001D2CE4 /* AFOMediaManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaManager.m; sourceTree = "<group>"; };
 		24DAD2532331CA70001D2CE4 /* AFOMediaSeekFrame+Conditional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFOMediaSeekFrame+Conditional.m"; sourceTree = "<group>"; };
 		24DAD2542331CA70001D2CE4 /* AFOMediaFrameImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaFrameImport.h; sourceTree = "<group>"; };
 		24DAD2552331CA70001D2CE4 /* AFOMediaFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaFrame.m; sourceTree = "<group>"; };
 		24DAD2562331CA70001D2CE4 /* AFOAudioPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOAudioPacket.m; sourceTree = "<group>"; };
 		24DAD2572331CA70001D2CE4 /* AFOMediaThumbnail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaThumbnail.m; sourceTree = "<group>"; };
 		24DAD2582331CA70001D2CE4 /* AFOMediaErrorCodeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaErrorCodeManager.m; sourceTree = "<group>"; };
-		24DAD2592331CA70001D2CE4 /* AFOMediaDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaDecoder.m; sourceTree = "<group>"; };
 		24DAD25A2331CA70001D2CE4 /* AFOGenerateImages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOGenerateImages.m; sourceTree = "<group>"; };
 		24DAD25C2331CA70001D2CE4 /* AFOMediaPlayController+AFOOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFOMediaPlayController+AFOOrientation.m"; sourceTree = "<group>"; };
 		24DAD25D2331CA70001D2CE4 /* AFOMediaTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaTimer.m; sourceTree = "<group>"; };
@@ -253,15 +241,12 @@
 		24DAD2C02331CA9C001D2CE4 /* media */ = {
 			isa = PBXGroup;
 			children = (
+				722D3D572338E9F600201ACB /* play */,
 				24DAD2C12331CAE2001D2CE4 /* audio */,
 				722D3D562338E9D200201ACB /* error */,
-				722D3D582338ED7B00201ACB /* openGL */,
-				722D3D572338E9F600201ACB /* play */,
 				722D3D592338EDA800201ACB /* format */,
 				722D3D5A2338EDFC00201ACB /* seek */,
 				722D3D5B2338EE1800201ACB /* manager */,
-				722D3D5E2338EEBB00201ACB /* decoder */,
-				722D3D5D2338EE8500201ACB /* mediaFrame */,
 				722D3D5C2338EE6600201ACB /* viewModels */,
 				722D3D5F2338EEDF00201ACB /* view */,
 			);
@@ -271,12 +256,12 @@
 		24DAD2C12331CAE2001D2CE4 /* audio */ = {
 			isa = PBXGroup;
 			children = (
+				24DAD2502331CA6F001D2CE4 /* AFOAudioManager.h */,
+				24DAD2412331CA6F001D2CE4 /* AFOAudioManager.m */,
 				24DAD26E2331CA71001D2CE4 /* AFOAudioCache.h */,
 				24DAD24E2331CA6F001D2CE4 /* AFOAudioCache.m */,
 				24DAD2612331CA70001D2CE4 /* AFOAudioDecoder.h */,
 				24DAD24B2331CA6F001D2CE4 /* AFOAudioDecoder.m */,
-				24DAD2502331CA6F001D2CE4 /* AFOAudioManager.h */,
-				24DAD2412331CA6F001D2CE4 /* AFOAudioManager.m */,
 				24DAD25E2331CA70001D2CE4 /* AFOAudioOutPut.h */,
 				24DAD24C2331CA6F001D2CE4 /* AFOAudioOutPut.m */,
 				24DAD2702331CA71001D2CE4 /* AFOAudioPacket.h */,
@@ -285,6 +270,8 @@
 				24DAD23E2331CA6E001D2CE4 /* AFOAudioQueue.m */,
 				24DAD2752331CA72001D2CE4 /* AFOAudioSession.h */,
 				24DAD25F2331CA70001D2CE4 /* AFOAudioSession.m */,
+				24DAD2762331CA72001D2CE4 /* AFOAudioThreadDecoder.h */,
+				24DAD23B2331CA6E001D2CE4 /* AFOAudioThreadDecoder.m */,
 			);
 			path = audio;
 			sourceTree = "<group>";
@@ -292,9 +279,9 @@
 		722D3D562338E9D200201ACB /* error */ = {
 			isa = PBXGroup;
 			children = (
+				24DAD24F2331CA6F001D2CE4 /* AFOMediaErrorString.h */,
 				24DAD2732331CA71001D2CE4 /* AFOMediaErrorCodeManager.h */,
 				24DAD2582331CA70001D2CE4 /* AFOMediaErrorCodeManager.m */,
-				24DAD24F2331CA6F001D2CE4 /* AFOMediaErrorString.h */,
 			);
 			path = error;
 			sourceTree = "<group>";
@@ -302,9 +289,9 @@
 		722D3D572338E9F600201ACB /* play */ = {
 			isa = PBXGroup;
 			children = (
+				24DAD2772331CA72001D2CE4 /* AFOMediaPlayControllerCategory.h */,
 				24DAD2492331CA6F001D2CE4 /* AFOMediaPlayController.h */,
 				24DAD2422331CA6F001D2CE4 /* AFOMediaPlayController.m */,
-				24DAD2772331CA72001D2CE4 /* AFOMediaPlayControllerCategory.h */,
 				24DAD2442331CA6F001D2CE4 /* AFOMediaPlayController+AFOGestures.h */,
 				24DAD2682331CA71001D2CE4 /* AFOMediaPlayController+AFOGestures.m */,
 				24DAD2482331CA6F001D2CE4 /* AFOMediaPlayController+AFOOrientation.h */,
@@ -313,18 +300,12 @@
 			path = play;
 			sourceTree = "<group>";
 		};
-		722D3D582338ED7B00201ACB /* openGL */ = {
-			isa = PBXGroup;
-			children = (
-				24DAD2392331CA6E001D2CE4 /* AFOMediaOpenGLView.h */,
-				24DAD2402331CA6E001D2CE4 /* AFOMediaOpenGLView.m */,
-			);
-			path = openGL;
-			sourceTree = "<group>";
-		};
 		722D3D592338EDA800201ACB /* format */ = {
 			isa = PBXGroup;
 			children = (
+				24DAD2542331CA70001D2CE4 /* AFOMediaFrameImport.h */,
+				24DAD2512331CA6F001D2CE4 /* AFOMediaFrame.h */,
+				24DAD2552331CA70001D2CE4 /* AFOMediaFrame.m */,
 				24DAD2782331CA72001D2CE4 /* AFOMediaYUV.h */,
 				24DAD2622331CA70001D2CE4 /* AFOMediaYUV.m */,
 				24DAD2712331CA71001D2CE4 /* AFOVideoFrameRGB.h */,
@@ -349,8 +330,6 @@
 		722D3D5B2338EE1800201ACB /* manager */ = {
 			isa = PBXGroup;
 			children = (
-				24DAD2382331CA6E001D2CE4 /* AFOMediaManager.h */,
-				24DAD2522331CA6F001D2CE4 /* AFOMediaManager.m */,
 				24DAD23D2331CA6E001D2CE4 /* AFOMediaQueueManager.h */,
 				24DAD2742331CA72001D2CE4 /* AFOMediaQueueManager.m */,
 				24DAD2362331CA6E001D2CE4 /* AFOPlayMediaManager.h */,
@@ -376,27 +355,6 @@
 				24DAD24A2331CA6F001D2CE4 /* AFOVideoFrame.m */,
 			);
 			path = viewModels;
-			sourceTree = "<group>";
-		};
-		722D3D5D2338EE8500201ACB /* mediaFrame */ = {
-			isa = PBXGroup;
-			children = (
-				24DAD2512331CA6F001D2CE4 /* AFOMediaFrame.h */,
-				24DAD2552331CA70001D2CE4 /* AFOMediaFrame.m */,
-				24DAD2542331CA70001D2CE4 /* AFOMediaFrameImport.h */,
-			);
-			path = mediaFrame;
-			sourceTree = "<group>";
-		};
-		722D3D5E2338EEBB00201ACB /* decoder */ = {
-			isa = PBXGroup;
-			children = (
-				24DAD2762331CA72001D2CE4 /* AFOAudioThreadDecoder.h */,
-				24DAD23B2331CA6E001D2CE4 /* AFOAudioThreadDecoder.m */,
-				24DAD2472331CA6F001D2CE4 /* AFOMediaDecoder.h */,
-				24DAD2592331CA70001D2CE4 /* AFOMediaDecoder.m */,
-			);
-			path = decoder;
 			sourceTree = "<group>";
 		};
 		722D3D5F2338EEDF00201ACB /* view */ = {
@@ -450,16 +408,13 @@
 				24DAD28B2331CA72001D2CE4 /* AFOVideoAudioManager.h in Headers */,
 				24DAD28E2331CA72001D2CE4 /* AFOMediaPlayController.h in Headers */,
 				24DAD28A2331CA72001D2CE4 /* AFOMediaThumbnail.h in Headers */,
-				24DAD27D2331CA72001D2CE4 /* AFOMediaManager.h in Headers */,
 				24DAD2A32331CA72001D2CE4 /* AFOAudioOutPut.h in Headers */,
 				24DAD2A52331CA72001D2CE4 /* AFOAudioQueue.h in Headers */,
 				24DAD2942331CA72001D2CE4 /* AFOMediaErrorString.h in Headers */,
 				24DAD2922331CA72001D2CE4 /* AFOMediaView.h in Headers */,
-				24DAD27E2331CA72001D2CE4 /* AFOMediaOpenGLView.h in Headers */,
 				24DAD2812331CA72001D2CE4 /* AFOVideoFrameYUV.h in Headers */,
 				24DAD2A92331CA72001D2CE4 /* AFOVideoFrame.h in Headers */,
 				24DAD2962331CA72001D2CE4 /* AFOMediaFrame.h in Headers */,
-				24DAD28C2331CA72001D2CE4 /* AFOMediaDecoder.h in Headers */,
 				24BAFDC01FF4B12900D2EAB9 /* AFOFFMpeg.h in Headers */,
 				240487632008459600D369FB /* AFOMediaForeignInterface.h in Headers */,
 			);
@@ -575,18 +530,15 @@
 				24DAD2B12331CA72001D2CE4 /* AFOPlayMediaManager.m in Sources */,
 				24DAD29D2331CA72001D2CE4 /* AFOMediaErrorCodeManager.m in Sources */,
 				24DAD27C2331CA72001D2CE4 /* AFOMediaSeekFrame.m in Sources */,
-				24DAD29E2331CA72001D2CE4 /* AFOMediaDecoder.m in Sources */,
 				24DAD2802331CA72001D2CE4 /* AFOAudioThreadDecoder.m in Sources */,
 				24DAD29C2331CA72001D2CE4 /* AFOMediaThumbnail.m in Sources */,
 				24DAD2AD2331CA72001D2CE4 /* AFOMediaPlayController+AFOGestures.m in Sources */,
-				24DAD2852331CA72001D2CE4 /* AFOMediaOpenGLView.m in Sources */,
 				24DAD2B42331CA72001D2CE4 /* AFOVideoFrameYUV.m in Sources */,
 				24DAD29F2331CA72001D2CE4 /* AFOGenerateImages.m in Sources */,
 				24DAD2982331CA72001D2CE4 /* AFOMediaSeekFrame+Conditional.m in Sources */,
 				24DAD2A22331CA72001D2CE4 /* AFOMediaTimer.m in Sources */,
 				24DAD2832331CA72001D2CE4 /* AFOAudioQueue.m in Sources */,
 				24DAD2B22331CA72001D2CE4 /* AFOMediaConditional.m in Sources */,
-				24DAD2972331CA72001D2CE4 /* AFOMediaManager.m in Sources */,
 				24DAD2AE2331CA72001D2CE4 /* AFOMediaView.m in Sources */,
 				24DAD2902331CA72001D2CE4 /* AFOAudioDecoder.m in Sources */,
 				24DAD2862331CA72001D2CE4 /* AFOAudioManager.m in Sources */,

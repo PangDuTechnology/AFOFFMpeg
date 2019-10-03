@@ -11,11 +11,9 @@
 #import <AFOFoundation/AFOFoundation.h>
 #import "AFOMediaPlayControllerCategory.h"
 #import "AFOVideoAudioManager.h"
-#import "AFOMediaOpenGLView.h"
 @interface AFOMediaPlayController ()<AFORouterManagerDelegate>
 @property (nonatomic, strong) AFOVideoAudioManager       *mediaManager;
 @property (nonatomic, copy)   NSString                   *strPath;
-@property (nonatomic, strong) AFOMediaOpenGLView         *openGLView;
 @property (nonatomic, assign) UIInterfaceOrientationMask  orientation;
 @end
 
