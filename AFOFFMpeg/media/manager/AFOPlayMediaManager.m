@@ -12,7 +12,7 @@
 #import "AFOMediaTimer.h"
 #import "AFOGenerateImages.h"
 #import "AFOMediaErrorCodeManager.h"
-#import "AFOMediaQueueManager.h"
+#import "AFOCountdownManager.h"
 @interface AFOPlayMediaManager (){
     AVFormatContext     *avFormatContext;
     AVCodecContext      *avCodecContext;
@@ -31,7 +31,7 @@
 @property (nonatomic, assign)            NSInteger       videoStream;
 @property (nonatomic, assign)            CGFloat         videoTimeBase;
 @property (nonatomic, assign)            BOOL            isRelease;
-@property (nonatomic, strong) AFOMediaQueueManager      *queueManager;
+@property (nonatomic, strong) AFOCountdownManager      *queueManager;
 @property (nonatomic, strong) AFOGenerateImages         *generateImage;
 @property (nonatomic, weak) id<AFOPlayMediaManager>      delegate;
 @end
@@ -164,9 +164,9 @@
 - (CGSize)outSize{
     return CGSizeMake(avFrame ->width, avFrame -> height);
 }
-- (AFOMediaQueueManager *)queueManager{
+- (AFOCountdownManager *)queueManager{
     if (!_queueManager) {
-        _queueManager = [[AFOMediaQueueManager alloc] init];
+        _queueManager = [[AFOCountdownManager alloc] init];
     }
     return _queueManager;
 }
