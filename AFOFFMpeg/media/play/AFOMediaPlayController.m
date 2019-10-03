@@ -60,7 +60,6 @@
     }];
 }
 #pragma mark ------------ system
-#pragma mark ------
 - (BOOL)shouldAutorotate{
     return YES;
 }
