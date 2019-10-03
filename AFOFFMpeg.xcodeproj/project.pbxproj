@@ -75,6 +75,8 @@
 		922E6559DEB8E99FA090F6B5 /* libPods-AFOFFMpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C3DF97E31429DA00550B5A /* libPods-AFOFFMpeg.a */; };
 		DB7101432345E49200EF4590 /* AFOAudioThreadDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7101412345E49200EF4590 /* AFOAudioThreadDecoder.m */; };
 		DB7101442345E49200EF4590 /* AFOAudioThreadDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = DB7101422345E49200EF4590 /* AFOAudioThreadDecoder.h */; };
+		DBD0743D234629CB00DB2532 /* AFONewMediaManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DBD0743B234629CB00DB2532 /* AFONewMediaManager.h */; };
+		DBD0743E234629CB00DB2532 /* AFONewMediaManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD0743C234629CB00DB2532 /* AFONewMediaManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -164,6 +166,8 @@
 		C215BB64AD96FF0492A70BBA /* Pods-AFOFFMpeg.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AFOFFMpeg.debug.xcconfig"; path = "Target Support Files/Pods-AFOFFMpeg/Pods-AFOFFMpeg.debug.xcconfig"; sourceTree = "<group>"; };
 		DB7101412345E49200EF4590 /* AFOAudioThreadDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOAudioThreadDecoder.m; sourceTree = "<group>"; };
 		DB7101422345E49200EF4590 /* AFOAudioThreadDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOAudioThreadDecoder.h; sourceTree = "<group>"; };
+		DBD0743B234629CB00DB2532 /* AFONewMediaManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFONewMediaManager.h; sourceTree = "<group>"; };
+		DBD0743C234629CB00DB2532 /* AFONewMediaManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFONewMediaManager.m; sourceTree = "<group>"; };
 		E6C3DF97E31429DA00550B5A /* libPods-AFOFFMpeg.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AFOFFMpeg.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -326,6 +330,8 @@
 			children = (
 				24DAD23D2331CA6E001D2CE4 /* AFOCountdownManager.h */,
 				24DAD2742331CA72001D2CE4 /* AFOCountdownManager.m */,
+				DBD0743B234629CB00DB2532 /* AFONewMediaManager.h */,
+				DBD0743C234629CB00DB2532 /* AFONewMediaManager.m */,
 				24DAD2362331CA6E001D2CE4 /* AFOMediaManager.h */,
 				24DAD26C2331CA71001D2CE4 /* AFOMediaManager.m */,
 				24DAD2462331CA6F001D2CE4 /* AFOVideoAudioManager.h */,
@@ -385,6 +391,7 @@
 				24DAD2BC2331CA72001D2CE4 /* AFOMediaPlayControllerCategory.h in Headers */,
 				24DAD2B02331CA72001D2CE4 /* AFOMediaControlView.h in Headers */,
 				24DAD2AC2331CA72001D2CE4 /* AFOGenerateImages.h in Headers */,
+				DBD0743D234629CB00DB2532 /* AFONewMediaManager.h in Headers */,
 				24DAD2952331CA72001D2CE4 /* AFOAudioManager.h in Headers */,
 				24DAD27B2331CA72001D2CE4 /* AFOMediaManager.h in Headers */,
 				24DAD28D2331CA72001D2CE4 /* AFOMediaPlayController+AFOOrientation.h in Headers */,
@@ -510,6 +517,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				24DAD2BF2331CA72001D2CE4 /* AFOMediaControlView.m in Sources */,
+				DBD0743E234629CB00DB2532 /* AFONewMediaManager.m in Sources */,
 				24DAD29B2331CA72001D2CE4 /* AFOAudioPacket.m in Sources */,
 				24DAD2912331CA72001D2CE4 /* AFOAudioOutPut.m in Sources */,
 				2404875E2008459600D369FB /* AFOMediaForeignInterface.m in Sources */,

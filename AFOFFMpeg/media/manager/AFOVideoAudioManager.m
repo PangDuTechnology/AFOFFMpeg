@@ -10,8 +10,7 @@
 #import <AFOGitHub/AFOGitHub.h>
 #import <AFOFoundation/AFOFoundation.h>
 #import "AFOMediaConditional.h"
-#import "AFOMediaManager.h"
-#import "AFOAudioManager.h"
+#import "AFONewMediaManager.h"
 /* no AV sync correction is done if below the minimum AV sync threshold */
 #define AV_SYNC_THRESHOLD_MIN 0.04
 /* AV sync correction is done if above the maximum AV sync threshold */
@@ -28,16 +27,7 @@
     AVCodecContext      *avCodecContextVideo;
     AVCodecContext      *avCcodecContextAudio;
 }
-@property (nonatomic, assign)            NSInteger  videoStream;
-@property (nonatomic, assign)            NSInteger  audioStream;
-@property (nonatomic, assign)            float      audioTimeStamp;
-@property (nonatomic, assign)            float      videoTimeStamp;
-@property (nonatomic, assign)            float      videoPosition;
-@property (nonatomic, assign)            CGFloat    tickCorrectionTime;
-@property (nonatomic, assign)            float      tickCorrectionPosition;
-@property (nonatomic, assign)            float      frameRate;
-@property (nonnull, nonatomic, strong)   AFOAudioManager      *audioManager;
-@property (nonnull, nonatomic, strong)   AFOMediaManager  *videoManager;
+
 @end
 
 @implementation AFOVideoAudioManager
@@ -84,11 +74,10 @@
     }];
     ///------
     [self registerBaseMethod:strPath];
-    ///------ play audio
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self.audioManager audioFormatContext:self->avFormatContext codecContext:self->avCcodecContextAudio index:self.audioStream];
-        [self playAudio];
-    });
+    ///------
+    AFONewMediaManager *newMedia = [[AFONewMediaManager alloc] init];
+    [newMedia registerAudioBaseMethod:strPath];
+    [newMedia playAudio];
     ///------ display video
     [self.videoManager displayVedioFormatContext:avFormatContext codecContext:avCodecContextVideo index:self.videoStream block:^(NSError *error, UIImage *image, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
         block(error,image,totalTime,currentTime,totalSeconds,cuttentSeconds);
