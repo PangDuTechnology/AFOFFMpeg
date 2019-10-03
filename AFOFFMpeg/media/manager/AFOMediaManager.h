@@ -32,7 +32,7 @@ typedef void(^displayVedioFrameBlock)(NSError *error,
                                       NSInteger totalSeconds,
                                       NSUInteger cuttentSeconds);
 
-@interface AFOPlayMediaManager : NSObject
+@interface AFOMediaManager : NSObject
 - (instancetype)initWithDelegate:(id<AFOPlayMediaManager>)delegate;
 /**
  <#Description#>

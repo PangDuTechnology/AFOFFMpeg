@@ -10,7 +10,7 @@
 #import <AFOGitHub/AFOGitHub.h>
 #import <AFOFoundation/AFOFoundation.h>
 #import "AFOMediaConditional.h"
-#import "AFOPlayMediaManager.h"
+#import "AFOMediaManager.h"
 #import "AFOAudioManager.h"
 /* no AV sync correction is done if below the minimum AV sync threshold */
 #define AV_SYNC_THRESHOLD_MIN 0.04
@@ -37,7 +37,7 @@
 @property (nonatomic, assign)            float      tickCorrectionPosition;
 @property (nonatomic, assign)            float      frameRate;
 @property (nonnull, nonatomic, strong)   AFOAudioManager      *audioManager;
-@property (nonnull, nonatomic, strong)   AFOPlayMediaManager  *videoManager;
+@property (nonnull, nonatomic, strong)   AFOMediaManager  *videoManager;
 @end
 
 @implementation AFOVideoAudioManager
@@ -90,6 +90,7 @@
     }];
     ///------ play audio
     [self.audioManager audioFormatContext:self->avFormatContext codecContext:avCcodecContextAudio index:self.audioStream];
+    [self playAudio];
 }
 - (void)playAudio{
     [self.audioManager playAudio];
@@ -144,9 +145,9 @@
     }
     return _audioManager;
 }
-- (AFOPlayMediaManager *)videoManager{
+- (AFOMediaManager *)videoManager{
     if (!_videoManager) {
-        _videoManager = [[AFOPlayMediaManager alloc] initWithDelegate:self];
+        _videoManager = [[AFOMediaManager alloc] initWithDelegate:self];
     }
     return _videoManager;
 }

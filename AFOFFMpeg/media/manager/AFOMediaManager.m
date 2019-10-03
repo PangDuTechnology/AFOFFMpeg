@@ -6,14 +6,14 @@
 //  Copyright © 2017年 AFO Science and technology Ltd. All rights reserved.
 //
 
-#import "AFOPlayMediaManager.h"
+#import "AFOMediaManager.h"
 #import <AFOGitHub/AFOGitHub.h>
 #import <AFOFoundation/AFOFoundation.h>
 #import "AFOMediaTimer.h"
 #import "AFOGenerateImages.h"
 #import "AFOMediaErrorCodeManager.h"
 #import "AFOCountdownManager.h"
-@interface AFOPlayMediaManager (){
+@interface AFOMediaManager (){
     AVFormatContext     *avFormatContext;
     AVCodecContext      *avCodecContext;
     AVFrame             *avFrame;
@@ -36,7 +36,7 @@
 @property (nonatomic, weak) id<AFOPlayMediaManager>      delegate;
 @end
 
-@implementation AFOPlayMediaManager
+@implementation AFOMediaManager
 
 #pragma mark ------ init
 - (instancetype)initWithDelegate:(id<AFOPlayMediaManager>)delegate{
