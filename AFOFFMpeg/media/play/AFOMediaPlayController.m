@@ -48,7 +48,6 @@
 }
 #pragma mark ------
 - (void)playerVedioWithPath:(NSString *)path{
-    ///------
     WeakObject(self);
     [self.mediaManager displayVedioForPath:path block:^(NSError * _Nullable error, UIImage * _Nullable image, NSString * _Nullable totalTime, NSString * _Nullable currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
         StrongObject(self);
@@ -70,7 +69,6 @@
 #pragma mark ------ didReceiveMemoryWarning
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 #pragma mark ------------ property
 - (AFOVideoAudioManager *)mediaManager{
