@@ -86,7 +86,7 @@
     [self registerBaseMethod:strPath];
     ///------ display video
     [self.videoManager displayVedioFormatContext:avFormatContext codecContext:avCodecContextVideo index:self.videoStream block:^(NSError *error, UIImage *image, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
-        //block(error,image,totalTime,currentTime,totalSeconds,cuttentSeconds);
+        block(error,image,totalTime,currentTime,totalSeconds,cuttentSeconds);
     }];
     ///------ play audio
     [self.audioManager audioFormatContext:self->avFormatContext codecContext:avCcodecContextAudio index:self.audioStream];
@@ -102,12 +102,12 @@
     [self stopAudio];
 }
 - (void)correctionTime{
-//    const NSTimeInterval correction = [self tickCorrection];
-//    const NSTimeInterval time = MAX(self.videoPosition + correction, 0.01);
-//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC);
-//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-//        [self correctionTime];
-//    });
+    const NSTimeInterval correction = [self tickCorrection];
+    const NSTimeInterval time = MAX(self.videoPosition + correction, 0.01);
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self correctionTime];
+    });
     [self playAudio];
 }
 - (CGFloat)tickCorrection{
