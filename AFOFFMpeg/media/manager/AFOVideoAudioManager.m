@@ -84,10 +84,10 @@
     }];
     ///------
     [self registerBaseMethod:strPath];
-    ///------ display video
-    [self.videoManager displayVedioFormatContext:avFormatContext codecContext:avCodecContextVideo index:self.videoStream block:^(NSError *error, UIImage *image, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
-        //block(error,image,totalTime,currentTime,totalSeconds,cuttentSeconds);
-    }];
+//    ///------ display video
+//    [self.videoManager displayVedioFormatContext:avFormatContext codecContext:avCodecContextVideo index:self.videoStream block:^(NSError *error, UIImage *image, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
+//        //block(error,image,totalTime,currentTime,totalSeconds,cuttentSeconds);
+//    }];
     ///------ play audio
     [self.audioManager audioFormatContext:avFormatContext codecContext:avCcodecContextAudio index:self.audioStream];
 }
