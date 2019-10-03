@@ -23,7 +23,8 @@
 @interface AFOVideoAudioManager ()<AFOAudioManagerDelegate,AFOPlayMediaManager>{
     AVCodec             *avCodecVideo;
     AVCodec             *avCodecAudio;
-    AVFormatContext     *avFormatContext;
+    AVFormatContext     *avVideoFormatContext;
+    AVFormatContext     *avAudioFormatContext;
     AVCodecContext      *avCodecContextVideo;
     AVCodecContext      *avCcodecContextAudio;
 }
@@ -40,20 +41,21 @@
 #pragma mark ------ add method
 - (void)registerBaseMethod:(NSString *)path{
     [INTUAutoRemoveObserver addObserver:self selector:@selector(stopAudioNotifacation:) name:@"AFOMediaStopManager" object:nil];
-    ///------
-    avFormatContext = avformat_alloc_context();
-    avformat_open_input(&avFormatContext, [path UTF8String], NULL, NULL);
     ///------------ video
+    avVideoFormatContext = avformat_alloc_context();
+    avformat_open_input(&avVideoFormatContext, [path UTF8String], NULL, NULL);
     avCodecContextVideo = avcodec_alloc_context3(NULL);
-    avcodec_parameters_to_context(avCodecContextVideo, avFormatContext -> streams[self.videoStream] -> codecpar);
+    avcodec_parameters_to_context(avCodecContextVideo, avVideoFormatContext -> streams[self.videoStream] -> codecpar);
     ///------ Find the decoder for the video stream.
     avCodecVideo = avcodec_find_decoder(avCodecContextVideo -> codec_id);
     ///------ Open codec
     avcodec_open2(avCodecContextVideo, avCodecVideo, NULL);
     
     ///------------ audio
+    avAudioFormatContext = avformat_alloc_context();
+    avformat_open_input(&avAudioFormatContext, [path UTF8String], NULL, NULL);
     avCcodecContextAudio = avcodec_alloc_context3(NULL);
-    avcodec_parameters_to_context(avCcodecContextAudio, avFormatContext -> streams[self.audioStream] -> codecpar);
+    avcodec_parameters_to_context(avCcodecContextAudio, avAudioFormatContext -> streams[self.audioStream] -> codecpar);
     ///------ Find the decoder for the video stream.
     avCodecAudio = avcodec_find_decoder(avCcodecContextAudio -> codec_id);
     ///------ Open codec
@@ -74,16 +76,15 @@
     }];
     ///------
     [self registerBaseMethod:strPath];
-    ///------ display video
-    [self.videoManager displayVedioFormatContext:avFormatContext codecContext:avCodecContextVideo index:self.videoStream block:^(NSError *error, UIImage *image, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
-        block(error,image,totalTime,currentTime,totalSeconds,cuttentSeconds);
-    }];
-
     ///------ play audio
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self.audioManager audioFormatContext:self->avFormatContext codecContext:self->avCcodecContextAudio index:self.audioStream];
+        [self.audioManager audioFormatContext:self->avAudioFormatContext codecContext:self->avCcodecContextAudio index:self.audioStream];
         [self playAudio];
     });
+    ///------ display video
+    [self.videoManager displayVedioFormatContext:avVideoFormatContext codecContext:avCodecContextVideo index:self.videoStream block:^(NSError *error, UIImage *image, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
+        block(error,image,totalTime,currentTime,totalSeconds,cuttentSeconds);
+    }];
 }
 - (void)playAudio{
     [self.audioManager playAudio];
