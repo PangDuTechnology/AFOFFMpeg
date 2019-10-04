@@ -56,7 +56,7 @@
     dispatch_async(self.queue_t, ^{
         [AFOConfigurationManager configurationForPath:strPath stream:self.audioStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context) {
             [self.audioManager audioFormatContext:format codecContext:context index:self.audioStream];
-//            [self playAudio];
+            [self playAudio];
         }];
     });
     ///------ display video
