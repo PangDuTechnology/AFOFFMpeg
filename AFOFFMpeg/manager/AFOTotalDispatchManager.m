@@ -33,6 +33,9 @@
     }
     return self;
 }
++ (void)initialize{
+    av_register_all();
+}
 - (void)displayVedioForPath:(NSString *)strPath
                       block:(displayVedioFrameBlock)block{
     WeakObject(self);
