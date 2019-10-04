@@ -62,18 +62,18 @@
             return;
         }
     }];
-    ///------
-    [self registerBaseMethod:strPath];
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//
-//    });
+    ///---
+   // [self registerBaseMethod:strPath];
+    ///---
     [AFOConfigurationManager configurationForPath:strPath stream:self.audioStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream) {
         [self.audioManager audioFormatContext:format codecContext:context index:self.audioStream];
         [self playAudio];
     }];
     ///------ display video
-    [self.videoManager displayVedioFormatContext:avVideoFormatContext codecContext:avCodecContextVideo index:self.videoStream block:^(NSError *error, UIImage *image, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
-        block(error,image,totalTime,currentTime,totalSeconds,cuttentSeconds);
+    [AFOConfigurationManager configurationForPath:strPath stream:self.videoStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream) {
+        [self.videoManager displayVedioFormatContext:format codecContext:context index:self.videoStream block:^(NSError *error, UIImage *image, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
+            block(error,image,totalTime,currentTime,totalSeconds,cuttentSeconds);
+        }];
     }];
 }
 - (void)playAudio{
