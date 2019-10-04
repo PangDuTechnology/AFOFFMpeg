@@ -10,9 +10,9 @@
 #import <AFORouter/AFORouter.h>
 #import <AFOFoundation/AFOFoundation.h>
 #import "AFOMediaPlayControllerCategory.h"
-#import "AFOVideoAudioManager.h"
+#import "AFOTotalDispatchManager.h"
 @interface AFOMediaPlayController ()<AFORouterManagerDelegate>
-@property (nonatomic, strong) AFOVideoAudioManager       *mediaManager;
+@property (nonatomic, strong) AFOTotalDispatchManager       *mediaManager;
 @property (nonatomic, copy)   NSString                   *strPath;
 @property (nonatomic, assign) UIInterfaceOrientationMask  orientation;
 @end
@@ -71,9 +71,9 @@
     [super didReceiveMemoryWarning];
 }
 #pragma mark ------------ property
-- (AFOVideoAudioManager *)mediaManager{
+- (AFOTotalDispatchManager *)mediaManager{
     if (!_mediaManager){
-        _mediaManager = [[AFOVideoAudioManager alloc] init];
+        _mediaManager = [[AFOTotalDispatchManager alloc] init];
     }
     return _mediaManager;
 }

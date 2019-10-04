@@ -1,5 +1,5 @@
 //
-//  AFOVideoAudioManager.h
+//  AFOTotalDispatchManager.h
 //  AFOFFMpeg
 //
 //  Created by xueguang xian on 2018/12/3.
@@ -28,7 +28,7 @@ typedef void(^displayVedioBlock)(NSError *_Nullable error,
                                 NSUInteger cuttentSeconds);
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AFOVideoAudioManager : NSObject
+@interface AFOTotalDispatchManager : NSObject
 @property (nonatomic, assign)            NSInteger  videoStream;
 @property (nonatomic, assign)            NSInteger  audioStream;
 @property (nonatomic, assign)            float      audioTimeStamp;

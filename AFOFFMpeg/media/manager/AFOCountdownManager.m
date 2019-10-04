@@ -12,8 +12,6 @@
 @interface AFOCountdownManager ()
 @property (nonatomic, strong)     dispatch_source_t    sourceTimer;
 @end
-
-
 @implementation AFOCountdownManager
 #pragma mark ------------ init
 - (instancetype)init{
@@ -44,7 +42,6 @@
         dispatch_source_cancel(_sourceTimer);
     }
 }
-#pragma mark ------------ custom
 #pragma mark ------ 倒计时
 - (void)addCountdownActionFps:(float)fps
                      duration:(int64_t)time

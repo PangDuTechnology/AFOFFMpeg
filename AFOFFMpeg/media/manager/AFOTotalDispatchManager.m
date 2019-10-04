@@ -1,16 +1,15 @@
 //
-//  AFOVideoAudioManager.m
+//  AFOTotalDispatchManager.m
 //  AFOFFMpeg
 //
 //  Created by xueguang xian on 2018/12/3.
 //  Copyright © 2018 AFO Science and technology Ltd. All rights reserved.
 //
 
-#import "AFOVideoAudioManager.h"
+#import "AFOTotalDispatchManager.h"
 #import <AFOGitHub/AFOGitHub.h>
 #import <AFOFoundation/AFOFoundation.h>
 #import "AFOMediaConditional.h"
-#import "AFONewMediaManager.h"
 /* no AV sync correction is done if below the minimum AV sync threshold */
 #define AV_SYNC_THRESHOLD_MIN 0.04
 /* AV sync correction is done if above the maximum AV sync threshold */
@@ -20,7 +19,7 @@
 /* no AV correction is done if too big error */
 #define AV_NOSYNC_THRESHOLD 10.0
 
-@interface AFOVideoAudioManager ()<AFOAudioManagerDelegate,AFOPlayMediaManager>{
+@interface AFOTotalDispatchManager ()<AFOAudioManagerDelegate,AFOPlayMediaManager>{
     AVCodec             *avCodecVideo;
     AVCodec             *avCodecAudio;
     AVFormatContext     *avVideoFormatContext;
@@ -28,13 +27,11 @@
     AVCodecContext      *avCodecContextVideo;
     AVCodecContext      *avCcodecContextAudio;
 }
-
 @end
-
-@implementation AFOVideoAudioManager
+@implementation AFOTotalDispatchManager
 #pragma mark ------ init
 + (void)initialize{
-    if (self == [AFOVideoAudioManager class]) {
+    if (self == [AFOTotalDispatchManager class]) {
         av_register_all();
     }
 }
