@@ -9,6 +9,7 @@
 #import "AFOTotalDispatchManager.h"
 #import <AFOGitHub/AFOGitHub.h>
 #import <AFOFoundation/AFOFoundation.h>
+#import "AFOConfigurationManager.h"
 #import "AFOMediaConditional.h"
 
 @interface AFOTotalDispatchManager ()<AFOAudioManagerDelegate,AFOPlayMediaManager>{
@@ -38,15 +39,15 @@
     ///------ Open codec
     avcodec_open2(avCodecContextVideo, avCodecVideo, NULL);
     
-    ///------------ audio
-    avAudioFormatContext = avformat_alloc_context();
-    avformat_open_input(&avAudioFormatContext, [path UTF8String], NULL, NULL);
-    avCcodecContextAudio = avcodec_alloc_context3(NULL);
-    avcodec_parameters_to_context(avCcodecContextAudio, avAudioFormatContext -> streams[self.audioStream] -> codecpar);
-    ///------ Find the decoder for the video stream.
-    avCodecAudio = avcodec_find_decoder(avCcodecContextAudio -> codec_id);
-    ///------ Open codec
-    avcodec_open2(avCcodecContextAudio, avCodecAudio, NULL);
+//    ///------------ audio
+//    avAudioFormatContext = avformat_alloc_context();
+//    avformat_open_input(&avAudioFormatContext, [path UTF8String], NULL, NULL);
+//    avCcodecContextAudio = avcodec_alloc_context3(NULL);
+//    avcodec_parameters_to_context(avCcodecContextAudio, avAudioFormatContext -> streams[self.audioStream] -> codecpar);
+//    ///------ Find the decoder for the video stream.
+//    avCodecAudio = avcodec_find_decoder(avCcodecContextAudio -> codec_id);
+//    ///------ Open codec
+//    avcodec_open2(avCcodecContextAudio, avCodecAudio, NULL);
 }
 - (void)displayVedioForPath:(NSString *)strPath
                       block:(displayVedioFrameBlock)block{
@@ -63,10 +64,13 @@
     }];
     ///------
     [self registerBaseMethod:strPath];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self.audioManager audioFormatContext:self->avAudioFormatContext codecContext:self->avCcodecContextAudio index:self.audioStream];
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//
+//    });
+    [AFOConfigurationManager configurationForPath:strPath stream:self.audioStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream) {
+        [self.audioManager audioFormatContext:format codecContext:context index:self.audioStream];
         [self playAudio];
-    });
+    }];
     ///------ display video
     [self.videoManager displayVedioFormatContext:avVideoFormatContext codecContext:avCodecContextVideo index:self.videoStream block:^(NSError *error, UIImage *image, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
         block(error,image,totalTime,currentTime,totalSeconds,cuttentSeconds);
