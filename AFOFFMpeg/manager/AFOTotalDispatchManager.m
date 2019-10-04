@@ -7,8 +7,8 @@
 //
 
 #import "AFOTotalDispatchManager.h"
-#import <AFOGitHub/AFOGitHub.h>
-#import <AFOFoundation/AFOFoundation.h>
+#import <AFOGitHub/INTUAutoRemoveObserver.h>
+#import <AFOFoundation/AFOWeakInstance.h>
 #import "AFOConfigurationManager.h"
 #import "AFOMediaConditional.h"
 
