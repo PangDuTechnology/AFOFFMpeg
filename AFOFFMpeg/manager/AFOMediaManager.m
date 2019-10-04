@@ -7,8 +7,8 @@
 //
 
 #import "AFOMediaManager.h"
-#import <AFOGitHub/AFOGitHub.h>
-#import <AFOFoundation/AFOFoundation.h>
+#import <AFOGitHub/INTUAutoRemoveObserver.h>
+#import <AFOFoundation/AFOWeakInstance.h>
 #import "AFOMediaTimer.h"
 #import "AFOGenerateImages.h"
 #import "AFOMediaErrorCodeManager.h"
