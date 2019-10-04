@@ -11,13 +11,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AFOConfigurationManager : NSObject
-- (void)configurationForPath:(NSString *)strPath
++ (void)configurationForPath:(NSString *)strPath
                       stream:(NSInteger)stream
                        block:(void(^)(
                                       AVCodec *codec,
-                                      AVFormatContext *format, AVCodecContext *context,
-                                      NSInteger videoStream,
-                                      NSInteger audioStream))block;
+                                      AVFormatContext *format, AVCodecContext *context))block;
 @end
 
 NS_ASSUME_NONNULL_END
