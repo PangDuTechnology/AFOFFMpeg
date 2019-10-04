@@ -43,7 +43,6 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'manager' do |manager|
-      manager.dependency 'AFOFFMpeg/error'
       manager.source_files = 'AFOFFMpeg/manager/*.{h,m}' 
       manager.public_header_files = 'AFOFFMpeg/manager/*.h'
   end
