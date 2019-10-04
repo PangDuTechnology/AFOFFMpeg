@@ -10,7 +10,6 @@
 #import <AFOGitHub/INTUAutoRemoveObserver.h>
 #import <AFOFoundation/AFOWeakInstance.h>
 #import "AFOConfigurationManager.h"
-#import "AFOMediaConditional.h"
 #import "AFOMediaManager.h"
 #import "AFOAudioManager.h"
 
@@ -40,17 +39,6 @@
 - (void)displayVedioForPath:(NSString *)strPath
                       block:(displayVedioFrameBlock)block{
     WeakObject(self);
-//    [AFOMediaConditional mediaSesourcesConditionalPath:strPath block:^(NSError *error, NSInteger videoIndex, NSInteger audioIndex){
-//        StrongObject(self);
-//        if (error.code == 0) {
-//            self.videoStream = videoIndex;
-//            self.audioStream = audioIndex;
-//        }else{
-//            block(error, NULL, NULL, NULL, 0, 0);
-//            return;
-//        }
-//    }];
-    //
     [AFOConfigurationManager configurationStreamPath:strPath block:^(NSError * _Nonnull error, NSInteger videoIndex, NSInteger audioIndex) {
         StrongObject(self);
         self.videoStream = videoIndex;
