@@ -28,11 +28,6 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'media' do |media|
-      media.dependency 'AFORouter'
-      media.dependency 'AFOFoundation' 
-      media.dependency 'AFOGitHub'
-      media.dependency 'AFOFFMpeg/error'
-      media.dependency 'AFOFFMpegLib'
       media.source_files = 'AFOFFMpeg/media/*.{h,m}' 
       media.public_header_files = 'AFOFFMpeg/media/*.h'
   end
