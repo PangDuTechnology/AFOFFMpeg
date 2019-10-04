@@ -23,9 +23,6 @@ Pod::Spec.new do |s|
   s.public_header_files = "AFOFFMpeg/*.h"
 
   s.subspec 'play' do |play|
-      play.dependency 'AFORouter'
-      play.dependency 'AFOFoundation' 
-      play.dependency 'AFOGitHub'
       play.source_files = 'AFOFFMpeg/play/*.{h,m}' 
       play.public_header_files = 'AFOFFMpeg/play/*.h'
   end
