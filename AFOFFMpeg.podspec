@@ -44,8 +44,7 @@ Pod::Spec.new do |s|
       audio.dependency 'AFORouter'
       audio.dependency 'AFOFoundation' 
       audio.dependency 'AFOGitHub'
-      audio.dependency 'AFOFFMpeg'
-      media.dependency 'AFOFFMpegLib'
+      audio.dependency 'AFOFFMpegLib'
       audio.source_files = 'AFOFFMpeg/audio/*.{h,m}' 
       audio.public_header_files = 'AFOFFMpeg/audio/*.h'
   end
