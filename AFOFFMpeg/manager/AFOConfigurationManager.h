@@ -18,6 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
                                       AVFormatContext *format, AVCodecContext *context,
                                       NSInteger videoStream,
                                       NSInteger audioStream))block;
++ (void)configurationStreamPath:(NSString *)strPath
+                          block:(void(^)(NSError *error,
+                                         NSInteger videoIndex,
+                                         NSInteger audioIndex))block;
 @end
 
 NS_ASSUME_NONNULL_END

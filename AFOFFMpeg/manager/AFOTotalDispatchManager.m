@@ -11,8 +11,20 @@
 #import <AFOFoundation/AFOWeakInstance.h>
 #import "AFOConfigurationManager.h"
 #import "AFOMediaConditional.h"
+#import "AFOMediaManager.h"
+#import "AFOAudioManager.h"
 
 @interface AFOTotalDispatchManager ()<AFOAudioManagerDelegate,AFOPlayMediaManager>
+@property (nonatomic, assign)            NSInteger  videoStream;
+@property (nonatomic, assign)            NSInteger  audioStream;
+@property (nonatomic, assign)            float      audioTimeStamp;
+@property (nonatomic, assign)            float      videoTimeStamp;
+@property (nonatomic, assign)            float      videoPosition;
+@property (nonatomic, assign)            CGFloat    tickCorrectionTime;
+@property (nonatomic, assign)            float      tickCorrectionPosition;
+@property (nonatomic, assign)            float      frameRate;
+@property (nonnull, nonatomic, strong)   AFOAudioManager      *audioManager;
+@property (nonnull, nonatomic, strong)   AFOMediaManager  *videoManager;
 @end
 @implementation AFOTotalDispatchManager
 #pragma mark ------ init
@@ -28,15 +40,21 @@
 - (void)displayVedioForPath:(NSString *)strPath
                       block:(displayVedioFrameBlock)block{
     WeakObject(self);
-    [AFOMediaConditional mediaSesourcesConditionalPath:strPath block:^(NSError *error, NSInteger videoIndex, NSInteger audioIndex){
+//    [AFOMediaConditional mediaSesourcesConditionalPath:strPath block:^(NSError *error, NSInteger videoIndex, NSInteger audioIndex){
+//        StrongObject(self);
+//        if (error.code == 0) {
+//            self.videoStream = videoIndex;
+//            self.audioStream = audioIndex;
+//        }else{
+//            block(error, NULL, NULL, NULL, 0, 0);
+//            return;
+//        }
+//    }];
+    //
+    [AFOConfigurationManager configurationStreamPath:strPath block:^(NSError * _Nonnull error, NSInteger videoIndex, NSInteger audioIndex) {
         StrongObject(self);
-        if (error.code == 0) {
-            self.videoStream = videoIndex;
-            self.audioStream = audioIndex;
-        }else{
-            block(error, NULL, NULL, NULL, 0, 0);
-            return;
-        }
+        self.videoStream = videoIndex;
+        self.audioStream = audioIndex;
     }];
     ///--- play audio
     [AFOConfigurationManager configurationForPath:strPath stream:self.audioStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream) {

@@ -11,6 +11,19 @@
 @interface AFOConfigurationManager ()
 @end
 @implementation AFOConfigurationManager
++ (void)configurationStreamPath:(NSString *)strPath
+                          block:(void(^)(NSError *error,
+                                         NSInteger videoIndex,
+                                         NSInteger audioIndex))block{
+    [AFOMediaConditional mediaSesourcesConditionalPath:strPath block:^(NSError *error, NSInteger videoIndex, NSInteger audioIndex){
+        if (error.code == 0) {
+            block(error,videoIndex, audioIndex);
+        }else{
+            block(error,0, 0);
+            return;
+        }
+    }];
+}
 + (void)configurationForPath:(NSString *)strPath
                       stream:(NSInteger)stream
                         block:(void(^)(
