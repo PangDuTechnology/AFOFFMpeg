@@ -19,8 +19,16 @@ Pod::Spec.new do |s|
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   s.source       = { :git => "https://github.com/PangDuTechnology/AFOFFMpeg.git", :tag => s.version.to_s }
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
-  s.source_files  = "AFOFFMpeg/**/*.{h,m}"
-  s.public_header_files = "AFOFFMpeg/**/*.h"
+  s.source_files  = "AFOFFMpeg/*.{h,m}"
+  s.public_header_files = "AFOFFMpeg/*.h"
+
+  s.subspec 'play' do |play|
+      play.dependency 'AFORouter'
+      play.dependency 'AFOFoundation' 
+      play.dependency 'AFOGitHub'
+      play.source_files = 'AFOFFMpeg/play/*.{h,m}' 
+      play.public_header_files = 'AFOFFMpeg/play/*.h'
+  end
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
