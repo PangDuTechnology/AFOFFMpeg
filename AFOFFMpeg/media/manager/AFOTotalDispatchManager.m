@@ -16,6 +16,12 @@
 @end
 @implementation AFOTotalDispatchManager
 #pragma mark ------ init
+- (instancetype)init{
+    if (self = [super init]) {
+        [INTUAutoRemoveObserver addObserver:self selector:@selector(stopAudioNotifacation:) name:@"AFOMediaStopManager" object:nil];
+    }
+    return self;
+}
 + (void)initialize{
     av_register_all();
 }
