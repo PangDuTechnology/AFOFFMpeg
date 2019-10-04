@@ -214,7 +214,14 @@
 				24BAFDBE1FF4B12900D2EAB9 /* AFOFFMpeg.h */,
 				2404875B2008459600D369FB /* AFOMediaForeignInterface.h */,
 				240487562008459600D369FB /* AFOMediaForeignInterface.m */,
-				24DAD2C02331CA9C001D2CE4 /* media */,
+				722D3D572338E9F600201ACB /* play */,
+				24DAD2C12331CAE2001D2CE4 /* audio */,
+				722D3D562338E9D200201ACB /* error */,
+				722D3D592338EDA800201ACB /* format */,
+				722D3D5A2338EDFC00201ACB /* seek */,
+				722D3D5B2338EE1800201ACB /* manager */,
+				722D3D5C2338EE6600201ACB /* viewModels */,
+				722D3D5F2338EEDF00201ACB /* view */,
 			);
 			path = AFOFFMpeg;
 			sourceTree = "<group>";
@@ -236,21 +243,6 @@
 				E6C3DF97E31429DA00550B5A /* libPods-AFOFFMpeg.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		24DAD2C02331CA9C001D2CE4 /* media */ = {
-			isa = PBXGroup;
-			children = (
-				722D3D572338E9F600201ACB /* play */,
-				24DAD2C12331CAE2001D2CE4 /* audio */,
-				722D3D562338E9D200201ACB /* error */,
-				722D3D592338EDA800201ACB /* format */,
-				722D3D5A2338EDFC00201ACB /* seek */,
-				722D3D5B2338EE1800201ACB /* manager */,
-				722D3D5C2338EE6600201ACB /* viewModels */,
-				722D3D5F2338EEDF00201ACB /* view */,
-			);
-			path = media;
 			sourceTree = "<group>";
 		};
 		24DAD2C12331CAE2001D2CE4 /* audio */ = {

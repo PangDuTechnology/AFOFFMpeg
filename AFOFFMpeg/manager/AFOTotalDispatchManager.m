@@ -38,7 +38,7 @@
             return;
         }
     }];
-    ///---
+    ///--- play audio
     [AFOConfigurationManager configurationForPath:strPath stream:self.audioStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream) {
         [self.audioManager audioFormatContext:format codecContext:context index:self.audioStream];
         [self playAudio];
