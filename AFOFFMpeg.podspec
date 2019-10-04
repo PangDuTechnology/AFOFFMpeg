@@ -29,6 +29,37 @@ Pod::Spec.new do |s|
       play.source_files = 'AFOFFMpeg/play/*.{h,m}' 
       play.public_header_files = 'AFOFFMpeg/play/*.h'
   end
+
+  s.subspec 'media' do |media|
+      media.dependency 'AFORouter'
+      media.dependency 'AFOFoundation' 
+      media.dependency 'AFOGitHub'
+      media.dependency 'AFOFFMpeg/error'
+      media.dependency 'AFOFFMpegLib'
+      media.source_files = 'AFOFFMpeg/media/*.{h,m}' 
+      media.public_header_files = 'AFOFFMpeg/media/*.h'
+  end
+
+  s.subspec 'audio' do |audio|
+      audio.dependency 'AFORouter'
+      audio.dependency 'AFOFoundation' 
+      audio.dependency 'AFOGitHub'
+      audio.dependency 'AFOFFMpeg'
+      media.dependency 'AFOFFMpegLib'
+      audio.source_files = 'AFOFFMpeg/audio/*.{h,m}' 
+      audio.public_header_files = 'AFOFFMpeg/audio/*.h'
+  end
+
+  s.subspec 'error' do |error|
+      error.source_files = 'AFOFFMpeg/error/*.{h,m}' 
+      error.public_header_files = 'AFOFFMpeg/error/*.h'
+  end
+
+  s.subspec 'manager' do |manager|
+      manager.dependency 'AFOFFMpeg/error'
+      manager.source_files = 'AFOFFMpeg/manager/*.{h,m}' 
+      manager.public_header_files = 'AFOFFMpeg/manager/*.h'
+  end
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
