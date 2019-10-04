@@ -20,14 +20,7 @@
 /* no AV correction is done if too big error */
 #define AV_NOSYNC_THRESHOLD 10.0
 
-@interface AFOTotalDispatchManager ()<AFOAudioManagerDelegate,AFOPlayMediaManager>{
-    AVCodec             *avCodecVideo;
-    AVCodec             *avCodecAudio;
-    AVFormatContext     *avVideoFormatContext;
-    AVFormatContext     *avAudioFormatContext;
-    AVCodecContext      *avCodecContextVideo;
-    AVCodecContext      *avCcodecContextAudio;
-}
+@interface AFOTotalDispatchManager ()<AFOAudioManagerDelegate,AFOPlayMediaManager>
 @property (nonatomic, assign)            NSInteger  videoStream;
 @property (nonatomic, assign)            NSInteger  audioStream;
 @property (nonatomic, assign)            float      audioTimeStamp;
@@ -41,34 +34,7 @@
 @property (nonnull, nonatomic, strong) dispatch_queue_t queue_t;
 @end
 @implementation AFOTotalDispatchManager
-#pragma mark ------ init
-+ (void)initialize{
-    if (self == [AFOTotalDispatchManager class]) {
-        av_register_all();
-    }
-}
-#pragma mark ------ add method
-- (void)registerBaseMethod:(NSString *)path{
-    ///------------ video
-    avVideoFormatContext = avformat_alloc_context();
-    avformat_open_input(&avVideoFormatContext, [path UTF8String], NULL, NULL);
-    avCodecContextVideo = avcodec_alloc_context3(NULL);
-    avcodec_parameters_to_context(avCodecContextVideo, avVideoFormatContext -> streams[self.videoStream] -> codecpar);
-    ///------ Find the decoder for the video stream.
-    avCodecVideo = avcodec_find_decoder(avCodecContextVideo -> codec_id);
-    ///------ Open codec
-    avcodec_open2(avCodecContextVideo, avCodecVideo, NULL);
-    
-    ///------------ audio
-    avAudioFormatContext = avformat_alloc_context();
-    avformat_open_input(&avAudioFormatContext, [path UTF8String], NULL, NULL);
-    avCcodecContextAudio = avcodec_alloc_context3(NULL);
-    avcodec_parameters_to_context(avCcodecContextAudio, avAudioFormatContext -> streams[self.audioStream] -> codecpar);
-    ///------ Find the decoder for the video stream.
-    avCodecAudio = avcodec_find_decoder(avCcodecContextAudio -> codec_id);
-    ///------ Open codec
-    avcodec_open2(avCcodecContextAudio, avCodecAudio, NULL);
-}
+#pragma mark ------ display Vedio
 - (void)displayVedioForPath:(NSString *)strPath
                       block:(displayVedioFrameBlock)block{
     [INTUAutoRemoveObserver addObserver:self selector:@selector(stopAudioNotifacation:) name:@"AFOMediaStopManager" object:nil];
@@ -103,7 +69,6 @@
             }];
         }];
     });
-
 }
 - (void)playAudio{
     [self.audioManager playAudio];
