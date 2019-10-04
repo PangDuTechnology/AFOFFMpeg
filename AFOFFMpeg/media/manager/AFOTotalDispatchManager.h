@@ -29,6 +29,16 @@ typedef void(^displayVedioBlock)(NSError *_Nullable error,
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AFOTotalDispatchManager : NSObject
+@property (nonatomic, assign)            NSInteger  videoStream;
+@property (nonatomic, assign)            NSInteger  audioStream;
+@property (nonatomic, assign)            float      audioTimeStamp;
+@property (nonatomic, assign)            float      videoTimeStamp;
+@property (nonatomic, assign)            float      videoPosition;
+@property (nonatomic, assign)            CGFloat    tickCorrectionTime;
+@property (nonatomic, assign)            float      tickCorrectionPosition;
+@property (nonatomic, assign)            float      frameRate;
+@property (nonnull, nonatomic, strong)   AFOAudioManager      *audioManager;
+@property (nonnull, nonatomic, strong)   AFOMediaManager  *videoManager;
 /**
  <#Description#>
  

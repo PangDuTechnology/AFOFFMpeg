@@ -9,60 +9,69 @@
 #import "AFOTotalDispatchManager.h"
 #import <AFOGitHub/AFOGitHub.h>
 #import <AFOFoundation/AFOFoundation.h>
-#import "AFOConfigurationManager.h"
 #import "AFOMediaConditional.h"
 
-@interface AFOTotalDispatchManager ()<AFOAudioManagerDelegate,AFOPlayMediaManager>
-@property (nonatomic, assign)            NSInteger  videoStream;
-@property (nonatomic, assign)            NSInteger  audioStream;
-@property (nonatomic, assign)            float      audioTimeStamp;
-@property (nonatomic, assign)            float      videoTimeStamp;
-@property (nonatomic, assign)            float      videoPosition;
-@property (nonatomic, assign)            CGFloat    tickCorrectionTime;
-@property (nonatomic, assign)            float      tickCorrectionPosition;
-@property (nonatomic, assign)            float      frameRate;
-@property (nonnull, nonatomic, strong)   AFOAudioManager      *audioManager;
-@property (nonnull, nonatomic, strong)   AFOMediaManager  *videoManager;
-@property (nonnull, nonatomic, strong) dispatch_queue_t queue_t;
+@interface AFOTotalDispatchManager ()<AFOAudioManagerDelegate,AFOPlayMediaManager>{
+    AVCodec             *avCodecVideo;
+    AVCodec             *avCodecAudio;
+    AVFormatContext     *avVideoFormatContext;
+    AVFormatContext     *avAudioFormatContext;
+    AVCodecContext      *avCodecContextVideo;
+    AVCodecContext      *avCcodecContextAudio;
+}
 @end
 @implementation AFOTotalDispatchManager
-#pragma mark ------ display Vedio
+#pragma mark ------ init
++ (void)initialize{
+    av_register_all();
+}
+#pragma mark ------ add method
+- (void)registerBaseMethod:(NSString *)path{
+    [INTUAutoRemoveObserver addObserver:self selector:@selector(stopAudioNotifacation:) name:@"AFOMediaStopManager" object:nil];
+    ///------------ video
+    avVideoFormatContext = avformat_alloc_context();
+    avformat_open_input(&avVideoFormatContext, [path UTF8String], NULL, NULL);
+    avCodecContextVideo = avcodec_alloc_context3(NULL);
+    avcodec_parameters_to_context(avCodecContextVideo, avVideoFormatContext -> streams[self.videoStream] -> codecpar);
+    ///------ Find the decoder for the video stream.
+    avCodecVideo = avcodec_find_decoder(avCodecContextVideo -> codec_id);
+    ///------ Open codec
+    avcodec_open2(avCodecContextVideo, avCodecVideo, NULL);
+    
+    ///------------ audio
+    avAudioFormatContext = avformat_alloc_context();
+    avformat_open_input(&avAudioFormatContext, [path UTF8String], NULL, NULL);
+    avCcodecContextAudio = avcodec_alloc_context3(NULL);
+    avcodec_parameters_to_context(avCcodecContextAudio, avAudioFormatContext -> streams[self.audioStream] -> codecpar);
+    ///------ Find the decoder for the video stream.
+    avCodecAudio = avcodec_find_decoder(avCcodecContextAudio -> codec_id);
+    ///------ Open codec
+    avcodec_open2(avCcodecContextAudio, avCodecAudio, NULL);
+}
 - (void)displayVedioForPath:(NSString *)strPath
                       block:(displayVedioFrameBlock)block{
-    [INTUAutoRemoveObserver addObserver:self selector:@selector(stopAudioNotifacation:) name:@"AFOMediaStopManager" object:nil];
-    ///---
-    dispatch_barrier_async(self.queue_t, ^{
-        WeakObject(self);
-        [AFOMediaConditional mediaSesourcesConditionalPath:strPath block:^(NSError *error, NSInteger videoIndex, NSInteger audioIndex){
-            StrongObject(self);
-            if (error.code == 0) {
-                self.videoStream = videoIndex;
-                self.audioStream = audioIndex;
-            }else{
-                block(error, NULL, NULL, NULL, 0, 0);
-                return;
-            }
-        }];
-    });
-    ///------ play audio
-    dispatch_async(self.queue_t, ^{
-        [AFOConfigurationManager configurationForPath:strPath stream:self.audioStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context) {
-            [self.audioManager audioFormatContext:format codecContext:context index:self.audioStream];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self playAudio];
-            });
-        }];
+    WeakObject(self);
+    [AFOMediaConditional mediaSesourcesConditionalPath:strPath block:^(NSError *error, NSInteger videoIndex, NSInteger audioIndex){
+        StrongObject(self);
+        if (error.code == 0) {
+            self.videoStream = videoIndex;
+            self.audioStream = audioIndex;
+        }else{
+            block(error, NULL, NULL, NULL, 0, 0);
+            return;
+        }
+    }];
+    ///------
+    [self registerBaseMethod:strPath];
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self.audioManager audioFormatContext:self->avAudioFormatContext codecContext:self->avCcodecContextAudio index:self.audioStream];
+        [self playAudio];
     });
     ///------ display video
-    dispatch_async(self.queue_t, ^{
-        [AFOConfigurationManager configurationForPath:strPath stream:self.videoStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context) {
-            [self.videoManager displayVedioFormatContext:format codecContext:context index:self.videoStream block:^(NSError *error, UIImage *image, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    block(error,image,totalTime,currentTime,totalSeconds,cuttentSeconds);
-                });
-            }];
-        }];
-    });
+    [self.videoManager displayVedioFormatContext:avVideoFormatContext codecContext:avCodecContextVideo index:self.videoStream block:^(NSError *error, UIImage *image, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
+        block(error,image,totalTime,currentTime,totalSeconds,cuttentSeconds);
+    }];
 }
 - (void)playAudio{
     [self.audioManager playAudio];
@@ -122,12 +131,6 @@
         _videoManager = [[AFOMediaManager alloc] initWithDelegate:self];
     }
     return _videoManager;
-}
-- (dispatch_queue_t)queue_t{
-    if (!_queue_t) {
-        _queue_t = dispatch_queue_create("com.AFOFFMpeg.totalDispatchManager", DISPATCH_QUEUE_CONCURRENT);
-    }
-    return _queue_t;
 }
 #pragma mark ------ dealloc
 - (void)dealloc{
