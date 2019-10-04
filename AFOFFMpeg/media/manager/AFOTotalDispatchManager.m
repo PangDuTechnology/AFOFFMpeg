@@ -12,42 +12,12 @@
 #import "AFOConfigurationManager.h"
 #import "AFOMediaConditional.h"
 
-@interface AFOTotalDispatchManager ()<AFOAudioManagerDelegate,AFOPlayMediaManager>{
-    AVCodec             *avCodecVideo;
-    AVCodec             *avCodecAudio;
-    AVFormatContext     *avVideoFormatContext;
-    AVFormatContext     *avAudioFormatContext;
-    AVCodecContext      *avCodecContextVideo;
-    AVCodecContext      *avCcodecContextAudio;
-}
+@interface AFOTotalDispatchManager ()<AFOAudioManagerDelegate,AFOPlayMediaManager>
 @end
 @implementation AFOTotalDispatchManager
 #pragma mark ------ init
 + (void)initialize{
     av_register_all();
-}
-#pragma mark ------ add method
-- (void)registerBaseMethod:(NSString *)path{
-    [INTUAutoRemoveObserver addObserver:self selector:@selector(stopAudioNotifacation:) name:@"AFOMediaStopManager" object:nil];
-    ///------------ video
-    avVideoFormatContext = avformat_alloc_context();
-    avformat_open_input(&avVideoFormatContext, [path UTF8String], NULL, NULL);
-    avCodecContextVideo = avcodec_alloc_context3(NULL);
-    avcodec_parameters_to_context(avCodecContextVideo, avVideoFormatContext -> streams[self.videoStream] -> codecpar);
-    ///------ Find the decoder for the video stream.
-    avCodecVideo = avcodec_find_decoder(avCodecContextVideo -> codec_id);
-    ///------ Open codec
-    avcodec_open2(avCodecContextVideo, avCodecVideo, NULL);
-    
-//    ///------------ audio
-//    avAudioFormatContext = avformat_alloc_context();
-//    avformat_open_input(&avAudioFormatContext, [path UTF8String], NULL, NULL);
-//    avCcodecContextAudio = avcodec_alloc_context3(NULL);
-//    avcodec_parameters_to_context(avCcodecContextAudio, avAudioFormatContext -> streams[self.audioStream] -> codecpar);
-//    ///------ Find the decoder for the video stream.
-//    avCodecAudio = avcodec_find_decoder(avCcodecContextAudio -> codec_id);
-//    ///------ Open codec
-//    avcodec_open2(avCcodecContextAudio, avCodecAudio, NULL);
 }
 - (void)displayVedioForPath:(NSString *)strPath
                       block:(displayVedioFrameBlock)block{
@@ -62,8 +32,6 @@
             return;
         }
     }];
-    ///---
-   // [self registerBaseMethod:strPath];
     ///---
     [AFOConfigurationManager configurationForPath:strPath stream:self.audioStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream) {
         [self.audioManager audioFormatContext:format codecContext:context index:self.audioStream];
