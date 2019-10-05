@@ -30,6 +30,8 @@
 - (instancetype)init{
     if (self = [super init]) {
         [INTUAutoRemoveObserver addObserver:self selector:@selector(stopAudioNotifacation:) name:@"AFOMediaStopManager" object:nil];
+        
+        [INTUAutoRemoveObserver addObserver:self selector:@selector(playAudio) name:@"AFOMediaStartManagerNotifacation" object:nil];
     }
     return self;
 }

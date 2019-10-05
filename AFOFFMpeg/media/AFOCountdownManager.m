@@ -28,10 +28,15 @@
         BOOL isPause = [number boolValue];
         if (isPause) {
             if (_sourceTimer) {
+                //---
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaStopManager" object:nil];
+                //---
                 dispatch_suspend(_sourceTimer);
             }
         }else{
             if (_sourceTimer) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaStartManagerNotifacation" object:nil];
+                //---
                 dispatch_resume(_sourceTimer);
             }
         }
