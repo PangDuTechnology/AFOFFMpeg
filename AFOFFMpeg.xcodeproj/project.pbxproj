@@ -214,11 +214,11 @@
 				24BAFDBE1FF4B12900D2EAB9 /* AFOFFMpeg.h */,
 				2404875B2008459600D369FB /* AFOMediaForeignInterface.h */,
 				240487562008459600D369FB /* AFOMediaForeignInterface.m */,
+				722D3D5B2338EE1800201ACB /* manager */,
 				722D3D572338E9F600201ACB /* play */,
 				DBD5F73B23473EEA004D59C5 /* media */,
 				24DAD2C12331CAE2001D2CE4 /* audio */,
 				722D3D562338E9D200201ACB /* error */,
-				722D3D5B2338EE1800201ACB /* manager */,
 			);
 			path = AFOFFMpeg;
 			sourceTree = "<group>";
