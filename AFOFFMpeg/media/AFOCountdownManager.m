@@ -65,16 +65,16 @@
         StrongObject(self);
         if(timeout <= 0){ //倒计时结束，关闭
             self.isFinish = YES;
-            [self.delegate vedioFileFinishDelegate];
             block(@(YES));
-            dispatch_suspend(self.sourceTimer);
         } else {
             self.isFinish = NO;
             timeout--;
             block(@(NO));
         }
     });
-    dispatch_resume(self.sourceTimer);
+    if (_sourceTimer) {
+        dispatch_resume(self.sourceTimer);
+    }
 }
 #pragma mark ------------ property
 - (dispatch_source_t)sourceTimer{
@@ -84,7 +84,7 @@
     return _sourceTimer;
 }
 - (void)dealloc{
-    if (!_sourceTimer) {
+    if (_sourceTimer) {
         dispatch_cancel(_sourceTimer);
     }
     NSLog(@"AFOMediaQueueManager dealloc");

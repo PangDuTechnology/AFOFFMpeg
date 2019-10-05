@@ -64,9 +64,6 @@
     [self stopAudio];
 }
 #pragma mark ------ AFOPlayMediaManager
-- (void)videoFinishPlayingDelegate{
-    
-}
 - (void)videoNowPlayingDelegate{
     [[NSNotificationCenter defaultCenter] postNotificationName:@"AFORestartMeidaFileNotification" object:nil];
 }

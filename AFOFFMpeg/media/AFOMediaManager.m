@@ -13,8 +13,7 @@
 #import "AFOGenerateImages.h"
 #import "AFOMediaErrorCodeManager.h"
 #import "AFOCountdownManager.h"
-#import "AFOCountDownManagerDelegate.h"
-@interface AFOMediaManager ()<AFOCountDownManagerDelegate>{
+@interface AFOMediaManager (){
     AVFormatContext     *avFormatContext;
     AVCodecContext      *avCodecContext;
     AVFrame             *avFrame;
@@ -111,7 +110,6 @@
                 while (!avcodec_receive_frame(avCodecContext, avFrame)) {
                     double frameRate = av_q2d([self avStream] -> avg_frame_rate);
                     frameRate += avFrame->repeat_pict * (frameRate * 0.5);
-//                    [self.delegate videoTimeStamp:av_frame_get_best_effort_timestamp(avFrame) * av_q2d([self avStream] -> time_base) position:_videoTimeBase frameRate:frameRate];
                     self.nowTime = self.currentTime;
                     av_packet_unref(&packet);
                     return YES;
@@ -193,4 +191,6 @@
     [self freeResources];
     NSLog(@"AFOPlayMediaManager dealloc");
 }
+//                    [self.delegate videoTimeStamp:av_frame_get_best_effort_timestamp(avFrame) * av_q2d([self avStream] -> time_base) position:_videoTimeBase frameRate:frameRate];
+
 @end
