@@ -12,6 +12,7 @@
 @interface AFOCountdownManager ()
 @property (nonatomic, strong)     dispatch_source_t    sourceTimer;
 @property (nonatomic, assign)       BOOL               isFinish;
+@property (nonatomic, assign)       BOOL               isSuspend;
 @end
 @implementation AFOCountdownManager
 #pragma mark ------------ init
@@ -33,12 +34,12 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaSuspendedManager" object:nil];
                 //---
                 dispatch_suspend(_sourceTimer);
+                self.isSuspend = YES;
             }
         }else{
             if (_sourceTimer) {
                 if (!self.isFinish) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaStartManagerNotifacation" object:nil];
-                    dispatch_resume(_sourceTimer);
                 }else{
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"AFORestartMeidaFileNotification" object:nil];
                 }
@@ -47,8 +48,8 @@
     }
 }
 - (void)AFOMediaQueueManagerTimerCancel{
-    if (_sourceTimer) {
-        dispatch_cancel(_sourceTimer);
+    if (self.isSuspend) {
+        dispatch_source_cancel(_sourceTimer);
     }
 }
 #pragma mark ------ 倒计时
@@ -66,12 +67,14 @@
         if(timeout <= 0){ //倒计时结束，关闭
             self.isFinish = YES;
             block(@(YES));
+            dispatch_suspend(self.sourceTimer);
         } else {
             self.isFinish = NO;
             timeout--;
             block(@(NO));
         }
     });
+    self.isSuspend = NO;
     if (_sourceTimer) {
         dispatch_resume(self.sourceTimer);
     }
@@ -85,8 +88,8 @@
 }
 - (void)dealloc{
     if (_sourceTimer) {
-        dispatch_cancel(_sourceTimer);
+        dispatch_source_cancel(_sourceTimer);
     }
-    NSLog(@"AFOMediaQueueManager dealloc");
+    NSLog(@"AFOCountdownManager dealloc");
 }
 @end
