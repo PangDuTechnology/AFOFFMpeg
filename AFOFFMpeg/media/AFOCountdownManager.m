@@ -38,6 +38,7 @@
             }
         }else{
             if (_sourceTimer) {
+                self.isSuspend = NO;
                 if (!self.isFinish) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaStartManagerNotifacation" object:nil];
                 }else{
@@ -48,9 +49,10 @@
     }
 }
 - (void)AFOMediaQueueManagerTimerCancel{
- //   if (self.isSuspend) {
- //       dispatch_source_cancel(_sourceTimer);
- //   }
+    if (_isFinish || _isSuspend) {
+        dispatch_resume(_sourceTimer);
+    }
+    dispatch_source_cancel(_sourceTimer);
 }
 #pragma mark ------ 倒计时
 - (void)addCountdownActionFps:(float)fps
@@ -74,7 +76,6 @@
             block(@(NO));
         }
     });
-    self.isSuspend = NO;
     if (_sourceTimer) {
         dispatch_resume(self.sourceTimer);
     }
@@ -87,9 +88,6 @@
     return _sourceTimer;
 }
 - (void)dealloc{
-    if (_sourceTimer) {
-        dispatch_source_cancel(_sourceTimer);
-    }
     NSLog(@"AFOCountdownManager dealloc");
 }
 @end
