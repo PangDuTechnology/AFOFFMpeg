@@ -48,9 +48,9 @@
     }
 }
 - (void)AFOMediaQueueManagerTimerCancel{
-    if (self.isSuspend) {
+ //   if (self.isSuspend) {
         dispatch_source_cancel(_sourceTimer);
-    }
+ //   }
 }
 #pragma mark ------ 倒计时
 - (void)addCountdownActionFps:(float)fps
