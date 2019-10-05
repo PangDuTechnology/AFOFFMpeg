@@ -40,7 +40,7 @@
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaStartManagerNotifacation" object:nil];
                     dispatch_resume(_sourceTimer);
                 }else{
-                    [self.delegate vedioFilePlayingDelegate];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFORestartMeidaFileNotification" object:nil];
                 }
             }
         }
@@ -84,6 +84,9 @@
     return _sourceTimer;
 }
 - (void)dealloc{
+    if (!_sourceTimer) {
+        dispatch_cancel(_sourceTimer);
+    }
     NSLog(@"AFOMediaQueueManager dealloc");
 }
 @end
