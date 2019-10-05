@@ -47,7 +47,7 @@
 }
 - (void)AFOMediaQueueManagerTimerCancel{
     if (_sourceTimer) {
-        dispatch_suspend(_sourceTimer);
+        dispatch_cancel(_sourceTimer);
     }
 }
 #pragma mark ------ 倒计时
