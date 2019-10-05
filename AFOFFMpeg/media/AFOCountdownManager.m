@@ -37,6 +37,7 @@
         }else{
             if (_sourceTimer) {
                 if (!self.isFinish) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaStartManagerNotifacation" object:nil];
                     dispatch_resume(_sourceTimer);
                 }else{
                     [self.delegate vedioFilePlayingDelegate];
