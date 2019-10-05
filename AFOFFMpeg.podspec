@@ -62,6 +62,7 @@ Pod::Spec.new do |s|
   s.dependency "AFOUIKIT"
   s.dependency "AFOGitHub"
   s.dependency "AFOViews"
+  s.dependency "AFODelegateExtension"
   s.dependency "AFOFFMpegLib"
   s.dependency "AFOlibyuv"
   s.dependency "libxvidcore"

@@ -72,7 +72,7 @@
                   weakself.nowTime + 1);
             //
             [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaStopManager" object:nil];
-            [weakself freeResources];
+//            [weakself freeResources];
             return ;
         }else{
             if ([weakself avReadFrame:weakself.videoStream]) {

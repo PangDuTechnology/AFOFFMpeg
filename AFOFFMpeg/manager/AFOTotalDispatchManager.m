@@ -13,19 +13,16 @@
 #import "AFOMediaManager.h"
 #import "AFOAudioManager.h"
 
-@interface AFOTotalDispatchManager ()<AFOAudioManagerDelegate,AFOPlayMediaManager>
+@interface AFOTotalDispatchManager ()
 @property (nonatomic, assign)            NSInteger  videoStream;
 @property (nonatomic, assign)            NSInteger  audioStream;
-@property (nonatomic, assign)            float      audioTimeStamp;
-@property (nonatomic, assign)            float      videoTimeStamp;
-@property (nonatomic, assign)            float      videoPosition;
-@property (nonatomic, assign)            CGFloat    tickCorrectionTime;
-@property (nonatomic, assign)            float      tickCorrectionPosition;
-@property (nonatomic, assign)            float      frameRate;
 @property (nonnull, nonatomic, strong)   AFOAudioManager      *audioManager;
 @property (nonnull, nonatomic, strong)   AFOMediaManager  *videoManager;
 @end
 @implementation AFOTotalDispatchManager
++ (void)initialize{
+    av_register_all();
+}
 #pragma mark ------ init
 - (instancetype)init{
     if (self = [super init]) {
@@ -34,9 +31,6 @@
         [INTUAutoRemoveObserver addObserver:self selector:@selector(playAudio) name:@"AFOMediaStartManagerNotifacation" object:nil];
     }
     return self;
-}
-+ (void)initialize{
-    av_register_all();
 }
 - (void)displayVedioForPath:(NSString *)strPath
                       block:(displayVedioFrameBlock)block{
@@ -67,44 +61,7 @@
 - (void)stopAudioNotifacation:(NSNotification *)notification{
     [self stopAudio];
 }
-- (void)correctionTime{
-    const NSTimeInterval correction = [self tickCorrection];
-    const NSTimeInterval time = MAX(self.videoPosition + correction, 0.01);
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self correctionTime];
-    });
-    [self playAudio];
-}
-- (CGFloat)tickCorrection{
-    const NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
-    if (!_tickCorrectionTime) {
-        _tickCorrectionTime = now;
-        _tickCorrectionPosition = _videoTimeStamp;
-        return 0;
-    }
-    NSTimeInterval dPosition = _videoTimeStamp - _tickCorrectionPosition;
-    NSTimeInterval dTime = now - _tickCorrectionTime;
-    NSTimeInterval correction = dPosition - dTime;
-    if (correction > 1.f || correction < -1.f) {
-        correction = 0;
-        _tickCorrectionTime = 0;
-    }
-    return correction;
-}
-#pragma mark ------ delegate
-- (void)audioTimeStamp:(float)audioTime{
-    self.audioTimeStamp = audioTime;
-}
-- (void)videoTimeStamp:(float)videoTime
-              position:(float)position
-             frameRate:(float)frameRate{
-    self.videoTimeStamp = videoTime;
-    self.videoPosition = position;
-    self.frameRate = frameRate;
-   [self correctionTime];
-}
-#pragma mark ------ attribute
+#pragma mark ------ property
 - (AFOAudioManager *)audioManager{
     if (!_audioManager) {
         _audioManager = [[AFOAudioManager alloc] initWithDelegate:self];
@@ -122,3 +79,47 @@
     NSLog(@"AFOVideoAudioManager dealloc");
 }
 @end
+//@property (nonatomic, assign)            float      audioTimeStamp;
+//@property (nonatomic, assign)            float      videoTimeStamp;
+//@property (nonatomic, assign)            float      videoPosition;
+//@property (nonatomic, assign)            CGFloat    tickCorrectionTime;
+//@property (nonatomic, assign)            float      tickCorrectionPosition;
+//@property (nonatomic, assign)            float      frameRate;
+
+//- (void)correctionTime{
+//    const NSTimeInterval correction = [self tickCorrection];
+//    const NSTimeInterval time = MAX(self.videoPosition + correction, 0.01);
+//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC);
+//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//        [self correctionTime];
+//    });
+//    [self playAudio];
+//}
+//- (CGFloat)tickCorrection{
+//    const NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
+//    if (!_tickCorrectionTime) {
+//        _tickCorrectionTime = now;
+//        _tickCorrectionPosition = _videoTimeStamp;
+//        return 0;
+//    }
+//    NSTimeInterval dPosition = _videoTimeStamp - _tickCorrectionPosition;
+//    NSTimeInterval dTime = now - _tickCorrectionTime;
+//    NSTimeInterval correction = dPosition - dTime;
+//    if (correction > 1.f || correction < -1.f) {
+//        correction = 0;
+//        _tickCorrectionTime = 0;
+//    }
+//    return correction;
+//}
+//#pragma mark ------ delegate
+//- (void)audioTimeStamp:(float)audioTime{
+//    self.audioTimeStamp = audioTime;
+//}
+//- (void)videoTimeStamp:(float)videoTime
+//position:(float)position
+//frameRate:(float)frameRate{
+//    self.videoTimeStamp = videoTime;
+//    self.videoPosition = position;
+//    self.frameRate = frameRate;
+//    [self correctionTime];
+//}
