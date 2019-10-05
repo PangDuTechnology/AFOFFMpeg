@@ -47,7 +47,7 @@
 }
 - (void)AFOMediaQueueManagerTimerCancel{
     if (_sourceTimer) {
-//        dispatch_source_cancel(_sourceTimer);
+        dispatch_suspend(_sourceTimer);
     }
 }
 #pragma mark ------ 倒计时
@@ -66,7 +66,7 @@
             self.isFinish = YES;
             [self.delegate vedioFileFinishDelegate];
             block(@(YES));
-//            dispatch_source_cancel(self.sourceTimer);
+            dispatch_suspend(self.sourceTimer);
         } else {
             self.isFinish = NO;
             timeout--;
