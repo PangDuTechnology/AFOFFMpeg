@@ -26,7 +26,7 @@
 - (void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaQueueManagerTimerCancel" object:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaStopManager" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaSuspendedManager" object:nil];
 }
 #pragma mark ------------ viewDidLoad
 - (void)viewDidLoad {

@@ -11,6 +11,7 @@
 #import <AFOFoundation/AFOFoundation.h>
 @interface AFOCountdownManager ()
 @property (nonatomic, strong)     dispatch_source_t    sourceTimer;
+@property (nonatomic, assign)       BOOL               isFinish;
 @end
 @implementation AFOCountdownManager
 #pragma mark ------------ init
@@ -29,15 +30,17 @@
         if (isPause) {
             if (_sourceTimer) {
                 //---
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaStopManager" object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaSuspendedManager" object:nil];
                 //---
                 dispatch_suspend(_sourceTimer);
             }
         }else{
             if (_sourceTimer) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaStartManagerNotifacation" object:nil];
-                //---
-                dispatch_resume(_sourceTimer);
+                if (!self.isFinish) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaStartManagerNotifacation" object:nil];
+                    //---
+                    dispatch_resume(_sourceTimer);
+                }
             }
         }
     }
@@ -60,9 +63,11 @@
     dispatch_source_set_event_handler(self.sourceTimer, ^{
         StrongObject(self);
         if(timeout <= 0){ //倒计时结束，关闭
+            self.isFinish = YES;
             block(@(YES));
             dispatch_source_cancel(self.sourceTimer);
         } else {
+            self.isFinish = NO;
             timeout--;
             block(@(NO));
         }

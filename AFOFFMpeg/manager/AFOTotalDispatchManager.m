@@ -16,6 +16,7 @@
 @interface AFOTotalDispatchManager ()
 @property (nonatomic, assign)            NSInteger  videoStream;
 @property (nonatomic, assign)            NSInteger  audioStream;
+@property (nonatomic, assign)            BOOL       isFinish;
 @property (nonnull, nonatomic, strong)   AFOAudioManager      *audioManager;
 @property (nonnull, nonatomic, strong)   AFOMediaManager  *videoManager;
 @end
@@ -26,9 +27,11 @@
 #pragma mark ------ init
 - (instancetype)init{
     if (self = [super init]) {
-        [INTUAutoRemoveObserver addObserver:self selector:@selector(stopAudioNotifacation:) name:@"AFOMediaStopManager" object:nil];
-        
         [INTUAutoRemoveObserver addObserver:self selector:@selector(playAudio) name:@"AFOMediaStartManagerNotifacation" object:nil];
+        
+        [INTUAutoRemoveObserver addObserver:self selector:@selector(suspendedAudioNotifacation:) name:@"AFOMediaSuspendedManager" object:nil];
+        
+        [INTUAutoRemoveObserver addObserver:self selector:@selector(mediaPlayFinishNotifacation:) name:@"AFOMediaFinishManagerNotifacation" object:nil];
     }
     return self;
 }
@@ -58,25 +61,28 @@
 - (void)stopAudio{
     [self.audioManager stopAudio];
 }
-- (void)stopAudioNotifacation:(NSNotification *)notification{
+- (void)suspendedAudioNotifacation:(NSNotification *)notification{
     [self stopAudio];
+}
+- (void)mediaPlayFinishNotifacation:(NSNotification *)notification{
+    
 }
 #pragma mark ------ property
 - (AFOAudioManager *)audioManager{
     if (!_audioManager) {
-        _audioManager = [[AFOAudioManager alloc] initWithDelegate:self];
+        _audioManager = [[AFOAudioManager alloc] init];
     }
     return _audioManager;
 }
 - (AFOMediaManager *)videoManager{
     if (!_videoManager) {
-        _videoManager = [[AFOMediaManager alloc] initWithDelegate:self];
+        _videoManager = [[AFOMediaManager alloc] init];
     }
     return _videoManager;
 }
 #pragma mark ------ dealloc
 - (void)dealloc{
-    NSLog(@"AFOVideoAudioManager dealloc");
+    NSLog(@"AFOTotalDispatchManager dealloc");
 }
 @end
 //@property (nonatomic, assign)            float      audioTimeStamp;
