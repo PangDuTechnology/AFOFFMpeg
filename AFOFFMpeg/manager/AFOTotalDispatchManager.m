@@ -13,7 +13,7 @@
 #import "AFOMediaManager.h"
 #import "AFOAudioManager.h"
 
-@interface AFOTotalDispatchManager ()
+@interface AFOTotalDispatchManager ()<AFOPlayMediaManager>
 @property (nonatomic, assign)            NSInteger  videoStream;
 @property (nonatomic, assign)            NSInteger  audioStream;
 @property (nonatomic, assign)            BOOL       isFinish;
@@ -31,7 +31,6 @@
         
         [INTUAutoRemoveObserver addObserver:self selector:@selector(suspendedAudioNotifacation:) name:@"AFOMediaSuspendedManager" object:nil];
         
-        [INTUAutoRemoveObserver addObserver:self selector:@selector(mediaPlayFinishNotifacation:) name:@"AFOMediaFinishManagerNotifacation" object:nil];
     }
     return self;
 }
@@ -64,8 +63,12 @@
 - (void)suspendedAudioNotifacation:(NSNotification *)notification{
     [self stopAudio];
 }
-- (void)mediaPlayFinishNotifacation:(NSNotification *)notification{
+#pragma mark ------ AFOPlayMediaManager
+- (void)videoFinishPlayingDelegate{
     
+}
+- (void)videoNowPlayingDelegate{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFORestartMeidaFileNotification" object:nil];
 }
 #pragma mark ------ property
 - (AFOAudioManager *)audioManager{
@@ -76,7 +79,7 @@
 }
 - (AFOMediaManager *)videoManager{
     if (!_videoManager) {
-        _videoManager = [[AFOMediaManager alloc] init];
+        _videoManager = [[AFOMediaManager alloc] initWithDelegate:self];
     }
     return _videoManager;
 }

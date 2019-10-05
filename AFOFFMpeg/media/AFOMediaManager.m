@@ -13,7 +13,8 @@
 #import "AFOGenerateImages.h"
 #import "AFOMediaErrorCodeManager.h"
 #import "AFOCountdownManager.h"
-@interface AFOMediaManager (){
+#import "AFOCountDownManagerDelegate.h"
+@interface AFOMediaManager ()<AFOCountDownManagerDelegate>{
     AVFormatContext     *avFormatContext;
     AVCodecContext      *avCodecContext;
     AVFrame             *avFrame;
@@ -121,6 +122,13 @@
         }
     }
     return YES;
+}
+#pragma mark ------ AFOCountDownManagerDelegate
+- (void)vedioFilePlayingDelegate{
+    [self.delegate videoNowPlayingDelegate];
+}
+- (void)vedioFileFinishDelegate{
+    [self.delegate videoFinishPlayingDelegate];
 }
 #pragma mark ------ 释放资源
 - (void)freeResources{

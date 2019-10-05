@@ -37,9 +37,9 @@
         }else{
             if (_sourceTimer) {
                 if (!self.isFinish) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaStartManagerNotifacation" object:nil];
-                    //---
                     dispatch_resume(_sourceTimer);
+                }else{
+                    [self.delegate vedioFilePlayingDelegate];
                 }
             }
         }
@@ -64,6 +64,7 @@
         StrongObject(self);
         if(timeout <= 0){ //倒计时结束，关闭
             self.isFinish = YES;
+            [self.delegate vedioFileFinishDelegate];
             block(@(YES));
             dispatch_source_cancel(self.sourceTimer);
         } else {

@@ -77,6 +77,7 @@
 		DB21CFE22346E7B600DE9674 /* AFOConfigurationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DB21CFE02346E7B600DE9674 /* AFOConfigurationManager.m */; };
 		DB7101432345E49200EF4590 /* AFOAudioThreadDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7101412345E49200EF4590 /* AFOAudioThreadDecoder.m */; };
 		DB7101442345E49200EF4590 /* AFOAudioThreadDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = DB7101422345E49200EF4590 /* AFOAudioThreadDecoder.h */; };
+		DBCFE38223489BF400E10EE2 /* AFOCountDownManagerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = DBCFE38123489BF400E10EE2 /* AFOCountDownManagerDelegate.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -168,6 +169,7 @@
 		DB21CFE02346E7B600DE9674 /* AFOConfigurationManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFOConfigurationManager.m; sourceTree = "<group>"; };
 		DB7101412345E49200EF4590 /* AFOAudioThreadDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOAudioThreadDecoder.m; sourceTree = "<group>"; };
 		DB7101422345E49200EF4590 /* AFOAudioThreadDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOAudioThreadDecoder.h; sourceTree = "<group>"; };
+		DBCFE38123489BF400E10EE2 /* AFOCountDownManagerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFOCountDownManagerDelegate.h; sourceTree = "<group>"; };
 		E6C3DF97E31429DA00550B5A /* libPods-AFOFFMpeg.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AFOFFMpeg.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -330,6 +332,7 @@
 			children = (
 				24DAD2362331CA6E001D2CE4 /* AFOMediaManager.h */,
 				24DAD26C2331CA71001D2CE4 /* AFOMediaManager.m */,
+				DBCFE38123489BF400E10EE2 /* AFOCountDownManagerDelegate.h */,
 				24DAD23D2331CA6E001D2CE4 /* AFOCountdownManager.h */,
 				24DAD2742331CA72001D2CE4 /* AFOCountdownManager.m */,
 				24DAD23A2331CA6E001D2CE4 /* AFOMediaTimer.h */,
@@ -374,6 +377,7 @@
 				24DAD28D2331CA72001D2CE4 /* AFOMediaPlayController+AFOOrientation.h in Headers */,
 				24DAD2B52331CA72001D2CE4 /* AFOAudioPacket.h in Headers */,
 				24DAD2B82331CA72001D2CE4 /* AFOMediaErrorCodeManager.h in Headers */,
+				DBCFE38223489BF400E10EE2 /* AFOCountDownManagerDelegate.h in Headers */,
 				24DAD2992331CA72001D2CE4 /* AFOMediaFrameImport.h in Headers */,
 				24DAD2842331CA72001D2CE4 /* AFOMediaConditional.h in Headers */,
 				24DAD2892331CA72001D2CE4 /* AFOMediaPlayController+AFOGestures.h in Headers */,

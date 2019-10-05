@@ -9,6 +9,7 @@
 #import "AFOMediaPlayController.h"
 #import <AFORouter/AFORouter.h>
 #import <AFOFoundation/AFOFoundation.h>
+#import <AFOGitHub/INTUAutoRemoveObserver.h>
 #import "AFOMediaPlayControllerCategory.h"
 #import "AFOTotalDispatchManager.h"
 @interface AFOMediaPlayController ()<AFORouterManagerDelegate>
@@ -32,10 +33,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    [INTUAutoRemoveObserver addObserver:self selector:@selector(restartMediaFile) name:@"AFORestartMeidaFileNotification" object:nil];
 }
 #pragma mark ------
 - (void)viewWillLayoutSubviews{
    [self addMeidaView];
+}
+- (void)restartMediaFile{
+    [self playerVedioWithPath:self.strPath];
 }
 #pragma mark ------ AFORouterManagerDelegate
 - (void)didReceiverRouterManagerDelegate:(id)model{
