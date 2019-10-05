@@ -32,6 +32,11 @@ Pod::Spec.new do |s|
       media.public_header_files = 'AFOFFMpeg/media/*.h'
   end
 
+  s.subspec 'screenshots' do |screenshots|
+      screenshots.source_files = 'AFOFFMpeg/screenshots/*.{h,m}' 
+      screenshots.public_header_files = 'AFOFFMpeg/screenshots/*.h'
+  end
+
   s.subspec 'audio' do |audio|
       audio.source_files = 'AFOFFMpeg/audio/*.{h,m}' 
       audio.public_header_files = 'AFOFFMpeg/audio/*.h'

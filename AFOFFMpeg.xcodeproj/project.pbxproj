@@ -218,6 +218,7 @@
 				722D3D572338E9F600201ACB /* play */,
 				DBD5F73B23473EEA004D59C5 /* media */,
 				24DAD2C12331CAE2001D2CE4 /* audio */,
+				DB18A996234842510045C87A /* screenshots */,
 				722D3D562338E9D200201ACB /* error */,
 			);
 			path = AFOFFMpeg;
@@ -311,6 +312,19 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		DB18A996234842510045C87A /* screenshots */ = {
+			isa = PBXGroup;
+			children = (
+				24DAD2432331CA6F001D2CE4 /* AFOMediaSeekFrame.h */,
+				24DAD2372331CA6E001D2CE4 /* AFOMediaSeekFrame.m */,
+				24DAD2792331CA72001D2CE4 /* AFOMediaSeekFrame+Conditional.h */,
+				24DAD2532331CA70001D2CE4 /* AFOMediaSeekFrame+Conditional.m */,
+				24DAD2452331CA6F001D2CE4 /* AFOMediaThumbnail.h */,
+				24DAD2572331CA70001D2CE4 /* AFOMediaThumbnail.m */,
+			);
+			path = screenshots;
+			sourceTree = "<group>";
+		};
 		DBD5F73B23473EEA004D59C5 /* media */ = {
 			isa = PBXGroup;
 			children = (
@@ -324,15 +338,9 @@
 				24DAD25A2331CA70001D2CE4 /* AFOGenerateImages.m */,
 				24DAD23F2331CA6E001D2CE4 /* AFOMediaConditional.h */,
 				24DAD26D2331CA71001D2CE4 /* AFOMediaConditional.m */,
-				24DAD2452331CA6F001D2CE4 /* AFOMediaThumbnail.h */,
-				24DAD2572331CA70001D2CE4 /* AFOMediaThumbnail.m */,
+				24DAD2542331CA70001D2CE4 /* AFOMediaFrameImport.h */,
 				24DAD2642331CA71001D2CE4 /* AFOVideoFrame.h */,
 				24DAD24A2331CA6F001D2CE4 /* AFOVideoFrame.m */,
-				24DAD2432331CA6F001D2CE4 /* AFOMediaSeekFrame.h */,
-				24DAD2372331CA6E001D2CE4 /* AFOMediaSeekFrame.m */,
-				24DAD2792331CA72001D2CE4 /* AFOMediaSeekFrame+Conditional.h */,
-				24DAD2532331CA70001D2CE4 /* AFOMediaSeekFrame+Conditional.m */,
-				24DAD2542331CA70001D2CE4 /* AFOMediaFrameImport.h */,
 				24DAD2512331CA6F001D2CE4 /* AFOMediaFrame.h */,
 				24DAD2552331CA70001D2CE4 /* AFOMediaFrame.m */,
 				24DAD2782331CA72001D2CE4 /* AFOMediaYUV.h */,
