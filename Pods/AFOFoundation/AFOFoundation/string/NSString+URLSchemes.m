@@ -1,15 +1,15 @@
 //
-//  AFORouterInfoplist.m
-//  AFORouter
+//  NSString+URLSchemes.m
+//  AFOFoundation
 //
-//  Created by xueguang xian on 2018/1/12.
-//  Copyright © 2018年 AFO. All rights reserved.
+//  Created by xianxueguang on 2019/9/30.
+//  Copyright © 2019年 AFO Science Technology Ltd. All rights reserved.
 //
 
-#import "AFORouterInfoplist.h"
+#import "NSString+URLSchemes.h"
 
-@implementation AFORouterInfoplist
-+ (NSString *)readAppInfoPlistFile{
+@implementation NSString (URLSchemes)
++ (NSString *)readSchemesFromInfoPlist{
     NSString* File = [[NSBundle mainBundle] pathForResource:@"Info" ofType:@"plist"];
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithContentsOfFile:File];
     __block NSArray *key = nil;
