@@ -9,7 +9,12 @@
 #import "AFOSchedulerBaseClass+AFOFFMpeg.h"
 #import <AFOSchedulerCore/NSObject+AFOScheduler.h>
 @implementation AFOSchedulerBaseClass (AFOFFMpeg)
-+ (void)ffmpegSchedulerMediaPlayReceiverParameters:(id)model{
-    
+#pragma mark ------ FFMpeg pass value
++ (void)ffmpegSchedulerMediaPlayReceiverParameters:(id)model
+                                            target:(id)target{
+    SEL sel = NSSelectorFromString(@"mediaPlayReceiverParameters:");
+    if ([target respondsToSelector:sel]) {
+        [self schedulerPerformSelector:target params:[NSArray arrayWithObject:model]];
+    }
 }
 @end

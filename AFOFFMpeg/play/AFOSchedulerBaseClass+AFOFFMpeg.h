@@ -11,7 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AFOSchedulerBaseClass (AFOFFMpeg)
-
++ (void)ffmpegSchedulerMediaPlayReceiverParameters:(id)model
+                                            target:(id)target;
 @end
 
 NS_ASSUME_NONNULL_END
