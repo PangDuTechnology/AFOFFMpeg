@@ -7,7 +7,9 @@
 //
 
 #import "AFOSchedulerBaseClass+AFOFFMpeg.h"
-
+#import <AFOSchedulerCore/NSObject+AFOScheduler.h>
 @implementation AFOSchedulerBaseClass (AFOFFMpeg)
-
++ (void)ffmpegSchedulerMediaPlayReceiverParameters:(id)model{
+    
+}
 @end
