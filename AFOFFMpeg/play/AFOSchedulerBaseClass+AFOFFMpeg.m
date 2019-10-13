@@ -14,7 +14,7 @@
                                             target:(id)target{
     SEL sel = NSSelectorFromString(@"mediaPlayReceiverParameters:");
     if ([target respondsToSelector:sel]) {
-        [self schedulerPerformSelector:target params:[NSArray arrayWithObject:model]];
+        [self schedulerPerformSelector:sel params:[NSArray arrayWithObject:model]];
     }
 }
 @end
