@@ -34,6 +34,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     [INTUAutoRemoveObserver addObserver:self selector:@selector(restartMediaFile) name:@"AFORestartMeidaFileNotification" object:nil];
+    [INTUAutoRemoveObserver addObserver:self selector:@selector(mediaPlayReceiverParameters:) name:@"AFO_MEDIAPLAY_RECEIVERPARAMETERS_NOTIFICATION" object:nil];
 }
 #pragma mark ------
 - (void)viewWillLayoutSubviews{
