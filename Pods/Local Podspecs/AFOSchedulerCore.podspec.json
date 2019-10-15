@@ -23,6 +23,21 @@
       "name": "scheduler",
       "source_files": "AFOSchedulerCore/scheduler/*.{h,m}",
       "public_header_files": "AFOSchedulerCore/scheduler/*.h"
+    },
+    {
+      "name": "playList",
+      "source_files": "AFOSchedulerCore/playList/*.{h,m}",
+      "public_header_files": "AFOSchedulerCore/playList/*.h"
+    },
+    {
+      "name": "homePage",
+      "source_files": "AFOSchedulerCore/homePage/*.{h,m}",
+      "public_header_files": "AFOSchedulerCore/homePage/*.h"
+    },
+    {
+      "name": "rooter",
+      "source_files": "AFOSchedulerCore/rooter/*.{h,m}",
+      "public_header_files": "AFOSchedulerCore/rooter/*.h"
     }
   ]
 }
