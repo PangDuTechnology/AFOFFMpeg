@@ -16,7 +16,7 @@
 
 @implementation AFORouterActionContext
 - (void)passingCurrentController:(UIViewController *)current
-                  nextController:(UIViewController *)next
+                  nextController:(NSString *)next
                       parameters:(NSDictionary *)paramenter{
     NSString *strAction = paramenter[@"action"];
     Class class = NSClassFromString(self.actionDic[strAction]);

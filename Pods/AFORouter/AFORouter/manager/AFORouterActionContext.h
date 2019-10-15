@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 @interface AFORouterActionContext : NSObject
 - (void)passingCurrentController:(UIViewController *)current
-                  nextController:(UIViewController *)next
+                  nextController:(NSString *)next
                       parameters:(NSDictionary *)paramenter;
 @end
 

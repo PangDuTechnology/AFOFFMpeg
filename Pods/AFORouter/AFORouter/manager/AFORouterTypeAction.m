@@ -7,7 +7,6 @@
 //
 
 #import "AFORouterTypeAction.h"
-
 @implementation AFORouterTypeAction
 #pragma mark ------------
 - (void)addControllerAction:(UIViewController *)nextController
@@ -28,7 +27,7 @@
 }
 #pragma mark ------ 
 - (void)currentController:(UIViewController *)current
-           nextController:(UIViewController *)next
+           nextController:(NSString *)next
                 parameter:(nonnull NSDictionary *)paramenter{
     
 }

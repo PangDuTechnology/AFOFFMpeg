@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 @protocol AFORouterManagerDelegate <NSObject>
 @optional
 - (id)didSenderRouterManagerDelegate;
 - (void)didReceiverRouterManagerDelegate:(id)model;
 - (void)didReceiverRouterManagerDelegate:(id)model
                               parameters:(NSDictionary *)parameters;
+- (void)didReceiverRouterManagerDelegateArray:(NSArray *)array
+                                   parameters:(NSDictionary *)parameters;
 @end

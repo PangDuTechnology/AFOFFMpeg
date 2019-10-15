@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AFOSchedulerBaseClass (AFORouter)
-
++ (void)schedulerRouterJumpPassingParameters:(NSDictionary *)parameters;
 @end
 
 NS_ASSUME_NONNULL_END

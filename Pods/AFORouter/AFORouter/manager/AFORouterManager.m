@@ -9,7 +9,7 @@
 #import "AFORouterManager.h"
 #import <UIKit/UIKit.h>
 #import <AFOFoundation/AFOFoundation.h>
-#import "AFOSchedulerBaseClass+AFORouter.h"
+#import <AFOSchedulerCore/AFOSchedulerBaseClass+AFORouter.h>
 #import "JLRoutes.h"
 @interface AFORouterManager ()<UIApplicationDelegate>
 @property (nonatomic, strong) JLRoutes                  *routes;
@@ -28,7 +28,7 @@
 #pragma mark ------ 添加跳转规则
 - (void)loadRotesFile{
     [self.routes addRoute:@"/:modelName/:current/:next/:action"handler:^BOOL(NSDictionary<NSString *,id> * _Nonnull parameters) {
-        [AFOSchedulerBaseClass jumpPassingParameters:parameters];
+        [AFOSchedulerBaseClass schedulerRouterJumpPassingParameters:parameters];
         return YES;
     }];
 }

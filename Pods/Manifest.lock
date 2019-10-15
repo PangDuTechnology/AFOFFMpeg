@@ -48,15 +48,12 @@ PODS:
   - AFORouter (0.0.8):
     - AFORouter/manager (= 0.0.8)
     - AFORouter/router (= 0.0.8)
-    - AFORouter/scheduler (= 0.0.8)
     - AFOSchedulerCore
   - AFORouter/manager (0.0.8):
     - AFOFoundation
     - AFORouter/router
     - AFOSchedulerCore
   - AFORouter/router (0.0.8):
-    - AFOSchedulerCore
-  - AFORouter/scheduler (0.0.8):
     - AFOSchedulerCore
   - AFOSchedulerCore (0.0.1):
     - AFOSchedulerCore/homePage (= 0.0.1)
@@ -105,10 +102,10 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   AFORouter:
-    :commit: e4c494994d6e616a935cec8ced15dade5b54cc62
+    :commit: 434092197661fed0fb7c72d91cd8daee32da298a
     :git: "/Users/piccolo/Documents/GitHub/AFORouter"
   AFOSchedulerCore:
-    :commit: 15335000d10389fd967fffb3a0bfba810e1e66f4
+    :commit: 2cae1a19763847b7f540afc95b8e16774474f400
     :git: "/Users/piccolo/Documents/GitHub/AFOSchedulerCore"
 
 SPEC CHECKSUMS:
@@ -116,7 +113,7 @@ SPEC CHECKSUMS:
   AFOFoundation: b5953521aa5c436dba3d2e77d56b5614289476ab
   AFOGitHub: 9b4aee6e56e6d3215ff93e879575649a01e19af4
   AFOlibyuv: 0de9914d223842fb3bd71df543efbc0b3de46d85
-  AFORouter: 58bd94d2b55d6f2683abdb7bbb5cfd122dc6da55
+  AFORouter: ce325a989fded002cfcbb6a60ea864abcfca0aa9
   AFOSchedulerCore: e67576eb67f1e252498368ff4f84844736f5af15
   AFOUIKIT: b1e12d14891b02f23c5dd3808db57ee6873e5c15
   AFOViews: e163b3141ed826d28d47c2a47cdbc51d0c399a54

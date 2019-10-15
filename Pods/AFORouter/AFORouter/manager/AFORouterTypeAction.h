@@ -14,10 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface AFORouterTypeAction : NSObject<AFORouterManagerDelegate>
 @property (nonatomic, strong)       id                   valueModel;
 - (void)addControllerAction:(UIViewController *)pushController
-                                         present:(UIViewController *)presentController
-                                      parameters:(NSDictionary *)parameters;
+                    present:(UIViewController *)presentController
+                 parameters:(NSDictionary *)parameters;
 - (void)currentController:(UIViewController *)current
-           nextController:(UIViewController *)next
+           nextController:(NSString *)next
                 parameter:(NSDictionary *)paramenter;
 @end
 

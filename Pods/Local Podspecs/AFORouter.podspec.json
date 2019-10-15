@@ -41,11 +41,6 @@
       },
       "source_files": "AFORouter/manager/*.{h,m}",
       "public_header_files": "AFORouter/manager/*.h"
-    },
-    {
-      "name": "scheduler",
-      "source_files": "AFORouter/scheduler/*.{h,m}",
-      "public_header_files": "AFORouter/scheduler/*.h"
     }
   ]
 }
