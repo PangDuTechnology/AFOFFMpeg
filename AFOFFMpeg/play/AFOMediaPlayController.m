@@ -52,14 +52,14 @@
     self.title = parameters[@"title"];
     [self playerVedioWithPath:value];
 }
-- (void)didReceiverRouterManagerDelegate:(id)model{
-    NSDictionary *parameters = model;
-    NSString *value = parameters[@"value"];
-    self.orientation = [[parameters objectForKey:@"direction"] integerValue];
-    self.strPath = value;
-    self.title = parameters[@"title"];
-    [self playerVedioWithPath:value];
-}
+//- (void)didReceiverRouterManagerDelegate:(id)model{
+//    NSDictionary *parameters = model;
+//    NSString *value = parameters[@"value"];
+//    self.orientation = [[parameters objectForKey:@"direction"] integerValue];
+//    self.strPath = value;
+//    self.title = parameters[@"title"];
+//    [self playerVedioWithPath:value];
+//}
 #pragma mark ------
 - (void)playerVedioWithPath:(NSString *)path{
     WeakObject(self);
