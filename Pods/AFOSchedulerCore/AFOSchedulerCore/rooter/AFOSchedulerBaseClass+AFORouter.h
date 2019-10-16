@@ -7,11 +7,14 @@
 //
 
 #import <AFOSchedulerCore/AFOSchedulerBaseClass.h>
-
+#import <UIKit/UIKit.h>
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AFOSchedulerBaseClass (AFORouter)
 + (void)schedulerRouterJumpPassingParameters:(NSDictionary *)parameters;
++ (void)schedulerController:(UIViewController *)nextController
+                    present:(UIViewController *)currentController
+                 parameters:(NSDictionary *)parameters;
 @end
 
 NS_ASSUME_NONNULL_END

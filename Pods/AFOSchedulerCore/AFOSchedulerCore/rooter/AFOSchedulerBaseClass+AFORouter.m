@@ -7,7 +7,11 @@
 //
 
 #import "AFOSchedulerBaseClass+AFORouter.h"
-#import <UIKit/UIKit.h>
+#import <AFOSchedulerCore/AFOSchedulerPassValueDelegate.h>
+@interface AFOSchedulerBaseClass ()<AFOSchedulerPassValueDelegate>
+
+@end
+
 @implementation AFOSchedulerBaseClass (AFORouter)
 #pragma mark ------ router
 + (void)schedulerRouterJumpPassingParameters:(NSDictionary *)parameters{
@@ -21,6 +25,24 @@
         if ([instance respondsToSelector:sel]) {
             [instance schedulerPerformSelector:sel params:paraArray];
         }
+    }
+}
+#pragma mark ------------
++ (void)schedulerController:(UIViewController *)nextController
+                    present:(UIViewController *)currentController
+                 parameters:(NSDictionary *)parameters{
+    id valueModel;
+    ///------ 传递值
+    if ([currentController respondsToSelector:@selector(schedulerSenderRouterManagerDelegate)]) {
+        valueModel = [currentController performSelector:@selector(schedulerSenderRouterManagerDelegate)];
+    }
+    ///------ 获取值
+    if ([nextController respondsToSelector:@selector(schedulerReceiverRouterManagerDelegate:)]) {
+        [nextController performSelector:@selector(schedulerReceiverRouterManagerDelegate:) withObject:parameters];
+    }
+    ///------ 获取值
+    if ([nextController respondsToSelector:@selector(schedulerReceiverRouterManagerDelegate:parameters:)] && valueModel) {
+        [nextController performSelector:@selector(schedulerReceiverRouterManagerDelegate:parameters:) withObject:valueModel withObject:parameters];
     }
 }
 @end

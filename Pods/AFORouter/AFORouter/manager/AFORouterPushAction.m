@@ -19,7 +19,8 @@
     Class class = NSClassFromString(next);
     UIViewController *controller = [[class alloc] init];
     controller.hidesBottomBarWhenPushed = YES;
-    [self addControllerAction:controller present:current parameters:paramenter];
+    [AFOSchedulerBaseClass schedulerController:current present:controller parameters:paramenter];
+//    [self addControllerAction:controller present:current parameters:paramenter];
     [current.navigationController pushViewController:controller animated:YES];
 }
 @end

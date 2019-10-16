@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <AFOSchedulerCore/AFOSchedulerBaseClass+AFORouter.h>
 #import "AFORouterTypeAction.h"
 #import "AFORouterManagerDelegate.h"
 NS_ASSUME_NONNULL_BEGIN

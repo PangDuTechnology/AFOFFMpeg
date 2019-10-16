@@ -7,11 +7,6 @@
 //
 
 #import "AFORouterTypeAction.h"
-#import <AFOSchedulerCore/AFOSchedulerBaseClass+AFORouter.h>
-@interface AFORouterTypeAction ()
-
-@end
-
 @implementation AFORouterTypeAction
 #pragma mark ------------
 - (void)addControllerAction:(UIViewController *)nextController

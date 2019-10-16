@@ -10,9 +10,10 @@
 #import <AFORouter/AFORouter.h>
 #import <AFOFoundation/AFOFoundation.h>
 #import <AFOGitHub/INTUAutoRemoveObserver.h>
+#import <AFOSchedulerCore/AFOSchedulerPassValueDelegate.h>
 #import "AFOMediaPlayControllerCategory.h"
 #import "AFOTotalDispatchManager.h"
-@interface AFOMediaPlayController ()<AFORouterManagerDelegate>
+@interface AFOMediaPlayController ()<AFOSchedulerPassValueDelegate>
 @property (nonatomic, strong) AFOTotalDispatchManager       *mediaManager;
 @property (nonatomic, copy)   NSString                   *strPath;
 @property (nonatomic, assign) UIInterfaceOrientationMask  orientation;
@@ -34,7 +35,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     [INTUAutoRemoveObserver addObserver:self selector:@selector(restartMediaFile) name:@"AFORestartMeidaFileNotification" object:nil];
-    [INTUAutoRemoveObserver addObserver:self selector:@selector(mediaPlayReceiverParameters:) name:@"AFO_MEDIAPLAY_RECEIVERPARAMETERS_NOTIFICATION" object:nil];
 }
 #pragma mark ------
 - (void)viewWillLayoutSubviews{
@@ -43,8 +43,8 @@
 - (void)restartMediaFile{
     [self playerVedioWithPath:self.strPath];
 }
-#pragma mark ------ AFORouterManagerDelegate
-- (void)mediaPlayReceiverParameters:(id)model{
+#pragma mark ------ AFOSchedulerPassValueDelegate
+- (void)schedulerReceiverRouterManagerDelegate:(id)model{
     NSDictionary *parameters = model;
     NSString *value = parameters[@"value"];
     self.orientation = [[parameters objectForKey:@"direction"] integerValue];
@@ -52,14 +52,6 @@
     self.title = parameters[@"title"];
     [self playerVedioWithPath:value];
 }
-//- (void)didReceiverRouterManagerDelegate:(id)model{
-//    NSDictionary *parameters = model;
-//    NSString *value = parameters[@"value"];
-//    self.orientation = [[parameters objectForKey:@"direction"] integerValue];
-//    self.strPath = value;
-//    self.title = parameters[@"title"];
-//    [self playerVedioWithPath:value];
-//}
 #pragma mark ------
 - (void)playerVedioWithPath:(NSString *)path{
     WeakObject(self);
