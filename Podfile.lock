@@ -102,7 +102,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   AFORouter:
-    :commit: 7448ab7c292ba004b7b8ce8ecdd530c8229b4510
+    :commit: 6888e2416e455e38dab3b5842a8d864d3dabf97a
     :git: "/Users/piccolo/Documents/GitHub/AFORouter"
   AFOSchedulerCore:
     :commit: eca43f2842cc9144a3acf37d9529e02a1f661841
