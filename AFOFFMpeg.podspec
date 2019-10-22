@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
 
   # ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   s.name         = "AFOFFMpeg"
-  s.version      = "0.1.1"
+  s.version      = "0.1.2"
   s.summary      = "decoding."
 
   # This description is used to generate tags and improve search results.
@@ -67,4 +67,5 @@ Pod::Spec.new do |s|
   s.dependency "AFOlibyuv"
   s.dependency "libxvidcore"
   s.dependency "AFOx264"
+  s.dependency "AFOSchedulerCore"
 end

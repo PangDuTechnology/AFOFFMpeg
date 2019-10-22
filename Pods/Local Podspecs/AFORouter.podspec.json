@@ -1,6 +1,6 @@
 {
   "name": "AFORouter",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "summary": "The router.",
   "description": "Used to pass values between pages.",
   "homepage": "https://github.com/PangDuTechnology/AFORouter.git",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/PangDuTechnology/AFORouter.git",
-    "tag": "0.0.8"
+    "tag": "0.0.9"
   },
   "source_files": "AFORouter/AFORouter.h",
   "public_header_files": "AFORouter/AFORouter.h",

@@ -1,6 +1,6 @@
 {
   "name": "AFOSchedulerCore",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "summary": "Scheduler.",
   "description": "Decoupling with NSInvocation.",
   "homepage": "https://github.com/PangDuTechnology/AFOSchedulerCore.git",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/PangDuTechnology/AFOSchedulerCore.git",
-    "tag": "0.0.1"
+    "tag": "0.0.2"
   },
   "source_files": "AFOSchedulerCore/AFOSchedulerCore.h",
   "public_header_files": "AFOSchedulerCore/AFOSchedulerCore.h",
