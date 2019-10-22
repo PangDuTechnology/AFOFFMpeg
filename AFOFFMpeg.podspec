@@ -67,4 +67,5 @@ Pod::Spec.new do |s|
   s.dependency "AFOlibyuv"
   s.dependency "libxvidcore"
   s.dependency "AFOx264"
+  s.dependency "AFOSchedulerCore"
 end

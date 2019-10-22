@@ -71,13 +71,13 @@
 		24DAD2BE2331CA72001D2CE4 /* AFOMediaSeekFrame+Conditional.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2792331CA72001D2CE4 /* AFOMediaSeekFrame+Conditional.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD2BF2331CA72001D2CE4 /* AFOMediaControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD27A2331CA72001D2CE4 /* AFOMediaControlView.m */; };
 		922E6559DEB8E99FA090F6B5 /* libPods-AFOFFMpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C3DF97E31429DA00550B5A /* libPods-AFOFFMpeg.a */; };
-		DB18A99A2348447E0045C87A /* AFOVideoFrameRGB.h in Headers */ = {isa = PBXBuildFile; fileRef = DB18A9982348447E0045C87A /* AFOVideoFrameRGB.h */; };
+		DB18A99A2348447E0045C87A /* AFOVideoFrameRGB.h in Headers */ = {isa = PBXBuildFile; fileRef = DB18A9982348447E0045C87A /* AFOVideoFrameRGB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB18A99B2348447E0045C87A /* AFOVideoFrameRGB.m in Sources */ = {isa = PBXBuildFile; fileRef = DB18A9992348447E0045C87A /* AFOVideoFrameRGB.m */; };
-		DB21CFE12346E7B600DE9674 /* AFOConfigurationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DB21CFDF2346E7B600DE9674 /* AFOConfigurationManager.h */; };
+		DB21CFE12346E7B600DE9674 /* AFOConfigurationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DB21CFDF2346E7B600DE9674 /* AFOConfigurationManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB21CFE22346E7B600DE9674 /* AFOConfigurationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DB21CFE02346E7B600DE9674 /* AFOConfigurationManager.m */; };
 		DB7101432345E49200EF4590 /* AFOAudioThreadDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7101412345E49200EF4590 /* AFOAudioThreadDecoder.m */; };
-		DB7101442345E49200EF4590 /* AFOAudioThreadDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = DB7101422345E49200EF4590 /* AFOAudioThreadDecoder.h */; };
-		DBCFE38223489BF400E10EE2 /* AFOCountDownManagerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = DBCFE38123489BF400E10EE2 /* AFOCountDownManagerDelegate.h */; };
+		DB7101442345E49200EF4590 /* AFOAudioThreadDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = DB7101422345E49200EF4590 /* AFOAudioThreadDecoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DBCFE38223489BF400E10EE2 /* AFOCountDownManagerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = DBCFE38123489BF400E10EE2 /* AFOCountDownManagerDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -366,18 +366,14 @@
 				24DAD27F2331CA72001D2CE4 /* AFOMediaTimer.h in Headers */,
 				24DAD2BA2331CA72001D2CE4 /* AFOAudioSession.h in Headers */,
 				24DAD2882331CA72001D2CE4 /* AFOMediaSeekFrame.h in Headers */,
-				DB21CFE12346E7B600DE9674 /* AFOConfigurationManager.h in Headers */,
-				DB7101442345E49200EF4590 /* AFOAudioThreadDecoder.h in Headers */,
 				24DAD2BC2331CA72001D2CE4 /* AFOMediaPlayControllerCategory.h in Headers */,
 				24DAD2B02331CA72001D2CE4 /* AFOMediaControlView.h in Headers */,
 				24DAD2AC2331CA72001D2CE4 /* AFOGenerateImages.h in Headers */,
 				24DAD2952331CA72001D2CE4 /* AFOAudioManager.h in Headers */,
-				DB18A99A2348447E0045C87A /* AFOVideoFrameRGB.h in Headers */,
 				24DAD27B2331CA72001D2CE4 /* AFOMediaManager.h in Headers */,
 				24DAD28D2331CA72001D2CE4 /* AFOMediaPlayController+AFOOrientation.h in Headers */,
 				24DAD2B52331CA72001D2CE4 /* AFOAudioPacket.h in Headers */,
 				24DAD2B82331CA72001D2CE4 /* AFOMediaErrorCodeManager.h in Headers */,
-				DBCFE38223489BF400E10EE2 /* AFOCountDownManagerDelegate.h in Headers */,
 				24DAD2992331CA72001D2CE4 /* AFOMediaFrameImport.h in Headers */,
 				24DAD2842331CA72001D2CE4 /* AFOMediaConditional.h in Headers */,
 				24DAD2892331CA72001D2CE4 /* AFOMediaPlayController+AFOGestures.h in Headers */,
@@ -393,8 +389,12 @@
 				24DAD2942331CA72001D2CE4 /* AFOMediaErrorString.h in Headers */,
 				24DAD2922331CA72001D2CE4 /* AFOMediaView.h in Headers */,
 				24DAD2812331CA72001D2CE4 /* AFOVideoFrameYUV.h in Headers */,
+				DB21CFE12346E7B600DE9674 /* AFOConfigurationManager.h in Headers */,
+				DB18A99A2348447E0045C87A /* AFOVideoFrameRGB.h in Headers */,
 				24DAD2A92331CA72001D2CE4 /* AFOVideoFrame.h in Headers */,
+				DBCFE38223489BF400E10EE2 /* AFOCountDownManagerDelegate.h in Headers */,
 				24DAD2962331CA72001D2CE4 /* AFOMediaFrame.h in Headers */,
+				DB7101442345E49200EF4590 /* AFOAudioThreadDecoder.h in Headers */,
 				24BAFDC01FF4B12900D2EAB9 /* AFOFFMpeg.h in Headers */,
 				240487632008459600D369FB /* AFOMediaForeignInterface.h in Headers */,
 			);
