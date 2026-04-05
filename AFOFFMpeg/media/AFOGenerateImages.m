@@ -18,8 +18,14 @@
 - (void)decoedImageForYUV:(struct AVFrame *)avFrame
                   outSize:(CGSize)outSize
                     block:(generateImageBlock)block{
-    [AFOMediaYUV makeYUVToRGB:avFrame width:outSize.width height:outSize.height scale:1.0 block:^(UIImage * _Nonnull image) {
-        block(image, [AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorNone]);
+    NSLog(@"AFOGenerateImages: decoedImageForYUV called.");
+    [AFOMediaYUV makeYUVToRGB:avFrame width:outSize.width height:outSize.height scale:1.0 block:^(UIImage * _Nonnull image, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"AFOGenerateImages: Error in YUV to RGB conversion: %@", error.localizedDescription);
+            block(nil, error);
+        } else {
+            block(image, nil);
+        }
     }];
 }
 #pragma mark ------ 图像数据格式的转换以及图片的缩放 方法二

@@ -33,7 +33,9 @@
 #pragma mark ------------ viewDidLoad
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"AFOMediaPlayController: viewDidLoad called. Self address: %p", self);
     self.view.backgroundColor = [UIColor whiteColor];
+    self.hidesBottomBarWhenPushed = YES; // Hide the tab bar when this controller is pushed
     [INTUAutoRemoveObserver addObserver:self selector:@selector(restartMediaFile) name:@"AFORestartMeidaFileNotification" object:nil];
 }
 #pragma mark ------
@@ -84,6 +86,7 @@
     return _mediaManager;
 }
 - (void)dealloc{
+    [self.mediaManager stopAudio];
     NSLog(@"AFOMediaPlayController dealloc");
 }
 @end

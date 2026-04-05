@@ -9,9 +9,9 @@
 #import "AFOAudioOutPut.h"
 #import <AudioToolbox/AudioToolbox.h>
 static const AudioUnitElement inputElement = 1;
-@interface AFOAudioOutPut (){
-    SInt16 *outData;
-}
+@interface AFOAudioOutPut ()
+@property (nonatomic, assign) SInt16 *outData;
+@property (nonatomic, assign) UInt32 outDataCapacity; // Track the allocated capacity of outData
 @property (nonatomic, assign) Float64       sampleRate;
 @property (nonatomic, assign) Float64       channel;
 @property (nonatomic, assign) AUGraph       auGraph;
@@ -20,6 +20,9 @@ static const AudioUnitElement inputElement = 1;
 @property (nonatomic, assign) AUNode        convertNote;
 @property (nonatomic, assign) AudioUnit     convertUnit;
 @property (nonatomic, weak) id<AFOAudioFillDataDelegate> delegate;
+/// render callback 强持有 self，停止时 CFRelease，避免 inRefCon 悬空
+@property (nonatomic, assign) void *af_selfRetainedRefCon;
+@property (nonatomic, assign) BOOL af_didStop;
 @end
 
 @implementation AFOAudioOutPut
@@ -28,7 +31,8 @@ static const AudioUnitElement inputElement = 1;
                  bytesPerSample:(NSInteger)bytesPerSample
                        delegate:(id<AFOAudioFillDataDelegate>)delegate{
     if (self = [super init]) {
-        outData = (SInt16 *)calloc(8*1024, sizeof(SInt16));
+        _outData = (SInt16 *)calloc(8*1024, sizeof(SInt16));
+        _outDataCapacity = 8 * 1024;
         _delegate = delegate;
         _sampleRate = sampleRate;
         _channel = channel;
@@ -141,7 +145,10 @@ static const AudioUnitElement inputElement = 1;
     
     AURenderCallbackStruct callbackStruct;
     callbackStruct.inputProc = &renderCallback;
-    callbackStruct.inputProcRefCon = (__bridge void *)self;
+    if (!self.af_selfRetainedRefCon) {
+        self.af_selfRetainedRefCon = (__bridge_retained void *)self;
+    }
+    callbackStruct.inputProcRefCon = self.af_selfRetainedRefCon;
     
     status = AudioUnitSetProperty(_convertUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, 0, &callbackStruct, sizeof(callbackStruct));
     CheckStatus(status, @"Could not set render callback on mixer input scope, element 1", YES);
@@ -152,7 +159,17 @@ static OSStatus renderCallback(void * inRefCon,
                                       UInt32                            inBusNumber,
                                       UInt32                            inNumberFrames,
                                       AudioBufferList * __nullable    ioData){
-    AFOAudioOutPut *audioOutput = (__bridge id)inRefCon;
+    if (!inRefCon) {
+        NSLog(@"AFOAudioOutPut: renderCallback - inRefCon is NULL, returning noErr");
+        return noErr;
+    }
+    AFOAudioOutPut *audioOutput = (__bridge AFOAudioOutPut *)inRefCon;
+    if (audioOutput.af_didStop) {
+        NSLog(@"AFOAudioOutPut: renderCallback - audioOutput already stopped, returning noErr");
+        return noErr;
+    }
+    // Log the address of audioOutput to track its validity
+    NSLog(@"AFOAudioOutPut: renderCallback - audioOutput address: %p", audioOutput);
     return [audioOutput renderData:ioData
                        atTimeStamp:inTimeStamp
                         forElement:inBusNumber
@@ -164,14 +181,26 @@ static OSStatus renderCallback(void * inRefCon,
             forElement:(UInt32)element
           numberFrames:(UInt32)numFrames
                  flags:(AudioUnitRenderActionFlags *)flags{
+    if (self.af_didStop) {
+        return noErr;
+    }
     for (int iBuffer = 0; iBuffer < ioData->mNumberBuffers; ++iBuffer) {
     memset(ioData->mBuffers[iBuffer].mData, 0, ioData->mBuffers[iBuffer].mDataByteSize);
     }
     ///---
     if (_delegate) {
-        [_delegate fillAudioData:outData frames:numFrames channels:_channel];
+        // Ensure outData has enough capacity
+        UInt32 requiredSize = ioData->mBuffers[0].mDataByteSize;
+        if (_outDataCapacity < requiredSize) {
+            _outData = (SInt16 *)realloc(_outData, requiredSize);
+            _outDataCapacity = requiredSize;
+            NSLog(@"AFOAudioOutPut: Reallocated outData to %u bytes.", _outDataCapacity);
+        }
+        
+        NSLog(@"AFOAudioOutPut: renderData - _delegate is valid, filling audio data. Self address: %p, outData address: %p", self, _outData);
+        [_delegate fillAudioData:_outData frames:numFrames channels:_channel];
         for (int iBuffer = 0; iBuffer < ioData->mNumberBuffers;  ++iBuffer) {
-            memcpy((SInt16 *)ioData->mBuffers[iBuffer].mData, outData, ioData->mBuffers[iBuffer].mDataByteSize);
+            memcpy((SInt16 *)ioData->mBuffers[iBuffer].mData, _outData, ioData->mBuffers[iBuffer].mDataByteSize);
         }
     }
     return noErr;
@@ -182,10 +211,34 @@ static OSStatus renderCallback(void * inRefCon,
     return YES;
 }
 - (void)audioStop{
-    OSStatus status = AUGraphStop(_auGraph);
-    AudioOutputUnitStop(_ioUnit);
-    AudioOutputUnitStop(_convertUnit);
-    CheckStatus(status, @"Could not stop AUGraph", YES);
+    NSLog(@"AFOAudioOutPut: audioStop called. Self address: %p", self);
+    if (self.af_didStop) {
+        return;
+    }
+    self.af_didStop = YES;
+    self.delegate = nil;
+
+    if (_auGraph) {
+        // First, disable the render callback to prevent further invocations
+        AURenderCallbackStruct callbackStruct;
+        callbackStruct.inputProc = NULL;
+        callbackStruct.inputProcRefCon = NULL;
+        OSStatus status = AudioUnitSetProperty(_convertUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, 0, &callbackStruct, sizeof(callbackStruct));
+        CheckStatus(status, @"Could not disable render callback", NO);
+
+        status = AUGraphStop(_auGraph);
+        CheckStatus(status, @"Could not stop AUGraph", NO);
+        AUGraphUninitialize(_auGraph);
+        AUGraphClose(_auGraph);
+        DisposeAUGraph(_auGraph);
+        _auGraph = NULL;
+    }
+
+    if (self.af_selfRetainedRefCon) {
+        NSLog(@"AFOAudioOutPut: Releasing af_selfRetainedRefCon. Self address: %p, refCon: %p", self, self.af_selfRetainedRefCon);
+        CFRelease(self.af_selfRetainedRefCon);
+        self.af_selfRetainedRefCon = NULL;
+    }
 }
 #pragma mark ------ C language method
 static void CheckStatus(OSStatus status, NSString *message, BOOL fatal){
@@ -202,6 +255,14 @@ static void CheckStatus(OSStatus status, NSString *message, BOOL fatal){
         if(fatal){
             exit(-1);
         }
+    }
+}
+
+- (void)dealloc{
+    NSLog(@"AFOAudioOutPut: dealloc called. Self address: %p", self);
+    if (_outData) {
+        free(_outData);
+        _outData = NULL;
     }
 }
 @end

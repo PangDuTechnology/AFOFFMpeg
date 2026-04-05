@@ -35,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)displayVedioForPath:(NSString *)strPath
                            block:(displayVedioBlock)block;
+- (void)stopAudio;
 @end
 
 NS_ASSUME_NONNULL_END

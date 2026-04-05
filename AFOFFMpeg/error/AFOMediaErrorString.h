@@ -24,7 +24,7 @@ typedef NS_ENUM(NSInteger, AFOPlayMediaErrorCode) {
     AFOPlayMediaErrorCodeDecoderImageFailure              = 5 ,
     
     AFOPlayMediaErrorCodeAllocateCodecContextFailure      = 6 ,
-    
+    AFOPlayMediaErrorCodeMemoryAllocationFailure          = 9 ,
     AFOPlayMediaErrorCodeImageorFormatConversionFailure   = 7 ,
     
     AFOPlayMediaErrorCodeRetrieveStreamInformationFailure = 8
@@ -49,6 +49,9 @@ static const NSString *AFOPlayMediaDecoderImageFailure = @"AVFrame中data为空"
 
 ///------ AFOPlayMediaErrorCodeAllocateCodecContextFailure
 static const NSString *AFOPlayMediaAllocateCodecContextFailure = @"初始化AVCodecContext,失败!";
+
+///------ AFOPlayMediaErrorCodeMemoryAllocationFailure
+static const NSString *AFOPlayMediaMemoryAllocationFailure = @"内存分配失败!";
 
 ///------ AFOPlayMediaErrorCodeImageorFormatConversionFailure
 static const NSString *AFOPlayMediaImageorFormatConversionFailure = @"初始化SwsContext,失败!";

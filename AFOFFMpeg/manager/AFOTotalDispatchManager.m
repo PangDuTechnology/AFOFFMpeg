@@ -27,6 +27,7 @@
 #pragma mark ------ init
 - (instancetype)init{
     if (self = [super init]) {
+        NSLog(@"AFOTotalDispatchManager: init called. Self address: %p", self);
         [INTUAutoRemoveObserver addObserver:self selector:@selector(playAudio) name:@"AFOMediaStartManagerNotifacation" object:nil];
         
         [INTUAutoRemoveObserver addObserver:self selector:@selector(suspendedAudioNotifacation:) name:@"AFOMediaSuspendedManager" object:nil];
@@ -36,11 +37,13 @@
 }
 - (void)displayVedioForPath:(NSString *)strPath
                       block:(displayVedioFrameBlock)block{
+    NSLog(@"AFOTotalDispatchManager: displayVedioForPath called for path: %@", strPath);
     WeakObject(self);
     [AFOConfigurationManager configurationStreamPath:strPath block:^(NSError * _Nonnull error, NSInteger videoIndex, NSInteger audioIndex) {
         StrongObject(self);
         self.videoStream = videoIndex;
         self.audioStream = audioIndex;
+        NSLog(@"AFOTotalDispatchManager: Video stream index: %ld, Audio stream index: %ld", (long)videoIndex, (long)audioIndex);
     }];
     ///--- play audio
     [AFOConfigurationManager configurationForPath:strPath stream:self.audioStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream) {

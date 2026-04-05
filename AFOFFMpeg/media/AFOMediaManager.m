@@ -57,6 +57,7 @@
                      codecContext:(AVCodecContext *)codecContext
                             index:(NSInteger)index
                             block:(displayVedioFrameBlock)block{
+    NSLog(@"AFOMediaManager: displayVedioFormatContext called. Video Stream Index: %ld", (long)index);
     self.videoStream = index;
     avCodecContext = codecContext;
     avFormatContext =formatContext;
@@ -74,7 +75,9 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaSuspendedManager" object:nil];
             return ;
         }else{
+            NSLog(@"AFOMediaManager: Countdown block executing. Attempting to read frame.");
             if ([weakself avReadFrame:weakself.videoStream]) {
+                NSLog(@"AFOMediaManager: Frame read successfully. Calling decodingFrameToImage.");
                 [weakself decodingFrameToImage:^(UIImage *image, NSError *error) {
                     if (error.code != 0) {
                         block(NULL, NULL, NULL, NULL, 0 , 0);
@@ -89,13 +92,14 @@
                     }
                 }];
             }else{
-                block(NULL, NULL, NULL, NULL, 0, 0);
+                block(nil, nil, nil, nil, 0, 0);
             }
         }
     }];
 }
 #pragma mark ------ YUV to image
 - (void)decodingFrameToImage:(void (^) (UIImage *image, NSError *error))block{
+    NSLog(@"AFOMediaManager: decodingFrameToImage called. AVFrame address: %p", avFrame);
     [self.generateImage decoedImageForYUV:avFrame outSize:self.outSize block:^(UIImage *image, NSError *error) {
         block(image,error);
     }];
@@ -103,11 +107,14 @@
 #pragma mark ------ stepFrame
 - (BOOL)avReadFrame:(NSInteger)duration {
     AVPacket  packet;
+    NSLog(@"AFOMediaManager: avReadFrame called for stream: %ld", (long)duration);
     while (av_read_frame(avFormatContext, &packet) >= 0) {
         if (packet.stream_index == duration) {
+            NSLog(@"AFOMediaManager: Found video packet. Size: %d, DTS: %lld, PTS: %lld", packet.size, packet.dts, packet.pts);
             int ret = avcodec_send_packet(avCodecContext, &packet);
             if (ret == 0) {
                 while (!avcodec_receive_frame(avCodecContext, avFrame)) {
+                    NSLog(@"AFOMediaManager: Successfully decoded video frame. PTS: %lld", avFrame->pts);
                     double frameRate = av_q2d([self avStream] -> avg_frame_rate);
                     frameRate += avFrame->repeat_pict * (frameRate * 0.5);
                     self.nowTime = self.currentTime;
@@ -115,10 +122,15 @@
                     return YES;
                 }
             }else{
+                NSLog(@"AFOMediaManager: avcodec_send_packet failed with error: %d", ret);
                 return NO;
             }
+        } else {
+            // Unref other stream packets to avoid memory leaks
+            av_packet_unref(&packet);
         }
     }
+    NSLog(@"AFOMediaManager: End of file or no more frames to read.");
     return YES;
 }
 #pragma mark ------ AFOCountDownManagerDelegate
