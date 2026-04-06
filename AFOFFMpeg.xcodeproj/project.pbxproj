@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		14E2AF1D2F83511000C851BA /* AFOMediaPlayController+HideTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 14E2AF1B2F83511000C851BA /* AFOMediaPlayController+HideTabBar.m */; };
 		14E2AF1E2F83511000C851BA /* AFOMediaPlayController+HideTabBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 14E2AF1C2F83511000C851BA /* AFOMediaPlayController+HideTabBar.h */; };
+		14F9FAAC2F838C6500D98EA3 /* UIViewController+DebugLifecycle.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F9FAAA2F838C6500D98EA3 /* UIViewController+DebugLifecycle.m */; };
+		14F9FAAD2F838C6500D98EA3 /* UIViewController+DebugLifecycle.h in Headers */ = {isa = PBXBuildFile; fileRef = 14F9FAAB2F838C6500D98EA3 /* UIViewController+DebugLifecycle.h */; };
 		2404875E2008459600D369FB /* AFOMediaForeignInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 240487562008459600D369FB /* AFOMediaForeignInterface.m */; };
 		240487632008459600D369FB /* AFOMediaForeignInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 2404875B2008459600D369FB /* AFOMediaForeignInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24BAFDC01FF4B12900D2EAB9 /* AFOFFMpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 24BAFDBE1FF4B12900D2EAB9 /* AFOFFMpeg.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -97,6 +99,8 @@
 /* Begin PBXFileReference section */
 		14E2AF1B2F83511000C851BA /* AFOMediaPlayController+HideTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFOMediaPlayController+HideTabBar.m"; sourceTree = "<group>"; };
 		14E2AF1C2F83511000C851BA /* AFOMediaPlayController+HideTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFOMediaPlayController+HideTabBar.h"; sourceTree = "<group>"; };
+		14F9FAAA2F838C6500D98EA3 /* UIViewController+DebugLifecycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DebugLifecycle.m"; sourceTree = "<group>"; };
+		14F9FAAB2F838C6500D98EA3 /* UIViewController+DebugLifecycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DebugLifecycle.h"; sourceTree = "<group>"; };
 		240487562008459600D369FB /* AFOMediaForeignInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaForeignInterface.m; sourceTree = "<group>"; };
 		2404875B2008459600D369FB /* AFOMediaForeignInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaForeignInterface.h; sourceTree = "<group>"; };
 		2408BB3C200877D80049060F /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -199,8 +203,10 @@
 		14E2AF1A2F83511000C851BA /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				14E2AF1B2F83511000C851BA /* AFOMediaPlayController+HideTabBar.m */,
+				14F9FAAB2F838C6500D98EA3 /* UIViewController+DebugLifecycle.h */,
+				14F9FAAA2F838C6500D98EA3 /* UIViewController+DebugLifecycle.m */,
 				14E2AF1C2F83511000C851BA /* AFOMediaPlayController+HideTabBar.h */,
+				14E2AF1B2F83511000C851BA /* AFOMediaPlayController+HideTabBar.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -391,6 +397,7 @@
 				24DAD2992331CA72001D2CE4 /* AFOMediaFrameImport.h in Headers */,
 				24DAD2842331CA72001D2CE4 /* AFOMediaConditional.h in Headers */,
 				24DAD2892331CA72001D2CE4 /* AFOMediaPlayController+AFOGestures.h in Headers */,
+				14F9FAAD2F838C6500D98EA3 /* UIViewController+DebugLifecycle.h in Headers */,
 				24DAD2A62331CA72001D2CE4 /* AFOAudioDecoder.h in Headers */,
 				24DAD2B32331CA72001D2CE4 /* AFOAudioCache.h in Headers */,
 				24DAD2BE2331CA72001D2CE4 /* AFOMediaSeekFrame+Conditional.h in Headers */,
@@ -520,6 +527,7 @@
 				24DAD2A12331CA72001D2CE4 /* AFOMediaPlayController+AFOOrientation.m in Sources */,
 				24DAD2872331CA72001D2CE4 /* AFOMediaPlayController.m in Sources */,
 				24DAD2A72331CA72001D2CE4 /* AFOMediaYUV.m in Sources */,
+				14F9FAAC2F838C6500D98EA3 /* UIViewController+DebugLifecycle.m in Sources */,
 				24DAD2B92331CA72001D2CE4 /* AFOCountdownManager.m in Sources */,
 				24DAD2932331CA72001D2CE4 /* AFOAudioCache.m in Sources */,
 				24DAD28F2331CA72001D2CE4 /* AFOVideoFrame.m in Sources */,
