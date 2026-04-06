@@ -19,7 +19,7 @@
  @param cuttentSeconds <#cuttentSeconds description#>
  */
 typedef void(^displayVedioBlock)(NSError *_Nullable error,
-                                UIImage  *_Nullable image,
+                                CVPixelBufferRef  _Nullable pixelBuffer,
                                 NSString *_Nullable totalTime,
                                 NSString *_Nullable currentTime,
                                 NSInteger totalSeconds,
