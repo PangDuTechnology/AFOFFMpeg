@@ -23,10 +23,14 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    NSLog(@"AFOMediaPlayController: viewWillAppear called. Hiding TabBar.");
+    self.tabBarController.tabBar.hidden = YES;
     [self settingControllerOrientation];
 }
 - (void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
+    NSLog(@"AFOMediaPlayController: viewDidDisappear called. Showing TabBar.");
+    self.tabBarController.tabBar.hidden = NO;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaQueueManagerTimerCancel" object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaSuspendedManager" object:nil];
 }
@@ -34,6 +38,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"AFOMediaPlayController: viewDidLoad called. Self address: %p", self);
+    NSLog(@"AFOMediaPlayController: Custom viewDidLoad code executed.");
     self.view.backgroundColor = [UIColor whiteColor];
     self.hidesBottomBarWhenPushed = YES; // Hide the tab bar when this controller is pushed
     [INTUAutoRemoveObserver addObserver:self selector:@selector(restartMediaFile) name:@"AFORestartMeidaFileNotification" object:nil];

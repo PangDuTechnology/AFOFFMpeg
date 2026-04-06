@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		14E2AF1D2F83511000C851BA /* AFOMediaPlayController+HideTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 14E2AF1B2F83511000C851BA /* AFOMediaPlayController+HideTabBar.m */; };
+		14E2AF1E2F83511000C851BA /* AFOMediaPlayController+HideTabBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 14E2AF1C2F83511000C851BA /* AFOMediaPlayController+HideTabBar.h */; };
 		2404875E2008459600D369FB /* AFOMediaForeignInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 240487562008459600D369FB /* AFOMediaForeignInterface.m */; };
 		240487632008459600D369FB /* AFOMediaForeignInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 2404875B2008459600D369FB /* AFOMediaForeignInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24BAFDC01FF4B12900D2EAB9 /* AFOFFMpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 24BAFDBE1FF4B12900D2EAB9 /* AFOFFMpeg.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -93,6 +95,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		14E2AF1B2F83511000C851BA /* AFOMediaPlayController+HideTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFOMediaPlayController+HideTabBar.m"; sourceTree = "<group>"; };
+		14E2AF1C2F83511000C851BA /* AFOMediaPlayController+HideTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFOMediaPlayController+HideTabBar.h"; sourceTree = "<group>"; };
 		240487562008459600D369FB /* AFOMediaForeignInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaForeignInterface.m; sourceTree = "<group>"; };
 		2404875B2008459600D369FB /* AFOMediaForeignInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaForeignInterface.h; sourceTree = "<group>"; };
 		2408BB3C200877D80049060F /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -192,6 +196,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		14E2AF1A2F83511000C851BA /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				14E2AF1B2F83511000C851BA /* AFOMediaPlayController+HideTabBar.m */,
+				14E2AF1C2F83511000C851BA /* AFOMediaPlayController+HideTabBar.h */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 		24BAFDB11FF4B12900D2EAB9 = {
 			isa = PBXGroup;
 			children = (
@@ -279,6 +292,7 @@
 		722D3D572338E9F600201ACB /* play */ = {
 			isa = PBXGroup;
 			children = (
+				14E2AF1A2F83511000C851BA /* Categories */,
 				24DAD2492331CA6F001D2CE4 /* AFOMediaPlayController.h */,
 				24DAD2422331CA6F001D2CE4 /* AFOMediaPlayController.m */,
 				24DAD2772331CA72001D2CE4 /* AFOMediaPlayControllerCategory.h */,
@@ -380,6 +394,7 @@
 				24DAD2A62331CA72001D2CE4 /* AFOAudioDecoder.h in Headers */,
 				24DAD2B32331CA72001D2CE4 /* AFOAudioCache.h in Headers */,
 				24DAD2BE2331CA72001D2CE4 /* AFOMediaSeekFrame+Conditional.h in Headers */,
+				14E2AF1E2F83511000C851BA /* AFOMediaPlayController+HideTabBar.h in Headers */,
 				24DAD2BD2331CA72001D2CE4 /* AFOMediaYUV.h in Headers */,
 				24DAD2822331CA72001D2CE4 /* AFOCountdownManager.h in Headers */,
 				24DAD28B2331CA72001D2CE4 /* AFOTotalDispatchManager.h in Headers */,
@@ -523,6 +538,7 @@
 				24DAD2AE2331CA72001D2CE4 /* AFOMediaView.m in Sources */,
 				24DAD2902331CA72001D2CE4 /* AFOAudioDecoder.m in Sources */,
 				24DAD2862331CA72001D2CE4 /* AFOAudioManager.m in Sources */,
+				14E2AF1D2F83511000C851BA /* AFOMediaPlayController+HideTabBar.m in Sources */,
 				24DAD2A42331CA72001D2CE4 /* AFOAudioSession.m in Sources */,
 				24DAD29A2331CA72001D2CE4 /* AFOMediaFrame.m in Sources */,
 			);
