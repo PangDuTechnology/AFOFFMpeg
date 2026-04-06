@@ -5,11 +5,19 @@
 //  Created by zhaoyun on 2026/4/6.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <MetalKit/MetalKit.h>
+#import <CoreVideo/CVMetalTextureCache.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AFOMetalVideoView : NSObject
+@interface AFOMetalVideoView : MTKView
+
+// 初始化方法
+- (instancetype)initWithFrame:(CGRect)frame;
+
+// 渲染 CVPixelBufferRef
+- (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
 
 @end
 

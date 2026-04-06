@@ -7,6 +7,7 @@
 //
 
 #import "AFOMediaPlayController+AFOGestures.h"
+#import "AFOMetalVideoView.h"
 #import <objc/runtime.h>
 #import <AFOGitHub/AFOGitHub.h>
 #import <AFOFoundation/AFOFoundation.h>
@@ -34,7 +35,6 @@
 - (void)addMeidaView{
     if (!self.mediaView) {
         self.mediaView = [[AFOMetalVideoView alloc] initWithFrame:self.view.frame]; // AFOMetalVideoView 不需要 delegate
-        [self.mediaView settingPlayButtonPause];
         [self.view addSubview:self.mediaView];
         ///------
         self.isShow = @(NO);
@@ -48,27 +48,6 @@
 }
 - (void)showOrHiddenNavigationBar{
     WeakObject(self);
-    [self.mediaView settingBottomViewShowOrHidden:^(UIView *view) {
-        StrongObject(self);
-        CGFloat offset = 0;
-        if (![self.isShow boolValue]) {
-            offset = view.frame.size.height + 5;
-        }
-        [view mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self.mediaView).offset(offset);
-        }];
-        [UIView animateWithDuration:.3 animations:^{
-            [self.mediaView layoutIfNeeded];
-            ///------
-            [self.navigationController setNavigationBarHidden:![self.isShow boolValue] animated:YES];
-        } completion:^(BOOL finished) {
-            if ([self.isShow boolValue]) {
-                self.isShow = @(NO);
-            }else{
-                self.isShow = @(YES);
-            }
-        }];
-    }];
 }
 #pragma mark ------------ AFOMediaViewDelegate
 - (void)buttonTouchActionDelegate:(BOOL)isSuspended{

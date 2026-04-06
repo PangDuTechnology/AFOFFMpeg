@@ -7,10 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		14E2AF1D2F83511000C851BA /* AFOMediaPlayController+HideTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 14E2AF1B2F83511000C851BA /* AFOMediaPlayController+HideTabBar.m */; };
-		14E2AF1E2F83511000C851BA /* AFOMediaPlayController+HideTabBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 14E2AF1C2F83511000C851BA /* AFOMediaPlayController+HideTabBar.h */; };
-		14F9FAAC2F838C6500D98EA3 /* UIViewController+DebugLifecycle.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F9FAAA2F838C6500D98EA3 /* UIViewController+DebugLifecycle.m */; };
-		14F9FAAD2F838C6500D98EA3 /* UIViewController+DebugLifecycle.h in Headers */ = {isa = PBXBuildFile; fileRef = 14F9FAAB2F838C6500D98EA3 /* UIViewController+DebugLifecycle.h */; };
+		144470BC2F83DA0B003CA8FC /* AFOMetalVideoView.h in Headers */ = {isa = PBXBuildFile; fileRef = 144470BA2F83DA0A003CA8FC /* AFOMetalVideoView.h */; };
+		144470BD2F83DA0B003CA8FC /* AFOMetalVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 144470BB2F83DA0A003CA8FC /* AFOMetalVideoView.m */; };
+		14F6917F2F83D734004BD718 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14F6917E2F83D734004BD718 /* VideoToolbox.framework */; };
 		14F9FAB42F8390E200D98EA3 /* libobjc.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 14F9FAB32F8390E200D98EA3 /* libobjc.tbd */; };
 		2404875E2008459600D369FB /* AFOMediaForeignInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 240487562008459600D369FB /* AFOMediaForeignInterface.m */; };
 		240487632008459600D369FB /* AFOMediaForeignInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 2404875B2008459600D369FB /* AFOMediaForeignInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -21,7 +20,6 @@
 		24BAFECC1FF4BCEB00D2EAB9 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BAFECB1FF4BCEB00D2EAB9 /* CoreImage.framework */; };
 		24BAFECE1FF4BCF800D2EAB9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BAFECD1FF4BCF800D2EAB9 /* CoreGraphics.framework */; };
 		24BAFED01FF4BD0700D2EAB9 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BAFECF1FF4BD0700D2EAB9 /* CoreMedia.framework */; };
-		24BAFED21FF4BD1D00D2EAB9 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BAFED11FF4BD1D00D2EAB9 /* VideoToolbox.framework */; };
 		24DAD27B2331CA72001D2CE4 /* AFOMediaManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2362331CA6E001D2CE4 /* AFOMediaManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD27C2331CA72001D2CE4 /* AFOMediaSeekFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD2372331CA6E001D2CE4 /* AFOMediaSeekFrame.m */; };
 		24DAD27F2331CA72001D2CE4 /* AFOMediaTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD23A2331CA6E001D2CE4 /* AFOMediaTimer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -98,10 +96,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		14E2AF1B2F83511000C851BA /* AFOMediaPlayController+HideTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFOMediaPlayController+HideTabBar.m"; sourceTree = "<group>"; };
-		14E2AF1C2F83511000C851BA /* AFOMediaPlayController+HideTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFOMediaPlayController+HideTabBar.h"; sourceTree = "<group>"; };
-		14F9FAAA2F838C6500D98EA3 /* UIViewController+DebugLifecycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DebugLifecycle.m"; sourceTree = "<group>"; };
-		14F9FAAB2F838C6500D98EA3 /* UIViewController+DebugLifecycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DebugLifecycle.h"; sourceTree = "<group>"; };
+		144470BA2F83DA0A003CA8FC /* AFOMetalVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMetalVideoView.h; sourceTree = "<group>"; };
+		144470BB2F83DA0A003CA8FC /* AFOMetalVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMetalVideoView.m; sourceTree = "<group>"; };
+		14F6917E2F83D734004BD718 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/System/Library/Frameworks/VideoToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		14F9FAB32F8390E200D98EA3 /* libobjc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libobjc.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/usr/lib/libobjc.tbd; sourceTree = DEVELOPER_DIR; };
 		240487562008459600D369FB /* AFOMediaForeignInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaForeignInterface.m; sourceTree = "<group>"; };
 		2404875B2008459600D369FB /* AFOMediaForeignInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaForeignInterface.h; sourceTree = "<group>"; };
@@ -190,7 +187,7 @@
 			files = (
 				14F9FAB42F8390E200D98EA3 /* libobjc.tbd in Frameworks */,
 				922E6559DEB8E99FA090F6B5 /* libPods-AFOFFMpeg.a in Frameworks */,
-				24BAFED21FF4BD1D00D2EAB9 /* VideoToolbox.framework in Frameworks */,
+				14F6917F2F83D734004BD718 /* VideoToolbox.framework in Frameworks */,
 				24BAFED01FF4BD0700D2EAB9 /* CoreMedia.framework in Frameworks */,
 				24BAFECE1FF4BCF800D2EAB9 /* CoreGraphics.framework in Frameworks */,
 				24BAFECC1FF4BCEB00D2EAB9 /* CoreImage.framework in Frameworks */,
@@ -203,17 +200,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		14E2AF1A2F83511000C851BA /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-				14F9FAAB2F838C6500D98EA3 /* UIViewController+DebugLifecycle.h */,
-				14F9FAAA2F838C6500D98EA3 /* UIViewController+DebugLifecycle.m */,
-				14E2AF1C2F83511000C851BA /* AFOMediaPlayController+HideTabBar.h */,
-				14E2AF1B2F83511000C851BA /* AFOMediaPlayController+HideTabBar.m */,
-			);
-			path = Categories;
-			sourceTree = "<group>";
-		};
 		24BAFDB11FF4B12900D2EAB9 = {
 			isa = PBXGroup;
 			children = (
@@ -251,6 +237,7 @@
 		24BAFEC41FF4BCB400D2EAB9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				14F6917E2F83D734004BD718 /* VideoToolbox.framework */,
 				14F9FAB32F8390E200D98EA3 /* libobjc.tbd */,
 				2408BB3C200877D80049060F /* libsqlite3.tbd */,
 				24A59FBC2008387200311ACB /* libiconv.tbd */,
@@ -302,7 +289,6 @@
 		722D3D572338E9F600201ACB /* play */ = {
 			isa = PBXGroup;
 			children = (
-				14E2AF1A2F83511000C851BA /* Categories */,
 				24DAD2492331CA6F001D2CE4 /* AFOMediaPlayController.h */,
 				24DAD2422331CA6F001D2CE4 /* AFOMediaPlayController.m */,
 				24DAD2772331CA72001D2CE4 /* AFOMediaPlayControllerCategory.h */,
@@ -314,6 +300,8 @@
 				24DAD27A2331CA72001D2CE4 /* AFOMediaControlView.m */,
 				24DAD24D2331CA6F001D2CE4 /* AFOMediaView.h */,
 				24DAD2692331CA71001D2CE4 /* AFOMediaView.m */,
+				144470BA2F83DA0A003CA8FC /* AFOMetalVideoView.h */,
+				144470BB2F83DA0A003CA8FC /* AFOMetalVideoView.m */,
 			);
 			path = play;
 			sourceTree = "<group>";
@@ -401,15 +389,14 @@
 				24DAD2992331CA72001D2CE4 /* AFOMediaFrameImport.h in Headers */,
 				24DAD2842331CA72001D2CE4 /* AFOMediaConditional.h in Headers */,
 				24DAD2892331CA72001D2CE4 /* AFOMediaPlayController+AFOGestures.h in Headers */,
-				14F9FAAD2F838C6500D98EA3 /* UIViewController+DebugLifecycle.h in Headers */,
 				24DAD2A62331CA72001D2CE4 /* AFOAudioDecoder.h in Headers */,
 				24DAD2B32331CA72001D2CE4 /* AFOAudioCache.h in Headers */,
 				24DAD2BE2331CA72001D2CE4 /* AFOMediaSeekFrame+Conditional.h in Headers */,
-				14E2AF1E2F83511000C851BA /* AFOMediaPlayController+HideTabBar.h in Headers */,
 				24DAD2BD2331CA72001D2CE4 /* AFOMediaYUV.h in Headers */,
 				24DAD2822331CA72001D2CE4 /* AFOCountdownManager.h in Headers */,
 				24DAD28B2331CA72001D2CE4 /* AFOTotalDispatchManager.h in Headers */,
 				24DAD28E2331CA72001D2CE4 /* AFOMediaPlayController.h in Headers */,
+				144470BC2F83DA0B003CA8FC /* AFOMetalVideoView.h in Headers */,
 				24DAD28A2331CA72001D2CE4 /* AFOMediaThumbnail.h in Headers */,
 				24DAD2A32331CA72001D2CE4 /* AFOAudioOutPut.h in Headers */,
 				24DAD2942331CA72001D2CE4 /* AFOMediaErrorString.h in Headers */,
@@ -531,9 +518,9 @@
 				24DAD2A12331CA72001D2CE4 /* AFOMediaPlayController+AFOOrientation.m in Sources */,
 				24DAD2872331CA72001D2CE4 /* AFOMediaPlayController.m in Sources */,
 				24DAD2A72331CA72001D2CE4 /* AFOMediaYUV.m in Sources */,
-				14F9FAAC2F838C6500D98EA3 /* UIViewController+DebugLifecycle.m in Sources */,
 				24DAD2B92331CA72001D2CE4 /* AFOCountdownManager.m in Sources */,
 				24DAD2932331CA72001D2CE4 /* AFOAudioCache.m in Sources */,
+				144470BD2F83DA0B003CA8FC /* AFOMetalVideoView.m in Sources */,
 				24DAD28F2331CA72001D2CE4 /* AFOVideoFrame.m in Sources */,
 				24DAD2B12331CA72001D2CE4 /* AFOMediaManager.m in Sources */,
 				24DAD29D2331CA72001D2CE4 /* AFOMediaErrorCodeManager.m in Sources */,
@@ -550,7 +537,6 @@
 				24DAD2AE2331CA72001D2CE4 /* AFOMediaView.m in Sources */,
 				24DAD2902331CA72001D2CE4 /* AFOAudioDecoder.m in Sources */,
 				24DAD2862331CA72001D2CE4 /* AFOAudioManager.m in Sources */,
-				14E2AF1D2F83511000C851BA /* AFOMediaPlayController+HideTabBar.m in Sources */,
 				24DAD2A42331CA72001D2CE4 /* AFOAudioSession.m in Sources */,
 				24DAD29A2331CA72001D2CE4 /* AFOMediaFrame.m in Sources */,
 			);
@@ -694,6 +680,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACH_O_TYPE = staticlib;
@@ -732,6 +719,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACH_O_TYPE = staticlib;

@@ -24,6 +24,9 @@
     VTDecompressionSessionRef _decompressSession;
     CMVideoFormatDescriptionRef _videoFormatDescription;
 }
+
+- (BOOL)avReadFrame:(NSInteger)duration;
+- (void)freeResources;
 /**输出视频Size*/
 @property (nonatomic, assign) CGSize         outSize;
 /**视频的长度，秒为单位*/
@@ -75,11 +78,6 @@
         NSLog(@"AFOMediaManager: Hardware decoding enabled.");
         // 如果是硬件解码，需要创建 VTDecompressionSession
         [self setupVideoToolboxDecompressionSessionWithCodecContext:avCodecContext];
-    } else {
-        NSLog(@"AFOMediaManager: Software decoding enabled.");
-        // 如果是软解码，仍然需要 AFOGenerateImages
-        self.generateImage = [[AFOGenerateImages alloc] init];
-    }
 
     WeakObject(self);
     ///------
@@ -112,22 +110,7 @@
                         block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeDecoderImageFailure], nil, nil, nil, 0, 0);
                     }
 
-                } else {
-                    // 软解码，调用原来的 UIImage 转换逻辑
-                    [weakself decodingFrameToImage:^(UIImage *image, NSError *error) {
-                        if (error.code != 0) {
-                            block(NULL, NULL, NULL, NULL, 0 , 0);
-                        }else{
-                            block(error,
-                                  (__bridge CVPixelBufferRef)image, // 注意：这里需要修改，如果依然是 UIImage，那么无法直接转换为 CVPixelBufferRef
-                                  [AFOMediaTimer timeFormatShort:weakself.duration],
-                                  [AFOMediaTimer currentTime:weakself.nowTime],
-                                  weakself.duration,
-                                  weakself.nowTime
-                                  );
-                        }
-                    }];
-                }
+                                }
             }else{
                 block(nil, nil, nil, nil, 0, 0);
             }
@@ -244,7 +227,7 @@
                                                      kCMVideoCodecType_H264, // 或 kCMVideoCodecType_H265
                                                      codecContext->width,
                                                      codecContext->height,
-                                                     (__bridge CFDictionaryRef)@{(id)kCMFormatDescriptionExtension_KeyFrameBoosting : @(YES)}, // 示例
+                                                     NULL, // Removed kCMFormatDescriptionExtension_KeyFrameBoosting
                                                      &formatDescription);
     if (status != noErr || !formatDescription) {
         NSLog(@"AFOMediaManager: Failed to create CMVideoFormatDescriptionRef: %d", (int)status);
