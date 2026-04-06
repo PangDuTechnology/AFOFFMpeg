@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <libavformat/avformat.h>
 NS_ASSUME_NONNULL_BEGIN
+enum AVPixelFormat AFOHWVideoToolboxGetFormat(AVCodecContext *s, const enum AVPixelFormat *fmt);
+
 
 @interface AFOConfigurationManager : NSObject
 + (void)configurationForPath:(NSString *)strPath

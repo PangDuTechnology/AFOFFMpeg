@@ -7,13 +7,8 @@
 //
 
 #import "AFOMediaPlayController.h"
-@class AFOMediaView;
+@class AFOMetalVideoView;
 @interface AFOMediaPlayController (AFOGestures)
-@property (nonatomic, strong) AFOMediaView           *mediaView;
+@property (nonatomic, strong) AFOMetalVideoView           *mediaView;
 - (void)addMeidaView;
-- (void)settingMeidaViewImage:(UIImage *)image
-                    totalTime:(NSString *)totalTime
-                  currentTime:(NSString *)currentTime
-                        total:(NSInteger)total
-                      current:(NSInteger)current;
 @end

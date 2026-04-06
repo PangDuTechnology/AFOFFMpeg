@@ -28,7 +28,7 @@
  @param cuttentSeconds <#cuttentSeconds description#>
  */
 typedef void(^displayVedioFrameBlock)(NSError *error,
-                                      UIImage *image,
+                                      CVPixelBufferRef _Nullable pixelBuffer,
                                       NSString *totalTime,
                                       NSString *currentTime,
                                       NSInteger totalSeconds,
