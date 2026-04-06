@@ -33,7 +33,7 @@
 #pragma mark ------
 - (void)addMeidaView{
     if (!self.mediaView) {
-        self.mediaView = [[AFOMediaView alloc] initWithFrame:self.view.frame delegate:self];
+        self.mediaView = [[AFOMetalVideoView alloc] initWithFrame:self.view.frame]; // AFOMetalVideoView 不需要 delegate
         [self.mediaView settingPlayButtonPause];
         [self.view addSubview:self.mediaView];
         ///------
@@ -42,17 +42,6 @@
     }
 }
 #pragma mark ------
-- (void)settingMeidaViewImage:(UIImage *)image
-                    totalTime:(NSString *)totalTime
-                  currentTime:(NSString *)currentTime
-                        total:(NSInteger)total
-                      current:(NSInteger)current{
-    [self.mediaView settingMovieImage:image
-                            totalTime:totalTime
-                          currentTime:currentTime
-                                total:total
-                              current:current];
-}
 #pragma mark ------ touchesBegan
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     [self showOrHiddenNavigationBar];

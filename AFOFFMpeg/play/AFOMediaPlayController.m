@@ -7,6 +7,7 @@
 //
 
 #import "AFOMediaPlayController.h"
+#import "AFOMetalVideoView.h"
 #import <AFORouter/AFORouter.h>
 #import <AFOFoundation/AFOFoundation.h>
 #import <AFOGitHub/INTUAutoRemoveObserver.h>
@@ -60,10 +61,12 @@
 #pragma mark ------
 - (void)playerVedioWithPath:(NSString *)path{
     WeakObject(self);
-    [self.mediaManager displayVedioForPath:path block:^(NSError * _Nullable error, UIImage * _Nullable image, NSString * _Nullable totalTime, NSString * _Nullable currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
+    [self.mediaManager displayVedioForPath:path block:^(NSError * _Nullable error, CVPixelBufferRef _Nullable pixelBuffer, NSString * _Nullable totalTime, NSString * _Nullable currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
         StrongObject(self);
-        if (!error.code) {
-            [self settingMeidaViewImage:image totalTime:totalTime currentTime:currentTime total:totalSeconds current:cuttentSeconds];
+        if (!error.code && pixelBuffer) {
+            [self.mediaView displayPixelBuffer:pixelBuffer];
+            // 可以在这里更新UI，例如时间信息等，如果需要
+            // [self.mediaView updatePlaybackUIWithTotalTime:totalTime currentTime:currentTime total:totalSeconds current:cuttentSeconds];
         }
     }];
 }
