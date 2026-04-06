@@ -11,6 +11,7 @@
 		14E2AF1E2F83511000C851BA /* AFOMediaPlayController+HideTabBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 14E2AF1C2F83511000C851BA /* AFOMediaPlayController+HideTabBar.h */; };
 		14F9FAAC2F838C6500D98EA3 /* UIViewController+DebugLifecycle.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F9FAAA2F838C6500D98EA3 /* UIViewController+DebugLifecycle.m */; };
 		14F9FAAD2F838C6500D98EA3 /* UIViewController+DebugLifecycle.h in Headers */ = {isa = PBXBuildFile; fileRef = 14F9FAAB2F838C6500D98EA3 /* UIViewController+DebugLifecycle.h */; };
+		14F9FAB42F8390E200D98EA3 /* libobjc.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 14F9FAB32F8390E200D98EA3 /* libobjc.tbd */; };
 		2404875E2008459600D369FB /* AFOMediaForeignInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 240487562008459600D369FB /* AFOMediaForeignInterface.m */; };
 		240487632008459600D369FB /* AFOMediaForeignInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 2404875B2008459600D369FB /* AFOMediaForeignInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24BAFDC01FF4B12900D2EAB9 /* AFOFFMpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 24BAFDBE1FF4B12900D2EAB9 /* AFOFFMpeg.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -101,6 +102,7 @@
 		14E2AF1C2F83511000C851BA /* AFOMediaPlayController+HideTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFOMediaPlayController+HideTabBar.h"; sourceTree = "<group>"; };
 		14F9FAAA2F838C6500D98EA3 /* UIViewController+DebugLifecycle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DebugLifecycle.m"; sourceTree = "<group>"; };
 		14F9FAAB2F838C6500D98EA3 /* UIViewController+DebugLifecycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DebugLifecycle.h"; sourceTree = "<group>"; };
+		14F9FAB32F8390E200D98EA3 /* libobjc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libobjc.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/usr/lib/libobjc.tbd; sourceTree = DEVELOPER_DIR; };
 		240487562008459600D369FB /* AFOMediaForeignInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaForeignInterface.m; sourceTree = "<group>"; };
 		2404875B2008459600D369FB /* AFOMediaForeignInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaForeignInterface.h; sourceTree = "<group>"; };
 		2408BB3C200877D80049060F /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -186,6 +188,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14F9FAB42F8390E200D98EA3 /* libobjc.tbd in Frameworks */,
 				922E6559DEB8E99FA090F6B5 /* libPods-AFOFFMpeg.a in Frameworks */,
 				24BAFED21FF4BD1D00D2EAB9 /* VideoToolbox.framework in Frameworks */,
 				24BAFED01FF4BD0700D2EAB9 /* CoreMedia.framework in Frameworks */,
@@ -248,6 +251,7 @@
 		24BAFEC41FF4BCB400D2EAB9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				14F9FAB32F8390E200D98EA3 /* libobjc.tbd */,
 				2408BB3C200877D80049060F /* libsqlite3.tbd */,
 				24A59FBC2008387200311ACB /* libiconv.tbd */,
 				24A59FBA2008386B00311ACB /* libbz2.tbd */,
