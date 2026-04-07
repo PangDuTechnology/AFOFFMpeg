@@ -47,7 +47,6 @@
     [self showOrHiddenNavigationBar];
 }
 - (void)showOrHiddenNavigationBar{
-    WeakObject(self);
 }
 #pragma mark ------------ AFOMediaViewDelegate
 - (void)buttonTouchActionDelegate:(BOOL)isSuspended{

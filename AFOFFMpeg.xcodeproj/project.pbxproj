@@ -375,6 +375,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24DAD27B2331CA72001D2CE4 /* AFOMediaManager.h in Headers */,
 				24DAD27F2331CA72001D2CE4 /* AFOMediaTimer.h in Headers */,
 				24DAD2BA2331CA72001D2CE4 /* AFOAudioSession.h in Headers */,
 				24DAD2882331CA72001D2CE4 /* AFOMediaSeekFrame.h in Headers */,
@@ -382,7 +383,6 @@
 				24DAD2B02331CA72001D2CE4 /* AFOMediaControlView.h in Headers */,
 				24DAD2AC2331CA72001D2CE4 /* AFOGenerateImages.h in Headers */,
 				24DAD2952331CA72001D2CE4 /* AFOAudioManager.h in Headers */,
-				24DAD27B2331CA72001D2CE4 /* AFOMediaManager.h in Headers */,
 				24DAD28D2331CA72001D2CE4 /* AFOMediaPlayController+AFOOrientation.h in Headers */,
 				24DAD2B52331CA72001D2CE4 /* AFOAudioPacket.h in Headers */,
 				24DAD2B82331CA72001D2CE4 /* AFOMediaErrorCodeManager.h in Headers */,

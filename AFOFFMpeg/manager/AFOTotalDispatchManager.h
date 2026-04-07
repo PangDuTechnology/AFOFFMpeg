@@ -12,7 +12,7 @@
  <#Description#>
  
  @param error <#error description#>
- @param image <#image description#>
+ @param pixelBuffer <#image description#>
  @param totalTime <#totalTime description#>
  @param currentTime <#currentTime description#>
  @param totalSeconds <#totalSeconds description#>
