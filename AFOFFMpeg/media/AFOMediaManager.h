@@ -21,21 +21,21 @@
  <#Description#>
 
  @param error <#error description#>
- @param pixelBuffer <#image description#>
+ @param image <#image description#>
  @param totalTime <#totalTime description#>
  @param currentTime <#currentTime description#>
  @param totalSeconds <#totalSeconds description#>
  @param cuttentSeconds <#cuttentSeconds description#>
  */
-typedef void(^displayVedioFrameBlock)(NSError * _Nullable error,
+typedef void(^displayVedioFrameBlock)(NSError *error,
                                       CVPixelBufferRef _Nullable pixelBuffer,
-                                      NSString * _Nullable totalTime,
-                                      NSString * _Nonnull currentTime,
+                                      NSString *totalTime,
+                                      NSString *currentTime,
                                       NSInteger totalSeconds,
                                       NSUInteger cuttentSeconds);
 
 @interface AFOMediaManager : NSObject
-- (instancetype _Nullable )initWithDelegate:(id<AFOPlayMediaManager>_Nullable)delegate;
+- (instancetype)initWithDelegate:(id<AFOPlayMediaManager>)delegate;
 /**
  <#Description#>
  @param formatContext <#avFormatContext description#>
@@ -43,9 +43,9 @@ typedef void(^displayVedioFrameBlock)(NSError * _Nullable error,
  @param index <#index description#>
  @param block <#block description#>
  */
-- (void)displayVedioFormatContext:(AVFormatContext *_Nullable)formatContext
-                     codecContext:(AVCodecContext *_Nullable)codecContext
+- (void)displayVedioFormatContext:(AVFormatContext *)formatContext
+                     codecContext:(AVCodecContext *)codecContext
                             index:(NSInteger)index
-                            block:(displayVedioFrameBlock _Nullable )block;
+                            block:(displayVedioFrameBlock)block;
 
 @end

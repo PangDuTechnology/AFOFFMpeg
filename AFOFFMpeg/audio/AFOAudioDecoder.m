@@ -51,7 +51,7 @@
     AVStream *audioStream =formatContext -> streams[self.audioStream];
     if (!(codecContext->sample_fmt == AV_SAMPLE_FMT_S16)) {
         swrContext = swr_alloc_set_opts(NULL,
-                                        av_get_default_channel_layout(self.channel),
+                                        av_get_default_channel_layout((int)self.channel),
                                         AV_SAMPLE_FMT_S16,
                                         audioStream->codecpar->sample_rate,
                                         av_get_default_channel_layout(audioStream->codecpar->channels),
@@ -117,7 +117,7 @@
                 }
                 ///---
                 if (gotFrame) {
-                    int numChannels = self.channel;
+                    int numChannels = (int)self.channel;
                     int numFrames = 0;
                     void *audioData;
                     if (swrContext) {

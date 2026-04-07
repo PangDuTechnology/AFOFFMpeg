@@ -63,46 +63,35 @@ typedef struct {
 }
 
 - (void)setupPipeline {
-    // 简化着色器代码，实际会从文件加载
-    NSString *shaderSource = @"\n"
-    "using namespace metal;\n"
-    "\n"
-    "struct AFOVertexIn {\n"
-    "    float2 position    [[attribute(0)]];\n"
-    "    float2 textureCoordinate [[attribute(1)]];\n"
-    "};\n"
-    "\n"
-    "struct AFOVertexOut {\n"
-    "    float4 position    [[position]];\n"
-    "    float2 textureCoordinate;\n"
-    "};\n"
-    "\n"
-    "vertex AFOVertexOut vertexShader(AFOVertexIn in [[stage_in]]) {\n"
-    "    AFOVertexOut out;\n"
-    "    out.position = float4(in.position, 0.0, 1.0);\n"
-    "    out.textureCoordinate = in.textureCoordinate;\n    return out;\n"
-    "}\n"
-    "\n"
-    "fragment float4 fragmentShader(AFOVertexOut in [[stage_in]],\n"
-    "                                texture2d<float> yTexture [[texture(0)]],\n"
-    "                                texture2d<float> uvTexture [[texture(1)]]) {\n"
-    "    constexpr sampler s(address::clamp_to_edge, filter::linear);\n"
-    "    float y = yTexture.sample(s, in.textureCoordinate).r;\n"
-    "    float2 uv = uvTexture.sample(s, in.textureCoordinate).rg;\n"
-    "    float r = y + 1.402 * (uv.y - 0.5);\n"
-    "    float g = y - 0.344 * (uv.x - 0.5) - 0.714 * (uv.y - 0.5);\n    float b = y + 1.772 * (uv.x - 0.5);\n    return float4(r, g, b, 1.0);\n"
-    "}\n";
+    NSError *error = nil;
+    id<MTLLibrary> defaultLibrary = [_device newLibraryWithFile:[[NSBundle mainBundle] pathForResource:@"AFOMetalShaders" ofType:@"metal"] error:&error];
+    if (error) {
+        NSLog(@"AFOMetalVideoView: Failed to create library: %@", error);
+        return;
+    }
 
-    id<MTLLibrary> defaultLibrary = [_device newLibraryWithSource:shaderSource options:nil error:nil];
     id<MTLFunction> vertexFunction = [defaultLibrary newFunctionWithName:@"vertexShader"];
+    if (!vertexFunction) {
+        NSLog(@"AFOMetalVideoView: Failed to find vertexShader.");
+        return;
+    }
+
     id<MTLFunction> fragmentFunction = [defaultLibrary newFunctionWithName:@"fragmentShader"];
+    if (!fragmentFunction) {
+        NSLog(@"AFOMetalVideoView: Failed to find fragmentShader.");
+        return;
+    }
 
     MTLRenderPipelineDescriptor *pipelineStateDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
     pipelineStateDescriptor.vertexFunction = vertexFunction;
     pipelineStateDescriptor.fragmentFunction = fragmentFunction;
     pipelineStateDescriptor.colorAttachments[0].pixelFormat = self.colorPixelFormat;
 
-    _pipelineState = [_device newRenderPipelineStateWithDescriptor:pipelineStateDescriptor error:nil];
+    _pipelineState = [_device newRenderPipelineStateWithDescriptor:pipelineStateDescriptor error:&error];
+    if (error) {
+        NSLog(@"AFOMetalVideoView: Failed to create render pipeline state: %@", error);
+        return;
+    }
 }
 
 - (void)setupVertices {

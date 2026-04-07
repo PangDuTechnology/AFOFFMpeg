@@ -45,11 +45,10 @@
 static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
                                              void *sourceFrameRefCon,
                                              OSStatus status,
-                                             VTDecompressionSessionFlags infoFlags,
-                                             CMTime presentationTimeStamp,
-                                             CMTime presentationDuration,
+                                             VTDecodeInfoFlags infoFlags,
                                              CVPixelBufferRef pixelBuffer,
-                                             CMVideoFormatDescriptionRef formatDescription);
+                                             CMTime presentationTimeStamp,
+                                             CMTime presentationDuration);
 
 @end
 
@@ -90,28 +89,29 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
         WeakObject(self);
         ///------
         [self.queueManager addCountdownActionFps:self.fps duration:weakself.duration block:^(NSNumber *isEnd) {
+            StrongObject(self); // Create strong reference
             if ([isEnd boolValue]) {
                 block(NULL,
                       NULL, // 传递 NULL CVPixelBufferRef
-                      [AFOMediaTimer timeFormatShort:weakself.duration],[AFOMediaTimer currentTime:weakself.nowTime + 1],
-                      weakself.duration,
-                      weakself.nowTime + 1);
+                      [AFOMediaTimer timeFormatShort:self.duration],[AFOMediaTimer currentTime:self.nowTime + 1],
+                      self.duration,
+                      self.nowTime + 1);
                 //
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaSuspendedManager" object:nil];
                 return ;
             }else{
                 NSLog(@"AFOMediaManager: Countdown block executing. Attempting to read frame.");
-                if ([weakself avReadFrame:weakself.videoStream]) {
-                    if (weakself.isHardwareDecoding) {
+                if ([self avReadFrame:self.videoStream]) {
+                    if (self.isHardwareDecoding) {
                         // 硬件解码，直接从 avFrame 获取 CVPixelBufferRef
-                        CVPixelBufferRef pixelBuffer = (CVPixelBufferRef)avFrame->data[3]; // VT 解码后的 CVPixelBufferRef 在 data[3]
+                        CVPixelBufferRef pixelBuffer = (CVPixelBufferRef)self->avFrame->data[3]; // VT 解码后的 CVPixelBufferRef 在 data[3]
                         if (pixelBuffer) {
                             block(nil,
                                   pixelBuffer,
-                                  [AFOMediaTimer timeFormatShort:weakself.duration],
-                                  [AFOMediaTimer currentTime:weakself.nowTime],
-                                  weakself.duration,
-                                  weakself.nowTime
+                                  [AFOMediaTimer timeFormatShort:self.duration],
+                                  [AFOMediaTimer currentTime:self.nowTime],
+                                  self.duration,
+                                  self.nowTime
                                   );
                         } else {
                             NSLog(@"AFOMediaManager: Hardware decoded frame is nil.");
@@ -282,11 +282,10 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
 static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
                                              void *sourceFrameRefCon,
                                              OSStatus status,
-                                             VTDecompressionSessionFlags infoFlags,
-                                             CMTime presentationTimeStamp,
-                                             CMTime presentationDuration,
+                                             VTDecodeInfoFlags infoFlags,
                                              CVPixelBufferRef pixelBuffer,
-                                             CMVideoFormatDescriptionRef formatDescription) {
+                                             CMTime presentationTimeStamp,
+                                             CMTime presentationDuration) {
     if (status != noErr) {
         NSLog(@"VideoToolbox Decompression failed: %d", (int)status);
         return;

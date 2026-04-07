@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		144470BC2F83DA0B003CA8FC /* AFOMetalVideoView.h in Headers */ = {isa = PBXBuildFile; fileRef = 144470BA2F83DA0A003CA8FC /* AFOMetalVideoView.h */; };
 		144470BD2F83DA0B003CA8FC /* AFOMetalVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 144470BB2F83DA0A003CA8FC /* AFOMetalVideoView.m */; };
+		146831142F84E84900FD10C9 /* AFOMetalShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 146831132F84E84900FD10C9 /* AFOMetalShaders.metal */; };
+		146831152F84E85000FD10C9 /* AFOMetalShaders.metal in Resources */ = {isa = PBXBuildFile; fileRef = 146831132F84E84900FD10C9 /* AFOMetalShaders.metal */; };
 		14F6917F2F83D734004BD718 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14F6917E2F83D734004BD718 /* VideoToolbox.framework */; };
 		14F9FAB42F8390E200D98EA3 /* libobjc.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 14F9FAB32F8390E200D98EA3 /* libobjc.tbd */; };
 		2404875E2008459600D369FB /* AFOMediaForeignInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 240487562008459600D369FB /* AFOMediaForeignInterface.m */; };
@@ -98,6 +100,7 @@
 /* Begin PBXFileReference section */
 		144470BA2F83DA0A003CA8FC /* AFOMetalVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMetalVideoView.h; sourceTree = "<group>"; };
 		144470BB2F83DA0A003CA8FC /* AFOMetalVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMetalVideoView.m; sourceTree = "<group>"; };
+		146831132F84E84900FD10C9 /* AFOMetalShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = AFOMetalShaders.metal; sourceTree = "<group>"; };
 		14F6917E2F83D734004BD718 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/System/Library/Frameworks/VideoToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		14F9FAB32F8390E200D98EA3 /* libobjc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libobjc.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/usr/lib/libobjc.tbd; sourceTree = DEVELOPER_DIR; };
 		240487562008459600D369FB /* AFOMediaForeignInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaForeignInterface.m; sourceTree = "<group>"; };
@@ -289,6 +292,7 @@
 		722D3D572338E9F600201ACB /* play */ = {
 			isa = PBXGroup;
 			children = (
+				146831132F84E84900FD10C9 /* AFOMetalShaders.metal */,
 				24DAD2492331CA6F001D2CE4 /* AFOMediaPlayController.h */,
 				24DAD2422331CA6F001D2CE4 /* AFOMediaPlayController.m */,
 				24DAD2772331CA72001D2CE4 /* AFOMediaPlayControllerCategory.h */,
@@ -474,6 +478,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				146831152F84E85000FD10C9 /* AFOMetalShaders.metal in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -536,6 +541,7 @@
 				24DAD2B22331CA72001D2CE4 /* AFOMediaConditional.m in Sources */,
 				24DAD2AE2331CA72001D2CE4 /* AFOMediaView.m in Sources */,
 				24DAD2902331CA72001D2CE4 /* AFOAudioDecoder.m in Sources */,
+				146831142F84E84900FD10C9 /* AFOMetalShaders.metal in Sources */,
 				24DAD2862331CA72001D2CE4 /* AFOAudioManager.m in Sources */,
 				24DAD2A42331CA72001D2CE4 /* AFOAudioSession.m in Sources */,
 				24DAD29A2331CA72001D2CE4 /* AFOMediaFrame.m in Sources */,
