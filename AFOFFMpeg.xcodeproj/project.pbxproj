@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		144470BC2F83DA0B003CA8FC /* AFOMetalVideoView.h in Headers */ = {isa = PBXBuildFile; fileRef = 144470BA2F83DA0A003CA8FC /* AFOMetalVideoView.h */; };
 		144470BD2F83DA0B003CA8FC /* AFOMetalVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 144470BB2F83DA0A003CA8FC /* AFOMetalVideoView.m */; };
-		146831222F84F7E400FD10C9 /* AFOMetalShaders.metal in Resources */ = {isa = PBXBuildFile; fileRef = 146831212F84F7E400FD10C9 /* AFOMetalShaders.metal */; };
-		14F6917F2F83D734004BD718 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14F6917E2F83D734004BD718 /* VideoToolbox.framework */; };
 		14F9FAB42F8390E200D98EA3 /* libobjc.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 14F9FAB32F8390E200D98EA3 /* libobjc.tbd */; };
 		2404875E2008459600D369FB /* AFOMediaForeignInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 240487562008459600D369FB /* AFOMediaForeignInterface.m */; };
 		240487632008459600D369FB /* AFOMediaForeignInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 2404875B2008459600D369FB /* AFOMediaForeignInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -99,8 +97,6 @@
 /* Begin PBXFileReference section */
 		144470BA2F83DA0A003CA8FC /* AFOMetalVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMetalVideoView.h; sourceTree = "<group>"; };
 		144470BB2F83DA0A003CA8FC /* AFOMetalVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMetalVideoView.m; sourceTree = "<group>"; };
-		146831212F84F7E400FD10C9 /* AFOMetalShaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = AFOMetalShaders.metal; sourceTree = "<group>"; };
-		14F6917E2F83D734004BD718 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/System/Library/Frameworks/VideoToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		14F9FAB32F8390E200D98EA3 /* libobjc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libobjc.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/usr/lib/libobjc.tbd; sourceTree = DEVELOPER_DIR; };
 		240487562008459600D369FB /* AFOMediaForeignInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaForeignInterface.m; sourceTree = "<group>"; };
 		2404875B2008459600D369FB /* AFOMediaForeignInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaForeignInterface.h; sourceTree = "<group>"; };
@@ -189,7 +185,6 @@
 			files = (
 				14F9FAB42F8390E200D98EA3 /* libobjc.tbd in Frameworks */,
 				922E6559DEB8E99FA090F6B5 /* libPods-AFOFFMpeg.a in Frameworks */,
-				14F6917F2F83D734004BD718 /* VideoToolbox.framework in Frameworks */,
 				24BAFED01FF4BD0700D2EAB9 /* CoreMedia.framework in Frameworks */,
 				24BAFECE1FF4BCF800D2EAB9 /* CoreGraphics.framework in Frameworks */,
 				24BAFECC1FF4BCEB00D2EAB9 /* CoreImage.framework in Frameworks */,
@@ -239,7 +234,6 @@
 		24BAFEC41FF4BCB400D2EAB9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				14F6917E2F83D734004BD718 /* VideoToolbox.framework */,
 				14F9FAB32F8390E200D98EA3 /* libobjc.tbd */,
 				2408BB3C200877D80049060F /* libsqlite3.tbd */,
 				24A59FBC2008387200311ACB /* libiconv.tbd */,
@@ -291,7 +285,6 @@
 		722D3D572338E9F600201ACB /* play */ = {
 			isa = PBXGroup;
 			children = (
-				146831212F84F7E400FD10C9 /* AFOMetalShaders.metal */,
 				24DAD2492331CA6F001D2CE4 /* AFOMediaPlayController.h */,
 				24DAD2422331CA6F001D2CE4 /* AFOMediaPlayController.m */,
 				24DAD2772331CA72001D2CE4 /* AFOMediaPlayControllerCategory.h */,
@@ -477,7 +470,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				146831222F84F7E400FD10C9 /* AFOMetalShaders.metal in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
