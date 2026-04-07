@@ -64,7 +64,7 @@ typedef struct {
 
 - (void)setupPipeline {
     NSError *error = nil;
-    id<MTLLibrary> defaultLibrary = [_device newLibraryWithFile:[[NSBundle mainBundle] pathForResource:@"AFOMetalShaders" ofType:@"metal"] error:&error];
+    id<MTLLibrary> defaultLibrary = [_device newLibraryWithFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"AFOMetalShaders" ofType:@"metal"] error:&error];
     if (error) {
         NSLog(@"AFOMetalVideoView: Failed to create library: %@", error);
         return;
