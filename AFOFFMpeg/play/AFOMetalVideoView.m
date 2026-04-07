@@ -64,7 +64,10 @@ typedef struct {
 
 - (void)setupPipeline {
     NSError *error = nil;
-    id<MTLLibrary> defaultLibrary = [_device newLibraryWithFile:[[NSBundle mainBundle] pathForResource:@"AFOMetalShaders" ofType:@"metal"] error:&error];
+    NSString *shaderPath = [[NSBundle mainBundle] pathForResource:@"default" ofType:@"metallib"];
+    NSLog(@"AFOMetalVideoView: Attempting to load Metal library from path: %@", shaderPath); // 添加这行日志
+
+    id<MTLLibrary> defaultLibrary = [_device newLibraryWithFile:shaderPath error:&error];
     if (error) {
         NSLog(@"AFOMetalVideoView: Failed to create library: %@", error);
         return;
@@ -86,6 +89,22 @@ typedef struct {
     pipelineStateDescriptor.vertexFunction = vertexFunction;
     pipelineStateDescriptor.fragmentFunction = fragmentFunction;
     pipelineStateDescriptor.colorAttachments[0].pixelFormat = self.colorPixelFormat;
+
+    MTLVertexDescriptor *vertexDescriptor = [[MTLVertexDescriptor alloc] init];
+
+    vertexDescriptor.attributes[0].format = MTLVertexFormatFloat2;
+    vertexDescriptor.attributes[0].offset = 0;
+    vertexDescriptor.attributes[0].bufferIndex = 0;
+
+    vertexDescriptor.attributes[1].format = MTLVertexFormatFloat2;
+    vertexDescriptor.attributes[1].offset = sizeof(float) * 2;
+    vertexDescriptor.attributes[1].bufferIndex = 0;
+
+    vertexDescriptor.layouts[0].stride = sizeof(float) * 4;
+    vertexDescriptor.layouts[0].stepRate = 1;
+    vertexDescriptor.layouts[0].stepFunction = MTLVertexStepFunctionPerVertex;
+
+    pipelineStateDescriptor.vertexDescriptor = vertexDescriptor;
 
     _pipelineState = [_device newRenderPipelineStateWithDescriptor:pipelineStateDescriptor error:&error];
     if (error) {
