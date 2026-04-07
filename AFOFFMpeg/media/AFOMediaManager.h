@@ -47,4 +47,5 @@ typedef void(^displayVedioFrameBlock)(NSError *error,
                      codecContext:(AVCodecContext *)codecContext
                             index:(NSInteger)index
                             block:(displayVedioFrameBlock)block;
+
 @end

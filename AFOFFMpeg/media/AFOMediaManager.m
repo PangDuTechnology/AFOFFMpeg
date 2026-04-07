@@ -24,7 +24,6 @@
     VTDecompressionSessionRef _decompressSession;
     CMVideoFormatDescriptionRef _videoFormatDescription;
 }
-
 - (BOOL)avReadFrame:(NSInteger)duration;
 - (void)freeResources;
 /**输出视频Size*/
@@ -43,6 +42,15 @@
 @property (nonatomic, assign)            BOOL            isHardwareDecoding; // 标记是否使用硬件解码
 @property (nonatomic, strong) AFOCountdownManager      *queueManager;
 @property (nonatomic, weak) id<AFOPlayMediaManager>      delegate;
+static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
+                                             void *sourceFrameRefCon,
+                                             OSStatus status,
+                                             VTDecompressionSessionFlags infoFlags,
+                                             CMTime presentationTimeStamp,
+                                             CMTime presentationDuration,
+                                             CVPixelBufferRef pixelBuffer,
+                                             CMVideoFormatDescriptionRef formatDescription);
+
 @end
 
 @implementation AFOMediaManager
@@ -71,51 +79,52 @@
     avCodecContext = codecContext;
     avFormatContext =formatContext;
     avFrame = av_frame_alloc();
-
+    
     // 检查是否配置了硬件解码
     self.isHardwareDecoding = (avCodecContext->hw_device_ctx != NULL);
     if (self.isHardwareDecoding) {
         NSLog(@"AFOMediaManager: Hardware decoding enabled.");
         // 如果是硬件解码，需要创建 VTDecompressionSession
         [self setupVideoToolboxDecompressionSessionWithCodecContext:avCodecContext];
-
-    WeakObject(self);
-    ///------
-    [self.queueManager addCountdownActionFps:self.fps duration:weakself.duration block:^(NSNumber *isEnd) {
-        if ([isEnd boolValue]) {
-            block(NULL,
-                  NULL, // 传递 NULL CVPixelBufferRef
-                  [AFOMediaTimer timeFormatShort:weakself.duration],[AFOMediaTimer currentTime:weakself.nowTime + 1],
-                  weakself.duration,
-                  weakself.nowTime + 1);
-            //
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaSuspendedManager" object:nil];
-            return ;
-        }else{
-            NSLog(@"AFOMediaManager: Countdown block executing. Attempting to read frame.");
-            if ([weakself avReadFrame:weakself.videoStream]) {
-                if (weakself.isHardwareDecoding) {
-                    // 硬件解码，直接从 avFrame 获取 CVPixelBufferRef
-                    CVPixelBufferRef pixelBuffer = (CVPixelBufferRef)avFrame->data[3]; // VT 解码后的 CVPixelBufferRef 在 data[3]
-                    if (pixelBuffer) {
-                        block(nil,
-                              pixelBuffer,
-                              [AFOMediaTimer timeFormatShort:weakself.duration],
-                              [AFOMediaTimer currentTime:weakself.nowTime],
-                              weakself.duration,
-                              weakself.nowTime
-                              );
-                    } else {
-                        NSLog(@"AFOMediaManager: Hardware decoded frame is nil.");
-                        block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeDecoderImageFailure], nil, nil, nil, 0, 0);
-                    }
-
-                                }
+        
+        WeakObject(self);
+        ///------
+        [self.queueManager addCountdownActionFps:self.fps duration:weakself.duration block:^(NSNumber *isEnd) {
+            if ([isEnd boolValue]) {
+                block(NULL,
+                      NULL, // 传递 NULL CVPixelBufferRef
+                      [AFOMediaTimer timeFormatShort:weakself.duration],[AFOMediaTimer currentTime:weakself.nowTime + 1],
+                      weakself.duration,
+                      weakself.nowTime + 1);
+                //
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaSuspendedManager" object:nil];
+                return ;
             }else{
-                block(nil, nil, nil, nil, 0, 0);
+                NSLog(@"AFOMediaManager: Countdown block executing. Attempting to read frame.");
+                if ([weakself avReadFrame:weakself.videoStream]) {
+                    if (weakself.isHardwareDecoding) {
+                        // 硬件解码，直接从 avFrame 获取 CVPixelBufferRef
+                        CVPixelBufferRef pixelBuffer = (CVPixelBufferRef)avFrame->data[3]; // VT 解码后的 CVPixelBufferRef 在 data[3]
+                        if (pixelBuffer) {
+                            block(nil,
+                                  pixelBuffer,
+                                  [AFOMediaTimer timeFormatShort:weakself.duration],
+                                  [AFOMediaTimer currentTime:weakself.nowTime],
+                                  weakself.duration,
+                                  weakself.nowTime
+                                  );
+                        } else {
+                            NSLog(@"AFOMediaManager: Hardware decoded frame is nil.");
+                            block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeDecoderImageFailure], nil, nil, nil, 0, 0);
+                        }
+                        
+                    }
+                }else{
+                    block(nil, nil, nil, nil, 0, 0);
+                }
             }
-        }
-    }];
+        }];
+    }
 }
 #pragma mark ------ stepFrame
 - (BOOL)avReadFrame:(NSInteger)duration {
@@ -183,7 +192,7 @@
         _videoFormatDescription = NULL;
     }
     _isRelease = YES;
-}}
+}
 #pragma mark ------------ property
 - (AVStream *)avStream{
     AVStream *stream = avFormatContext -> streams[self.videoStream];
