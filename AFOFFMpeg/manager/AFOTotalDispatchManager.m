@@ -50,9 +50,6 @@
         [self.audioManager audioFormatContext:format codecContext:context index:self.audioStream];
         [self playAudio];
     }];
-//    [AFOConfigurationManager configurationForPath:strPath stream:self.audioStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream) {
-//
-//    }];
     ///------ display video
     [AFOConfigurationManager configurationForPath:strPath stream:self.videoStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream, NSData * _Nullable sps, NSData * _Nullable pps) {
         StrongObject(self);
