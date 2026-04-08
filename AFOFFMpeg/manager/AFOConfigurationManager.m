@@ -78,11 +78,13 @@ static void getSPSAndPPSFromExtraData(const uint8_t *extradata, int extradata_si
 }
 + (void)configurationForPath:(NSString *)strPath
                       stream:(NSInteger)stream
-                        block:(void(^)(
-                                       AVCodec *codec,
-                                       AVFormatContext *format, AVCodecContext *context,
-                                       NSInteger videoStream,
-                                       NSInteger audioStream))block{
+                       block:(void(^)(
+                                      AVCodec * _Nullable codec,
+                                      AVFormatContext * _Nullable format, AVCodecContext * _Nullable context,
+                                      NSInteger videoStream,
+                                      NSInteger audioStream,
+                                      NSData * _Nullable sps,
+                                      NSData * _Nullable pps))block{
     [AFOMediaConditional mediaSesourcesConditionalPath:strPath block:^(NSError *error, NSInteger videoIndex, NSInteger audioIndex) {
         if (error.code == 0) {
             ///------------ video

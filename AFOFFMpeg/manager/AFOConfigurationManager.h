@@ -16,10 +16,12 @@ enum AVPixelFormat AFOHWVideoToolboxGetFormat(AVCodecContext *s, const enum AVPi
 + (void)configurationForPath:(NSString *)strPath
                       stream:(NSInteger)stream
                        block:(void(^)(
-                                      AVCodec *codec,
-                                      AVFormatContext *format, AVCodecContext *context,
+                                      AVCodec * _Nullable codec,
+                                      AVFormatContext * _Nullable format, AVCodecContext * _Nullable context,
                                       NSInteger videoStream,
-                                      NSInteger audioStream))block;
+                                      NSInteger audioStream,
+                                      NSData * _Nullable sps,
+                                      NSData * _Nullable pps))block;
 + (void)configurationStreamPath:(NSString *)strPath
                           block:(void(^)(NSError *error,
                                          NSInteger videoIndex,
