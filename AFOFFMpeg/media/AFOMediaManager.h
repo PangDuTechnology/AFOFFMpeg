@@ -16,6 +16,7 @@
              frameRate:(float)frameRate;
 - (void)videoNowPlayingDelegate;
 - (void)videoFinishPlayingDelegate;
+- (void)videoDidPauseDelegate:(BOOL)isPaused;
 @end
 /**
  <#Description#>
@@ -32,7 +33,8 @@ typedef void(^displayVedioFrameBlock)(NSError *error,
                                       NSString *totalTime,
                                       NSString *currentTime,
                                       NSInteger totalSeconds,
-                                      NSUInteger cuttentSeconds);
+                                      NSUInteger cuttentSeconds,
+                                      BOOL isVideoEnd);
 
 @interface AFOMediaManager : NSObject
 - (instancetype)initWithDelegate:(id<AFOPlayMediaManager>)delegate;

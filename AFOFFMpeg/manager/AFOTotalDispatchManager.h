@@ -23,7 +23,8 @@ typedef void(^displayVedioBlock)(NSError *_Nullable error,
                                 NSString *_Nullable totalTime,
                                 NSString *_Nullable currentTime,
                                 NSInteger totalSeconds,
-                                NSUInteger cuttentSeconds);
+                                NSUInteger cuttentSeconds,
+                                BOOL isVideoEnd);
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AFOTotalDispatchManager : NSObject

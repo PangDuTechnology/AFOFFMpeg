@@ -91,9 +91,13 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
                       NULL, // 传递 NULL CVPixelBufferRef
                       [AFOMediaTimer timeFormatShort:self.duration],[AFOMediaTimer currentTime:self.nowTime + 1],
                       self.duration,
-                      self.nowTime + 1);
+                      self.nowTime + 1,
+                      YES); // 添加 isVideoEnd 参数
                 //
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaSuspendedManager" object:nil];
+                if ([self.delegate respondsToSelector:@selector(videoDidPauseDelegate:)]) {
+                    [self.delegate videoDidPauseDelegate:YES];
+                }
                 return ;
             }else{
                 NSLog(@"AFOMediaManager: Countdown block executing. Attempting to read frame.");
@@ -107,16 +111,18 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
                                   [AFOMediaTimer timeFormatShort:self.duration],
                                   [AFOMediaTimer currentTime:self.nowTime],
                                   self.duration,
-                                  self.nowTime
+                                  self.nowTime,
+                                  NO // 添加 isVideoEnd 参数
                                   );
+                            NSLog(@"AFOMediaManager: Output CVPixelBufferRef. Address: %p, Pixel Format: %u, Timestamp: %lld", pixelBuffer, CVPixelBufferGetPixelFormatType(pixelBuffer), self.nowTime);
                         } else {
                             NSLog(@"AFOMediaManager: Hardware decoded frame is nil.");
-                            block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeDecoderImageFailure], nil, nil, nil, 0, 0);
+                            block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeDecoderImageFailure], nil, nil, nil, 0, 0, NO);
                         }
                         
                     }
                 }else{
-                    block(nil, nil, nil, nil, 0, 0);
+                    block(nil, nil, nil, nil, 0, 0, NO);
                 }
             }
         }];

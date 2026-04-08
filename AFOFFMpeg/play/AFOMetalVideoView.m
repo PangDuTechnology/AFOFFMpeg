@@ -40,6 +40,9 @@ typedef struct {
     self = [super initWithFrame:frame];
     if (self) {
         self.delegate = self;
+        self.paused = YES;
+        self.enableSetNeedsDisplay = YES;
+        self.preferredFramesPerSecond = 30;
         _device = MTLCreateSystemDefaultDevice();
         if (!_device) {
             NSLog(@"Metal is not supported on this device.");
@@ -135,17 +138,19 @@ typedef struct {
 }
 
 - (void)drawInMTKView:(nonnull MTKView *)view {
-    if (!_yTexture || !_uvTexture || !_pipelineState) { // 检查 _pipelineState
+    if (self.isPaused || !_yTexture || !_uvTexture) {
         return;
     }
 
-    _renderPassDescriptor = view.currentRenderPassDescriptor;
-    if (_renderPassDescriptor == nil) {
+    // 使用 MTKView 提供的 currentRenderPassDescriptor
+    MTLRenderPassDescriptor *currentRenderPassDescriptor = view.currentRenderPassDescriptor;
+    if (!currentRenderPassDescriptor) {
+        NSLog(@"AFOMetalVideoView: currentRenderPassDescriptor is nil. Skipping draw.");
         return;
     }
 
     id<MTLCommandBuffer> commandBuffer = [_commandQueue commandBuffer];
-    id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:_renderPassDescriptor];
+    id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:currentRenderPassDescriptor];
     [renderEncoder setRenderPipelineState:_pipelineState];
     [renderEncoder setVertexBuffer:_vertices offset:0 atIndex:0];
     [renderEncoder setFragmentTexture:_yTexture atIndex:0];
@@ -154,25 +159,45 @@ typedef struct {
     [renderEncoder endEncoding];
     [commandBuffer presentDrawable:view.currentDrawable];
     [commandBuffer commit];
-
-    // 释放纹理
-    _yTexture = nil;
-    _uvTexture = nil;
 }
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer {
     if (!pixelBuffer) {
-        NSLog(@"AFOMetalVideoView: displayPixelBuffer received nil pixelBuffer."); // 添加日志
+        NSLog(@"AFOMetalVideoView: displayPixelBuffer received nil pixelBuffer.");
+        self.paused = YES;
+        _yTexture = nil;
+        _uvTexture = nil;
+        if (self.currentPixelBuffer) { // 释放旧的 pixelBuffer
+            CVPixelBufferRelease(self.currentPixelBuffer);
+            self.currentPixelBuffer = nil;
+        }
         return;
     }
+    self.paused = NO;
+    NSLog(@"AFOMetalVideoView: Received CVPixelBufferRef. Address: %p, Pixel Format: %u", pixelBuffer, CVPixelBufferGetPixelFormatType(pixelBuffer));
+
+    // 如果有旧的 pixelBuffer，先释放它
+    if (self.currentPixelBuffer) {
+        CVPixelBufferRelease(self.currentPixelBuffer);
+    }
+    // 强引用新的 pixelBuffer
+    self.currentPixelBuffer = CVPixelBufferRetain(pixelBuffer);
 
     CVMetalTextureRef yTextureRef = NULL;
     CVMetalTextureRef uvTextureRef = NULL;
 
+    // Release existing textures to avoid drawing stale frames
+    if (_yTexture) {
+        _yTexture = nil;
+    }
+    if (_uvTexture) {
+        _uvTexture = nil;
+    }
+
     // Y-plane
     CVReturn status = CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
                                                                 _textureCache,
-                                                                pixelBuffer,
+                                                                self.currentPixelBuffer,
                                                                 nil,
                                                                 MTLPixelFormatR8Unorm,
                                                                 CVPixelBufferGetWidthOfPlane(pixelBuffer, 0),
@@ -182,6 +207,7 @@ typedef struct {
     if (status == kCVReturnSuccess) {
         _yTexture = CVMetalTextureGetTexture(yTextureRef);
         if (yTextureRef) CFRelease(yTextureRef); // 确保在获取纹理后释放引用
+        NSLog(@"AFOMetalVideoView: Successfully created Y texture. Address: %p", _yTexture); // 添加成功日志
     } else {
         NSLog(@"AFOMetalVideoView: Failed to create Y texture. Status: %d", status); // 添加错误日志
     }
@@ -189,7 +215,7 @@ typedef struct {
     // UV-plane
     status = CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
                                                        _textureCache,
-                                                       pixelBuffer,
+                                                       self.currentPixelBuffer,
                                                        nil,
                                                        MTLPixelFormatRG8Unorm, // 对于 NV12 格式
                                                        CVPixelBufferGetWidthOfPlane(pixelBuffer, 1),
@@ -199,18 +225,21 @@ typedef struct {
     if (status == kCVReturnSuccess) {
         _uvTexture = CVMetalTextureGetTexture(uvTextureRef);
         if (uvTextureRef) CFRelease(uvTextureRef); // 确保在获取纹理后释放引用
+        NSLog(@"AFOMetalVideoView: Successfully created UV texture. Address: %p", _uvTexture); // 添加成功日志
     } else {
         NSLog(@"AFOMetalVideoView: Failed to create UV texture. Status: %d", status); // 添加错误日志
     }
 
-    // 调用 MTKView 的 draw 方法
-    [self draw];
 }
 
 - (void)dealloc {
     if (_textureCache) {
         CFRelease(_textureCache);
         _textureCache = NULL;
+    }
+    if (_currentPixelBuffer) { // 在 dealloc 中释放持有的 pixelBuffer
+        CVPixelBufferRelease(_currentPixelBuffer);
+        _currentPixelBuffer = NULL;
     }
 }
 

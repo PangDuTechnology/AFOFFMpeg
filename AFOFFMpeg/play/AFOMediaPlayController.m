@@ -61,7 +61,7 @@
 #pragma mark ------
 - (void)playerVedioWithPath:(NSString *)path{
     WeakObject(self);
-    [self.mediaManager displayVedioForPath:path block:^(NSError * _Nullable error, CVPixelBufferRef _Nullable pixelBuffer, NSString * _Nullable totalTime, NSString * _Nullable currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
+    [self.mediaManager displayVedioForPath:path block:^(NSError * _Nullable error, CVPixelBufferRef  _Nullable pixelBuffer, NSString * _Nullable totalTime, NSString * _Nullable currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds, BOOL isVideoEnd) {
         StrongObject(self);
         if (!error.code && pixelBuffer) {
             [self.mediaView displayPixelBuffer:pixelBuffer];

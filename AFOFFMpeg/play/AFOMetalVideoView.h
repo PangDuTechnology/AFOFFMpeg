@@ -12,6 +12,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AFOMetalVideoView : MTKView
+@property (nonatomic, assign) BOOL isPaused;
+@property (nonatomic, assign) CVPixelBufferRef currentPixelBuffer;
 
 // 初始化方法
 - (instancetype)initWithFrame:(CGRect)frame;

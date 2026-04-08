@@ -53,11 +53,10 @@
     ///------ display video
     [AFOConfigurationManager configurationForPath:strPath stream:self.videoStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream, NSData * _Nullable sps, NSData * _Nullable pps) {
         StrongObject(self);
-        // Set SPS and PPS on videoManager before calling displayVedioFormatContext
-//        self.videoManager.sps = sps;
-//        self.videoManager.pps = pps;
-        [self.videoManager displayVedioFormatContext:format codecContext:context index:self.videoStream block:^(NSError *error, CVPixelBufferRef pixelBuffer, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
-            block(error,pixelBuffer,totalTime,currentTime,totalSeconds,cuttentSeconds);
+        
+        [self.videoManager displayVedioFormatContext:format codecContext:context index:self.videoStream block:^(NSError *error, CVPixelBufferRef pixelBuffer, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds, BOOL isVideoEnd) {
+            NSLog(@"AFOTotalDispatchManager: pixelBuffer received: %p", pixelBuffer);
+            block(error,pixelBuffer,totalTime,currentTime,totalSeconds,cuttentSeconds, isVideoEnd);
         }];
     }];
 }
@@ -73,6 +72,17 @@
 #pragma mark ------ AFOPlayMediaManager
 - (void)videoNowPlayingDelegate{
     [[NSNotificationCenter defaultCenter] postNotificationName:@"AFORestartMeidaFileNotification" object:nil];
+}
+
+- (void)videoFinishPlayingDelegate{
+    // AFOMediaManager 已经调用了 videoDidPauseDelegate:YES，这里不需要额外操作
+}
+
+- (void)videoDidPauseDelegate:(BOOL)isPaused {
+    // 这里可以将 isPaused 状态通过通知或 delegate 传递给 AFOMetalVideoView 的持有者
+    // 由于 AFOTotalDispatchManager 的 block 已经添加了 isVideoEnd 参数，
+    // 我将通过 block 回调的方式传递这个状态，而不是在这里发送通知。
+    // For now, no direct action here, relying on the block callback.
 }
 #pragma mark ------ property
 - (AFOAudioManager *)audioManager{
@@ -90,6 +100,8 @@
 #pragma mark ------ dealloc
 - (void)dealloc{
     NSLog(@"AFOTotalDispatchManager dealloc");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    // TODO: Add calls to stop/cancel dispatch objects in audioManager and videoManager
 }
 @end
 //@property (nonatomic, assign)            float      audioTimeStamp;
