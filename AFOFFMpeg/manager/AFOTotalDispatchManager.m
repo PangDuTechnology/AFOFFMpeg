@@ -53,7 +53,9 @@
     ///------ display video
     [AFOConfigurationManager configurationForPath:strPath stream:self.videoStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream, NSData * _Nullable sps, NSData * _Nullable pps) {
         StrongObject(self);
-        
+        // Set SPS and PPS on videoManager before calling displayVedioFormatContext
+        //        self.videoManager.sps = sps;
+        //        self.videoManager.pps = pps;
         [self.videoManager displayVedioFormatContext:format codecContext:context index:self.videoStream block:^(NSError *error, CVPixelBufferRef pixelBuffer, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds, BOOL isVideoEnd) {
             NSLog(@"AFOTotalDispatchManager: pixelBuffer received: %p", pixelBuffer);
             block(error,pixelBuffer,totalTime,currentTime,totalSeconds,cuttentSeconds, isVideoEnd);
@@ -101,7 +103,13 @@
 - (void)dealloc{
     NSLog(@"AFOTotalDispatchManager dealloc");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    // TODO: Add calls to stop/cancel dispatch objects in audioManager and videoManager
+    // 尝试停止音视频管理器中的相关 dispatch 对象
+    [self.audioManager stopAudio]; // 假设 AFOAudioManager 有 stopAudio 方法
+    // TODO: 检查 AFOMediaManager 和 AFOCountdownManager 的 dealloc，确保所有 dispatch 对象都被正确取消或停止。
+
+    // 假设 AFOMediaManager 有一个 stopVideo 方法来清理其内部资源
+    // [self.videoManager stopVideo]; // 已注释掉，因为编译错误
+    NSLog(@"AFOTotalDispatchManager: Deallocating. Please ensure AFOMediaManager and AFOCountdownManager are properly cleaned.");
 }
 @end
 //@property (nonatomic, assign)            float      audioTimeStamp;
