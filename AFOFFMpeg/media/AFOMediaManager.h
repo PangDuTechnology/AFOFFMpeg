@@ -35,8 +35,6 @@ typedef void(^displayVedioFrameBlock)(NSError *error,
                                       NSUInteger cuttentSeconds);
 
 @interface AFOMediaManager : NSObject
-@property (nonatomic, strong) NSData *sps;
-@property (nonatomic, strong) NSData *pps;
 - (instancetype)initWithDelegate:(id<AFOPlayMediaManager>)delegate;
 /**
  <#Description#>

@@ -21,8 +21,6 @@
     AVFormatContext     *avFormatContext;
     AVCodecContext      *avCodecContext;
     AVFrame             *avFrame;
-    VTDecompressionSessionRef _decompressSession;
-    CMVideoFormatDescriptionRef _videoFormatDescription;
 }
 - (BOOL)avReadFrame:(NSInteger)duration;
 - (void)freeResources;
@@ -80,12 +78,10 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
     avFrame = av_frame_alloc();
     
     // 检查是否配置了硬件解码
-    self.isHardwareDecoding = (avCodecContext->hw_device_ctx != NULL);
+    self.isHardwareDecoding = YES;//(avCodecContext->hw_device_ctx != NULL);
     if (self.isHardwareDecoding) {
         NSLog(@"AFOMediaManager: Hardware decoding enabled.");
         // 如果是硬件解码，需要创建 VTDecompressionSession
-        [self setupVideoToolboxDecompressionSessionWithCodecContext:avCodecContext];
-        
         WeakObject(self);
         ///------
         [self.queueManager addCountdownActionFps:self.fps duration:weakself.duration block:^(NSNumber *isEnd) {
@@ -182,15 +178,6 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
         avCodecContext = NULL;
     }
 
-    if (_decompressSession) {
-        VTDecompressionSessionInvalidate(_decompressSession);
-        CFRelease(_decompressSession);
-        _decompressSession = NULL;
-    }
-    if (_videoFormatDescription) {
-        CFRelease(_videoFormatDescription);
-        _videoFormatDescription = NULL;
-    }
     _isRelease = YES;
 }
 #pragma mark ------------ property
@@ -223,62 +210,6 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
         _queueManager = [[AFOCountdownManager alloc] init];
     }
     return _queueManager;
-}
-- (void)setupVideoToolboxDecompressionSessionWithCodecContext:(AVCodecContext *)codecContext {
-    if (_decompressSession) {
-        return;
-    }
-
-    CMVideoFormatDescriptionRef formatDescription = NULL;
-    OSStatus status = noErr;
-
-    // 获取 H.264 的 SPS 和 PPS
-    const uint8_t *sps = self.sps.bytes;
-    size_t spsSize = self.sps.length;
-    const uint8_t *pps = self.pps.bytes;
-    size_t ppsSize = self.pps.length;
-
-    const uint8_t*  parameterSetPointers[2] = { sps, pps };
-    const size_t    parameterSetSizes[2] = { spsSize, ppsSize };
-
-    // 使用 CMVideoFormatDescriptionCreateFromH264ParameterSets 创建 CMVideoFormatDescriptionRef
-    status = CMVideoFormatDescriptionCreateFromH264ParameterSets(kCFAllocatorDefault,
-                                                                 2, // parameterSetCount
-                                                                 parameterSetPointers,
-                                                                 parameterSetSizes,
-                                                                 4, // NALUnitHeaderLength (通常是 4)
-                                                                 &formatDescription);
-
-    if (status != noErr || !formatDescription) {
-        NSLog(@"AFOMediaManager: Failed to create CMVideoFormatDescriptionRef from H264 parameter sets: %d", (int)status);
-        return;
-    }
-    _videoFormatDescription = formatDescription;
-
-    // 配置 VTDecompressionSession
-    NSDictionary *destinationPixelBufferAttributes = @{
-        (id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange), // NV12
-        (id)kCVPixelBufferOpenGLESCompatibilityKey : @(YES),
-        (id)kCVPixelBufferOpenGLCompatibilityKey : @(YES),
-        (id)kCVPixelBufferMetalCompatibilityKey : @(YES)
-    };
-
-    VTDecompressionOutputCallbackRecord callbackRecord;
-    callbackRecord.decompressionOutputCallback = videoDecompressionOutputCallback;
-    callbackRecord.decompressionOutputRefCon = (__bridge void *)self;
-
-    status = VTDecompressionSessionCreate(kCFAllocatorDefault,
-                                          formatDescription,
-                                          NULL, // decoderSpecification
-                                          (__bridge CFDictionaryRef)destinationPixelBufferAttributes,
-                                          &callbackRecord,
-                                          &_decompressSession);
-
-    if (status != noErr || !_decompressSession) {
-        NSLog(@"AFOMediaManager: Failed to create VTDecompressionSession: %d", (int)status);
-        CFRelease(formatDescription);
-        _videoFormatDescription = NULL;
-    }
 }
 
 #pragma mark ------------ dealloc

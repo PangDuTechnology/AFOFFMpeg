@@ -54,8 +54,8 @@
     [AFOConfigurationManager configurationForPath:strPath stream:self.videoStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream, NSData * _Nullable sps, NSData * _Nullable pps) {
         StrongObject(self);
         // Set SPS and PPS on videoManager before calling displayVedioFormatContext
-        self.videoManager.sps = sps;
-        self.videoManager.pps = pps;
+//        self.videoManager.sps = sps;
+//        self.videoManager.pps = pps;
         [self.videoManager displayVedioFormatContext:format codecContext:context index:self.videoStream block:^(NSError *error, CVPixelBufferRef pixelBuffer, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
             block(error,pixelBuffer,totalTime,currentTime,totalSeconds,cuttentSeconds);
         }];
