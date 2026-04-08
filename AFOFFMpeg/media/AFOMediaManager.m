@@ -229,17 +229,28 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
         return;
     }
 
-    // 创建 CMVideoFormatDescriptionRef
-    // 这里需要根据 AVCodecContext 的信息构建
     CMVideoFormatDescriptionRef formatDescription = NULL;
-    OSStatus status = CMVideoFormatDescriptionCreate(kCFAllocatorDefault,
-                                                     kCMVideoCodecType_H264, // 或 kCMVideoCodecType_H265
-                                                     codecContext->width,
-                                                     codecContext->height,
-                                                     NULL, // Removed kCMFormatDescriptionExtension_KeyFrameBoosting
-                                                     &formatDescription);
+    OSStatus status = noErr;
+
+    // 获取 H.264 的 SPS 和 PPS
+    const uint8_t *sps = self.sps.bytes;
+    size_t spsSize = self.sps.length;
+    const uint8_t *pps = self.pps.bytes;
+    size_t ppsSize = self.pps.length;
+
+    const uint8_t*  parameterSetPointers[2] = { sps, pps };
+    const size_t    parameterSetSizes[2] = { spsSize, ppsSize };
+
+    // 使用 CMVideoFormatDescriptionCreateFromH264ParameterSets 创建 CMVideoFormatDescriptionRef
+    status = CMVideoFormatDescriptionCreateFromH264ParameterSets(kCFAllocatorDefault,
+                                                                 2, // parameterSetCount
+                                                                 parameterSetPointers,
+                                                                 parameterSetSizes,
+                                                                 4, // NALUnitHeaderLength (通常是 4)
+                                                                 &formatDescription);
+
     if (status != noErr || !formatDescription) {
-        NSLog(@"AFOMediaManager: Failed to create CMVideoFormatDescriptionRef: %d", (int)status);
+        NSLog(@"AFOMediaManager: Failed to create CMVideoFormatDescriptionRef from H264 parameter sets: %d", (int)status);
         return;
     }
     _videoFormatDescription = formatDescription;

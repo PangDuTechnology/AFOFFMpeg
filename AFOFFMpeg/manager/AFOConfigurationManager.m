@@ -12,6 +12,54 @@
 #include <libavcodec/videotoolbox.h>
 #include <libavutil/hwcontext.h>
 #include <libavutil/hwcontext_videotoolbox.h>
+// 辅助函数：从 extradata 中提取 SPS 和 PPS
+static void getSPSAndPPSFromExtraData(const uint8_t *extradata, int extradata_size, NSData **spsData, NSData **ppsData) {
+    if (!extradata || extradata_size < 4) {
+        return;
+    }
+
+    const uint8_t *p = extradata;
+    const uint8_t *end = extradata + extradata_size;
+
+    while (p + 4 < end) {
+        if (p[0] == 0x00 && p[1] == 0x00 && p[2] == 0x00 && p[3] == 0x01) {
+            // 找到起始码
+            p += 4;
+            if ((*p & 0x1F) == 7) { // NAL 单元类型 7 是 SPS
+                const uint8_t *nextStartCode = NULL;
+                const uint8_t *q = p;
+                while (q + 4 < end) {
+                    if (q[0] == 0x00 && q[1] == 0x00 && q[2] == 0x00 && q[3] == 0x01) {
+                        nextStartCode = q;
+                        break;
+                    }
+                    q++;
+                }
+                *spsData = [NSData dataWithBytes:p length:(nextStartCode ? (nextStartCode - p) : (end - p))];
+                if (nextStartCode) {
+                    p = nextStartCode;
+                    continue;
+                }
+            } else if ((*p & 0x1F) == 8) { // NAL 单元类型 8 是 PPS
+                const uint8_t *nextStartCode = NULL;
+                const uint8_t *q = p;
+                while (q + 4 < end) {
+                    if (q[0] == 0x00 && q[1] == 0x00 && q[2] == 0x00 && q[3] == 0x01) {
+                        nextStartCode = q;
+                        break;
+                    }
+                    q++;
+                }
+                *ppsData = [NSData dataWithBytes:p length:(nextStartCode ? (nextStartCode - p) : (end - p))];
+                if (nextStartCode) {
+                    p = nextStartCode;
+                    continue;
+                }
+            }
+        }
+        p++;
+    }
+}
 @interface AFOConfigurationManager ()
 @end
 @implementation AFOConfigurationManager
@@ -35,7 +83,7 @@
                                        AVFormatContext *format, AVCodecContext *context,
                                        NSInteger videoStream,
                                        NSInteger audioStream))block{
-    [AFOMediaConditional mediaSesourcesConditionalPath:strPath block:^(NSError *error, NSInteger videoIndex, NSInteger audioIndex){
+    [AFOMediaConditional mediaSesourcesConditionalPath:strPath block:^(NSError *error, NSInteger videoIndex, NSInteger audioIndex) {
         if (error.code == 0) {
             ///------------ video
            AVFormatContext *avFormatContext = avformat_alloc_context();
@@ -49,8 +97,14 @@
             ///------ Find the decoder for the video stream.
             ///------ Open codec
             avcodec_open2(avCodecContext, avCodec, NULL);
-            block(avCodec,avFormatContext,avCodecContext,videoIndex,audioIndex);
+            NSData *spsData = nil;
+            NSData *ppsData = nil;
+            if (avCodecContext->extradata_size > 0 && avCodecContext->extradata != NULL) {
+                getSPSAndPPSFromExtraData(avCodecContext->extradata, avCodecContext->extradata_size, &spsData, &ppsData);
+            }
+            block(avCodec,avFormatContext,avCodecContext,videoIndex,audioIndex,spsData,ppsData);
         }else{
+            block(NULL,NULL,NULL,0,0,nil,nil);
             return;
         }
     }];

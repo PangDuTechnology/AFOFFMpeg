@@ -69,19 +69,19 @@ typedef struct {
 
     id<MTLLibrary> defaultLibrary = [_device newLibraryWithFile:shaderPath error:&error];
     if (error) {
-        NSLog(@"AFOMetalVideoView: Failed to create library: %@", error);
+        NSLog(@"AFOMetalVideoView: Failed to create library from path: %@, Error: %@");
         return;
     }
 
     id<MTLFunction> vertexFunction = [defaultLibrary newFunctionWithName:@"vertexShader"];
     if (!vertexFunction) {
-        NSLog(@"AFOMetalVideoView: Failed to find vertexShader.");
+        NSLog(@"AFOMetalVideoView: Failed to find vertexShader in library: %@.", shaderPath);
         return;
     }
 
     id<MTLFunction> fragmentFunction = [defaultLibrary newFunctionWithName:@"fragmentShader"];
     if (!fragmentFunction) {
-        NSLog(@"AFOMetalVideoView: Failed to find fragmentShader.");
+        NSLog(@"AFOMetalVideoView: Failed to find fragmentShader in library: %@.", shaderPath);
         return;
     }
 
@@ -107,6 +107,7 @@ typedef struct {
     pipelineStateDescriptor.vertexDescriptor = vertexDescriptor;
 
     _pipelineState = [_device newRenderPipelineStateWithDescriptor:pipelineStateDescriptor error:&error];
+    NSLog(@"AFOMetalVideoView: Successfully created render pipeline state."); // 添加成功日志
     if (error) {
         NSLog(@"AFOMetalVideoView: Failed to create render pipeline state: %@", error);
         return;
@@ -134,7 +135,7 @@ typedef struct {
 }
 
 - (void)drawInMTKView:(nonnull MTKView *)view {
-    if (!_yTexture || !_uvTexture) {
+    if (!_yTexture || !_uvTexture || !_pipelineState) { // 检查 _pipelineState
         return;
     }
 
@@ -161,6 +162,7 @@ typedef struct {
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer {
     if (!pixelBuffer) {
+        NSLog(@"AFOMetalVideoView: displayPixelBuffer received nil pixelBuffer."); // 添加日志
         return;
     }
 
@@ -179,7 +181,9 @@ typedef struct {
                                                                 &yTextureRef);
     if (status == kCVReturnSuccess) {
         _yTexture = CVMetalTextureGetTexture(yTextureRef);
-        CFRelease(yTextureRef);
+        if (yTextureRef) CFRelease(yTextureRef); // 确保在获取纹理后释放引用
+    } else {
+        NSLog(@"AFOMetalVideoView: Failed to create Y texture. Status: %d", status); // 添加错误日志
     }
 
     // UV-plane
@@ -194,7 +198,9 @@ typedef struct {
                                                        &uvTextureRef);
     if (status == kCVReturnSuccess) {
         _uvTexture = CVMetalTextureGetTexture(uvTextureRef);
-        CFRelease(uvTextureRef);
+        if (uvTextureRef) CFRelease(uvTextureRef); // 确保在获取纹理后释放引用
+    } else {
+        NSLog(@"AFOMetalVideoView: Failed to create UV texture. Status: %d", status); // 添加错误日志
     }
 
     // 调用 MTKView 的 draw 方法
