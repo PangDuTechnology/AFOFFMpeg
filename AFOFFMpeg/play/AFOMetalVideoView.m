@@ -138,7 +138,7 @@ typedef struct {
 }
 
 - (void)drawInMTKView:(nonnull MTKView *)view {
-    if (self.isPaused || !_yTexture || !_uvTexture) {
+    if (self.isPaused || !_yTexture || !_uvTexture || _yTexture.width == 0 || _uvTexture.width == 0) {
         return;
     }
 
@@ -187,12 +187,9 @@ typedef struct {
     CVMetalTextureRef uvTextureRef = NULL;
 
     // Release existing textures to avoid drawing stale frames
-    if (_yTexture) {
-        _yTexture = nil;
-    }
-    if (_uvTexture) {
-        _uvTexture = nil;
-    }
+    // 在创建新纹理之前，确保清除旧纹理引用
+    _yTexture = nil;
+    _uvTexture = nil;
 
     // Y-plane
     CVReturn status = CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
@@ -209,7 +206,8 @@ typedef struct {
         if (yTextureRef) CFRelease(yTextureRef); // 确保在获取纹理后释放引用
         NSLog(@"AFOMetalVideoView: Successfully created Y texture. Address: %p", _yTexture); // 添加成功日志
     } else {
-        NSLog(@"AFOMetalVideoView: Failed to create Y texture. Status: %d", status); // 添加错误日志
+        NSLog(@"AFOMetalVideoView: Failed to create Y texture. Status: %d", status);
+        self.paused = YES; // 纹理创建失败时暂停绘制
     }
 
     // UV-plane
@@ -227,7 +225,8 @@ typedef struct {
         if (uvTextureRef) CFRelease(uvTextureRef); // 确保在获取纹理后释放引用
         NSLog(@"AFOMetalVideoView: Successfully created UV texture. Address: %p", _uvTexture); // 添加成功日志
     } else {
-        NSLog(@"AFOMetalVideoView: Failed to create UV texture. Status: %d", status); // 添加错误日志
+        NSLog(@"AFOMetalVideoView: Failed to create UV texture. Status: %d", status);
+        self.paused = YES; // 纹理创建失败时暂停绘制
     }
 
 }
