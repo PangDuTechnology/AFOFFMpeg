@@ -5,10 +5,19 @@
 //  Created by zhaoyun on 2026/4/6.
 //
 
-// AFOMetalVideoView.m
 #import "AFOMetalVideoView.h"
 #import <Metal/Metal.h>
+#import <MetalKit/MetalKit.h>
 #import <simd/simd.h>
+
+/// 解码定时器在全局队列上回调，Metal/UIKit 必须在主线程更新，否则易出现闪屏、花屏或偏绿闪烁。
+static void AFO_MetalVideoViewRunOnMain(void (^work)(void)) {
+    if ([NSThread isMainThread]) {
+        work();
+    } else {
+        dispatch_async(dispatch_get_main_queue(), work);
+    }
+}
 
 // 顶点数据结构
 typedef struct {
@@ -16,18 +25,20 @@ typedef struct {
     vector_float2 textureCoordinate;
 } AFOVertex;
 
-@interface AFOMetalVideoView () <MTKViewDelegate> {
-    id<MTLDevice> _device;
-    id<MTLCommandQueue> _commandQueue;
-    id<MTLRenderPipelineState> _pipelineState;
-    id<MTLTexture> _yTexture;
-    id<MTLTexture> _uvTexture;
-    CVMetalTextureCacheRef _textureCache;
-    id<MTLBuffer> _vertices;
-    MTLRenderPassDescriptor *_renderPassDescriptor;
+@interface AFOMetalVideoView () <MTKViewDelegate>
 
-    vector_float2 _viewportSize;
-}
+@property (nonatomic, strong) id<MTLDevice> device;
+@property (nonatomic, strong) id<MTLCommandQueue> commandQueue;
+@property (nonatomic, strong) id<MTLRenderPipelineState> pipelineState;
+@property (nonatomic, strong) id<MTLBuffer> vertices;
+@property (nonatomic, strong) id<MTLTexture> yTexture;
+@property (nonatomic, strong) id<MTLTexture> uvTexture;
+@property (nonatomic, assign) CVMetalTextureCacheRef textureCache;
+@property (nonatomic, assign) vector_float2 viewportSize;
+/// 当前帧像素尺寸，用于计算 scaleAspectFit，避免拉伸变形
+@property (nonatomic, assign) CGFloat videoContentWidth;
+@property (nonatomic, assign) CGFloat videoContentHeight;
+
 @end
 
 @implementation AFOMetalVideoView
@@ -39,207 +50,290 @@ typedef struct {
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.delegate = self;
-        self.paused = YES;
-        self.enableSetNeedsDisplay = YES;
-        self.preferredFramesPerSecond = 30;
-        _device = MTLCreateSystemDefaultDevice();
-        if (!_device) {
-            NSLog(@"Metal is not supported on this device.");
-            return nil;
-        }
-        self.device = _device;
-        self.colorPixelFormat = MTLPixelFormatBGRA8Unorm; // 根据需要调整
-        self.framebufferOnly = YES;
-
-        _commandQueue = [_device newCommandQueue];
-
-        [self setupMetal];
-        [self setupPipeline];
-        [self setupVertices];
+        [self setupMetalView];
     }
     return self;
 }
 
-- (void)setupMetal {
-    CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, _device, nil, &_textureCache);
+- (void)setupMetalView {
+    self.device = MTLCreateSystemDefaultDevice();
+    if (!self.device) {
+        NSLog(@"AFOMetalVideoView: Metal is not supported on this device.");
+        return;
+    }
+
+    MTKView *mtkView = (MTKView *)self;
+    mtkView.device = self.device;
+    mtkView.delegate = self;
+    mtkView.colorPixelFormat = MTLPixelFormatBGRA8Unorm;
+    mtkView.clearColor = MTLClearColorMake(0, 0, 0, 1);
+    mtkView.autoResizeDrawable = YES;
+    mtkView.contentMode = UIViewContentModeScaleAspectFit;
+    mtkView.preferredFramesPerSecond = 30;
+    mtkView.paused = YES;
+    mtkView.enableSetNeedsDisplay = YES;
+
+    self.commandQueue = [self.device newCommandQueue];
+    _videoContentWidth = 0;
+    _videoContentHeight = 0;
+
+    [self setupTextureCache];
+    [self setupPipeline];
+    [self afo_rebuildVertexBufferForAspectFit];
+    
+    NSLog(@"AFOMetalVideoView: Metal view setup completed successfully.");
+}
+
+- (void)setupTextureCache {
+    CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, self.device, nil, &_textureCache);
 }
 
 - (void)setupPipeline {
     NSError *error = nil;
     NSString *shaderPath = [[NSBundle mainBundle] pathForResource:@"default" ofType:@"metallib"];
-    NSLog(@"AFOMetalVideoView: Attempting to load Metal library from path: %@", shaderPath); // 添加这行日志
+    NSLog(@"AFOMetalVideoView: Attempting to load Metal library from path: %@", shaderPath);
 
-    id<MTLLibrary> defaultLibrary = [_device newLibraryWithFile:shaderPath error:&error];
-    if (error) {
-        NSLog(@"AFOMetalVideoView: Failed to create library from path: %@, Error: %@");
+    id<MTLLibrary> defaultLibrary = [self.device newLibraryWithFile:shaderPath error:&error];
+    if (error || !defaultLibrary) {
+        NSLog(@"AFOMetalVideoView: Failed to create library: %@", error.localizedDescription);
         return;
     }
 
     id<MTLFunction> vertexFunction = [defaultLibrary newFunctionWithName:@"vertexShader"];
-    if (!vertexFunction) {
-        NSLog(@"AFOMetalVideoView: Failed to find vertexShader in library: %@.", shaderPath);
-        return;
-    }
-
     id<MTLFunction> fragmentFunction = [defaultLibrary newFunctionWithName:@"fragmentShader"];
-    if (!fragmentFunction) {
-        NSLog(@"AFOMetalVideoView: Failed to find fragmentShader in library: %@.", shaderPath);
+
+    if (!vertexFunction || !fragmentFunction) {
+        NSLog(@"AFOMetalVideoView: Failed to find shader functions. vertex: %@, fragment: %@", 
+              vertexFunction ? @"found" : @"missing", 
+              fragmentFunction ? @"found" : @"missing");
         return;
     }
 
-    MTLRenderPipelineDescriptor *pipelineStateDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
-    pipelineStateDescriptor.vertexFunction = vertexFunction;
-    pipelineStateDescriptor.fragmentFunction = fragmentFunction;
-    pipelineStateDescriptor.colorAttachments[0].pixelFormat = self.colorPixelFormat;
+    MTLRenderPipelineDescriptor *pipelineDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
+    pipelineDescriptor.vertexFunction = vertexFunction;
+    pipelineDescriptor.fragmentFunction = fragmentFunction;
+    pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormatBGRA8Unorm;
 
     MTLVertexDescriptor *vertexDescriptor = [[MTLVertexDescriptor alloc] init];
-
     vertexDescriptor.attributes[0].format = MTLVertexFormatFloat2;
     vertexDescriptor.attributes[0].offset = 0;
     vertexDescriptor.attributes[0].bufferIndex = 0;
-
     vertexDescriptor.attributes[1].format = MTLVertexFormatFloat2;
     vertexDescriptor.attributes[1].offset = sizeof(float) * 2;
     vertexDescriptor.attributes[1].bufferIndex = 0;
-
     vertexDescriptor.layouts[0].stride = sizeof(float) * 4;
-    vertexDescriptor.layouts[0].stepRate = 1;
     vertexDescriptor.layouts[0].stepFunction = MTLVertexStepFunctionPerVertex;
 
-    pipelineStateDescriptor.vertexDescriptor = vertexDescriptor;
+    pipelineDescriptor.vertexDescriptor = vertexDescriptor;
 
-    _pipelineState = [_device newRenderPipelineStateWithDescriptor:pipelineStateDescriptor error:&error];
-    NSLog(@"AFOMetalVideoView: Successfully created render pipeline state."); // 添加成功日志
+    _pipelineState = [self.device newRenderPipelineStateWithDescriptor:pipelineDescriptor error:&error];
     if (error) {
-        NSLog(@"AFOMetalVideoView: Failed to create render pipeline state: %@", error);
-        return;
+        NSLog(@"AFOMetalVideoView: Failed to create pipeline state: %@", error.localizedDescription);
+    } else {
+        NSLog(@"AFOMetalVideoView: Successfully created render pipeline state.");
     }
 }
 
-- (void)setupVertices {
-    AFOVertex quadVertices[] = {
-        // Position, Texture Coordinate
-        {{-1.0, -1.0}, {0.0, 1.0}},
-        {{ 1.0, -1.0}, {1.0, 1.0}},
-        {{-1.0,  1.0}, {0.0, 0.0}},
+/// 按视频与 drawable 宽高比做 scaleAspectFit，黑边填充，不变形。
+- (void)afo_rebuildVertexBufferForAspectFit {
+    CGFloat vw = (CGFloat)self.drawableSize.width;
+    CGFloat vh = (CGFloat)self.drawableSize.height;
+    if (vw < 1.0 || vh < 1.0) {
+        CGFloat scale = self.window.screen.scale ?: UIScreen.mainScreen.scale;
+        vw = CGRectGetWidth(self.bounds) * scale;
+        vh = CGRectGetHeight(self.bounds) * scale;
+    }
+    CGFloat cw = self.videoContentWidth;
+    CGFloat ch = self.videoContentHeight;
+    if (cw < 1.0 || ch < 1.0) {
+        cw = MAX(vw, 1.0);
+        ch = MAX(vh, 1.0);
+    }
 
-        {{ 1.0, -1.0}, {1.0, 1.0}},
-        {{ 1.0,  1.0}, {1.0, 0.0}},
-        {{-1.0,  1.0}, {0.0, 0.0}},
+    CGFloat arView = vw / vh;
+    CGFloat arVideo = cw / ch;
+    CGFloat sx = 1.0f;
+    CGFloat sy = 1.0f;
+    if (arView > arVideo) {
+        sx = arVideo / arView;
+    } else {
+        sy = arView / arVideo;
+    }
+
+    AFOVertex quadVertices[] = {
+        {{-sx, -sy}, {0.0f, 1.0f}},
+        {{ sx, -sy}, {1.0f, 1.0f}},
+        {{-sx,  sy}, {0.0f, 0.0f}},
+        {{ sx, -sy}, {1.0f, 1.0f}},
+        {{ sx,  sy}, {1.0f, 0.0f}},
+        {{-sx,  sy}, {0.0f, 0.0f}},
     };
 
-    _vertices = [_device newBufferWithBytes:quadVertices length:sizeof(quadVertices) options:MTLResourceStorageModeShared];
+    const NSUInteger len = sizeof(quadVertices);
+    if (!_vertices || _vertices.length < len) {
+        _vertices = [self.device newBufferWithLength:len options:MTLResourceStorageModeShared];
+    }
+    memcpy(_vertices.contents, quadVertices, len);
 }
 
-- (void)mtkView:(nonnull MTKView *)view drawableSizeWillChange:(CGSize)size {
+#pragma mark - MTKViewDelegate
+
+- (void)mtkView:(MTKView *)view drawableSizeWillChange:(CGSize)size {
     _viewportSize.x = size.width;
     _viewportSize.y = size.height;
+    NSLog(@"AFOMetalVideoView: Drawable size changed to %.0fx%.0f", size.width, size.height);
+    [self afo_rebuildVertexBufferForAspectFit];
 }
 
-- (void)drawInMTKView:(nonnull MTKView *)view {
-    if (self.isPaused || !_yTexture || !_uvTexture || _yTexture.width == 0 || _uvTexture.width == 0) {
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self afo_rebuildVertexBufferForAspectFit];
+}
+
+- (void)drawInMTKView:(MTKView *)view {
+    if (self.paused || !_yTexture || !_uvTexture || !_vertices) {
         return;
     }
 
-    // 使用 MTKView 提供的 currentRenderPassDescriptor
-    MTLRenderPassDescriptor *currentRenderPassDescriptor = view.currentRenderPassDescriptor;
-    if (!currentRenderPassDescriptor) {
-        NSLog(@"AFOMetalVideoView: currentRenderPassDescriptor is nil. Skipping draw.");
+    MTLRenderPassDescriptor *renderPassDescriptor = view.currentRenderPassDescriptor;
+    if (!renderPassDescriptor) {
+        NSLog(@"AFOMetalVideoView: currentRenderPassDescriptor is nil");
         return;
     }
 
-    id<MTLCommandBuffer> commandBuffer = [_commandQueue commandBuffer];
-    id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:currentRenderPassDescriptor];
-    [renderEncoder setRenderPipelineState:_pipelineState];
-    [renderEncoder setVertexBuffer:_vertices offset:0 atIndex:0];
-    [renderEncoder setFragmentTexture:_yTexture atIndex:0];
-    [renderEncoder setFragmentTexture:_uvTexture atIndex:1];
+    id<MTLCommandBuffer> commandBuffer = [self.commandQueue commandBuffer];
+    id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
+
+    [renderEncoder setRenderPipelineState:self.pipelineState];
+    [renderEncoder setVertexBuffer:self.vertices offset:0 atIndex:0];
+    [renderEncoder setFragmentTexture:self.yTexture atIndex:0];
+    [renderEncoder setFragmentTexture:self.uvTexture atIndex:1];
     [renderEncoder drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:6];
+
     [renderEncoder endEncoding];
     [commandBuffer presentDrawable:view.currentDrawable];
     [commandBuffer commit];
+
+    // 绘制一次后暂停，避免重复绘制相同帧
+    self.paused = YES;
 }
+
+#pragma mark - Public Methods
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer {
     if (!pixelBuffer) {
-        NSLog(@"AFOMetalVideoView: displayPixelBuffer received nil pixelBuffer.");
+        AFO_MetalVideoViewRunOnMain(^{
+            [self afo_applyPixelBufferAndDraw:nil];
+        });
+        return;
+    }
+    if (![NSThread isMainThread]) {
+        CVPixelBufferRetain(pixelBuffer);
+        AFO_MetalVideoViewRunOnMain(^{
+            [self afo_applyPixelBufferAndDraw:pixelBuffer];
+            CVPixelBufferRelease(pixelBuffer);
+        });
+        return;
+    }
+    [self afo_applyPixelBufferAndDraw:pixelBuffer];
+}
+
+/// 必须在主线程调用；若 Y/UV Metal 纹理未同时创建成功，保留上一帧纹理，避免出现半帧/脏缓存导致的偏色闪烁。
+- (void)afo_applyPixelBufferAndDraw:(CVPixelBufferRef)pixelBuffer {
+    NSAssert([NSThread isMainThread], @"Metal/CVPixelBuffer upload must run on main thread");
+
+    if (!pixelBuffer) {
         self.paused = YES;
-        _yTexture = nil;
-        _uvTexture = nil;
-        if (self.currentPixelBuffer) { // 释放旧的 pixelBuffer
-            CVPixelBufferRelease(self.currentPixelBuffer);
-            self.currentPixelBuffer = nil;
+        self.yTexture = nil;
+        self.uvTexture = nil;
+        if (_currentPixelBuffer) {
+            CVPixelBufferRelease(_currentPixelBuffer);
+            _currentPixelBuffer = nil;
         }
         return;
     }
-    self.paused = NO;
-    NSLog(@"AFOMetalVideoView: Received CVPixelBufferRef. Address: %p, Pixel Format: %u", pixelBuffer, CVPixelBufferGetPixelFormatType(pixelBuffer));
 
-    // 如果有旧的 pixelBuffer，先释放它
-    if (self.currentPixelBuffer) {
-        CVPixelBufferRelease(self.currentPixelBuffer);
+    size_t planeCount = CVPixelBufferGetPlaneCount(pixelBuffer);
+    if (planeCount < 2) {
+        NSLog(@"AFOMetalVideoView: skip frame — expected biplanar NV12, planeCount=%zu", planeCount);
+        return;
     }
-    // 强引用新的 pixelBuffer
-    self.currentPixelBuffer = CVPixelBufferRetain(pixelBuffer);
+
+    NSLog(@"AFOMetalVideoView: ✅ Received CVPixelBufferRef. Address: %p, Format: %u, Size: %dx%d",
+          pixelBuffer,
+          (unsigned int)CVPixelBufferGetPixelFormatType(pixelBuffer),
+          (int)CVPixelBufferGetWidth(pixelBuffer),
+          (int)CVPixelBufferGetHeight(pixelBuffer));
+
+    CVMetalTextureCacheFlush(self.textureCache, 0);
 
     CVMetalTextureRef yTextureRef = NULL;
     CVMetalTextureRef uvTextureRef = NULL;
 
-    // Release existing textures to avoid drawing stale frames
-    // 在创建新纹理之前，确保清除旧纹理引用
-    _yTexture = nil;
-    _uvTexture = nil;
-
-    // Y-plane
-    CVReturn status = CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
-                                                                _textureCache,
-                                                                self.currentPixelBuffer,
-                                                                nil,
-                                                                MTLPixelFormatR8Unorm,
-                                                                CVPixelBufferGetWidthOfPlane(pixelBuffer, 0),
-                                                                CVPixelBufferGetHeightOfPlane(pixelBuffer, 0),
-                                                                0,
-                                                                &yTextureRef);
-    if (status == kCVReturnSuccess) {
-        _yTexture = CVMetalTextureGetTexture(yTextureRef);
-        if (yTextureRef) CFRelease(yTextureRef); // 确保在获取纹理后释放引用
-        NSLog(@"AFOMetalVideoView: Successfully created Y texture. Address: %p", _yTexture); // 添加成功日志
-    } else {
-        NSLog(@"AFOMetalVideoView: Failed to create Y texture. Status: %d", status);
-        self.paused = YES; // 纹理创建失败时暂停绘制
+    CVReturn yStatus = CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
+                                                                 self.textureCache,
+                                                                 pixelBuffer,
+                                                                 nil,
+                                                                 MTLPixelFormatR8Unorm,
+                                                                 CVPixelBufferGetWidthOfPlane(pixelBuffer, 0),
+                                                                 CVPixelBufferGetHeightOfPlane(pixelBuffer, 0),
+                                                                 0,
+                                                                 &yTextureRef);
+    CVReturn uvStatus = kCVReturnError;
+    if (yStatus == kCVReturnSuccess && yTextureRef) {
+        uvStatus = CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
+                                                               self.textureCache,
+                                                               pixelBuffer,
+                                                               nil,
+                                                               MTLPixelFormatRG8Unorm,
+                                                               CVPixelBufferGetWidthOfPlane(pixelBuffer, 1),
+                                                               CVPixelBufferGetHeightOfPlane(pixelBuffer, 1),
+                                                               1,
+                                                               &uvTextureRef);
     }
 
-    // UV-plane
-    status = CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
-                                                       _textureCache,
-                                                       self.currentPixelBuffer,
-                                                       nil,
-                                                       MTLPixelFormatRG8Unorm, // 对于 NV12 格式
-                                                       CVPixelBufferGetWidthOfPlane(pixelBuffer, 1),
-                                                       CVPixelBufferGetHeightOfPlane(pixelBuffer, 1),
-                                                       1,
-                                                       &uvTextureRef);
-    if (status == kCVReturnSuccess) {
-        _uvTexture = CVMetalTextureGetTexture(uvTextureRef);
-        if (uvTextureRef) CFRelease(uvTextureRef); // 确保在获取纹理后释放引用
-        NSLog(@"AFOMetalVideoView: Successfully created UV texture. Address: %p", _uvTexture); // 添加成功日志
-    } else {
-        NSLog(@"AFOMetalVideoView: Failed to create UV texture. Status: %d", status);
-        self.paused = YES; // 纹理创建失败时暂停绘制
+    id<MTLTexture> newY = (yStatus == kCVReturnSuccess && yTextureRef) ? CVMetalTextureGetTexture(yTextureRef) : nil;
+    id<MTLTexture> newUV = (uvStatus == kCVReturnSuccess && uvTextureRef) ? CVMetalTextureGetTexture(uvTextureRef) : nil;
+
+    if (yTextureRef) {
+        CFRelease(yTextureRef);
+    }
+    if (uvTextureRef) {
+        CFRelease(uvTextureRef);
     }
 
+    if (!newY || !newUV) {
+        NSLog(@"AFOMetalVideoView: ❌ Metal texture failed (yStatus=%d uvStatus=%d) — keeping previous frame.", (int)yStatus, (int)uvStatus);
+        return;
+    }
+
+    if (_currentPixelBuffer) {
+        CVPixelBufferRelease(_currentPixelBuffer);
+    }
+    _currentPixelBuffer = CVPixelBufferRetain(pixelBuffer);
+
+    self.videoContentWidth = (CGFloat)CVPixelBufferGetWidth(pixelBuffer);
+    self.videoContentHeight = (CGFloat)CVPixelBufferGetHeight(pixelBuffer);
+    [self afo_rebuildVertexBufferForAspectFit];
+
+    self.yTexture = newY;
+    self.uvTexture = newUV;
+
+    NSLog(@"AFOMetalVideoView: ✅ Y/UV textures updated, drawing.");
+    self.paused = NO;
+    [self setNeedsDisplay];
 }
 
 - (void)dealloc {
-    if (_textureCache) {
-        CFRelease(_textureCache);
-        _textureCache = NULL;
+    if (self.textureCache) {
+        CFRelease(self.textureCache);
+        self.textureCache = NULL;
     }
-    if (_currentPixelBuffer) { // 在 dealloc 中释放持有的 pixelBuffer
+    if (_currentPixelBuffer) {
         CVPixelBufferRelease(_currentPixelBuffer);
         _currentPixelBuffer = NULL;
     }
+    NSLog(@"AFOMetalVideoView: dealloc called.");
 }
 
 @end

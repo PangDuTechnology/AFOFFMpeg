@@ -45,22 +45,28 @@
         self.audioStream = audioIndex;
         NSLog(@"AFOTotalDispatchManager: Video stream index: %ld, Audio stream index: %ld", (long)videoIndex, (long)audioIndex);
     }];
+    AFOMediaLog(@"AFOTotalDispatchManager: Called AFOConfigurationManager configurationStreamPath. Waiting for callback.");
     ///--- play audio
     [AFOConfigurationManager configurationForPath:strPath stream:self.audioStream block:^(AVCodec * _Nullable codec, AVFormatContext * _Nullable format, AVCodecContext * _Nullable context, NSInteger videoStream, NSInteger audioStream, NSData * _Nullable sps, NSData * _Nullable pps) {
         [self.audioManager audioFormatContext:format codecContext:context index:self.audioStream];
         [self playAudio];
     }];
+    AFOMediaLog(@"AFOTotalDispatchManager: Called AFOConfigurationManager configurationForPath for audio. Waiting for callback.");
     ///------ display video
     [AFOConfigurationManager configurationForPath:strPath stream:self.videoStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream, NSData * _Nullable sps, NSData * _Nullable pps) {
+        AFOMediaLog(@"AFOTotalDispatchManager: Received AFOConfigurationManager video callback. format: %p, context: %p", format, context);
         StrongObject(self);
         // Set SPS and PPS on videoManager before calling displayVedioFormatContext
         //        self.videoManager.sps = sps;
         //        self.videoManager.pps = pps;
+        AFOMediaLog(@"AFOTotalDispatchManager: Calling videoManager displayVedioFormatContext. format: %p, context: %p", format, context);
         [self.videoManager displayVedioFormatContext:format codecContext:context index:self.videoStream block:^(NSError *error, CVPixelBufferRef pixelBuffer, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds, BOOL isVideoEnd) {
+            AFOMediaLog(@"AFOTotalDispatchManager: AFOConfigurationManager callback for video. format: %p, context: %p", format, context);
             NSLog(@"AFOTotalDispatchManager: pixelBuffer received: %p", pixelBuffer);
             block(error,pixelBuffer,totalTime,currentTime,totalSeconds,cuttentSeconds, isVideoEnd);
         }];
     }];
+    AFOMediaLog(@"AFOTotalDispatchManager: Called AFOConfigurationManager configurationForPath for video. Waiting for callback.");
 }
 - (void)playAudio{
     [self.audioManager playAudio];
@@ -101,6 +107,7 @@
 }
 #pragma mark ------ dealloc
 - (void)dealloc{
+    AFOMediaLog(@"AFOTotalDispatchManager: Deallocating instance: %p", self); // 添加日志
     NSLog(@"AFOTotalDispatchManager dealloc");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     // 尝试停止音视频管理器中的相关 dispatch 对象

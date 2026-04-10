@@ -27,8 +27,14 @@ static NSDictionary *codeDictionary;
                                AFOPlayMediaOpenDecoderFailure,
                            @(AFOPlayMediaErrorCodeDecoderImageFailure):
                                AFOPlayMediaDecoderImageFailure,
+                           @(AFOPlayMediaErrorCodeDecoderPacketFailure):
+                               AFOPlayMediaDecoderPacketFailure,
+                           @(AFOPlayMediaErrorCodeDecoderFrameFailure):
+                               AFOPlayMediaDecoderFrameFailure,
                            @(AFOPlayMediaErrorCodeAllocateCodecContextFailure) :
                                AFOPlayMediaAllocateCodecContextFailure,
+                           @(AFOPlayMediaErrorCodeMemoryAllocationFailure):
+                               AFOPlayMediaMemoryAllocationFailure,
                            @(AFOPlayMediaErrorCodeImageorFormatConversionFailure) : AFOPlayMediaImageorFormatConversionFailure,
                            @(AFOPlayMediaErrorCodeRetrieveStreamInformationFailure):
                                AFOPlayMediaRetrieveStreamInformationFailure
@@ -37,8 +43,12 @@ static NSDictionary *codeDictionary;
 }
 #pragma mark ------ 根据errorCode返回Error
 + (NSError *)errorCode:(AFOPlayMediaErrorCode)errorCode{
-    NSError *error = [NSError errorWithDomain:codeDictionary[@(errorCode)] code:errorCode userInfo:codeDictionary];
-    return error;
+    NSString *message = codeDictionary[@(errorCode)];
+    if (message.length == 0) {
+        message = [NSString stringWithFormat:@"未注册的错误码: %ld", (long)errorCode];
+    }
+    // 历史实现把中文说明放在 domain 字段；userInfo 沿用原字典（勿传 nil，否则 NSInvalidArgumentException）。
+    return [NSError errorWithDomain:message code:errorCode userInfo:codeDictionary];
 }
 #pragma mark ------------ property
 @end

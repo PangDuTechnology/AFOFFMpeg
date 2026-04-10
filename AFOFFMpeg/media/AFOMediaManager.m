@@ -7,9 +7,13 @@
 //
 
 #import <VideoToolbox/VideoToolbox.h>
+#include <string.h>
 #include <libavutil/hwcontext.h>
 #include <libavutil/opt.h>
 #include <libavutil/pixfmt.h>
+#include <libavutil/pixdesc.h> // 导入 av_get_pix_fmt_name 函数声明
+#include <libswscale/swscale.h> // 导入 libswscale
+#include <libavutil/error.h> // 导入 av_make_error_string 函数声明
 #import "AFOMediaManager.h"
 #import <AFOGitHub/INTUAutoRemoveObserver.h>
 #import <AFOFoundation/AFOWeakInstance.h>
@@ -17,13 +21,41 @@
 #import "AFOMediaManager.h"
 #import "AFOMediaErrorCodeManager.h"
 #import "AFOCountdownManager.h"
+
+#include <libavutil/frame.h>
+#include <libavcodec/avcodec.h>
+
+/// 是否为 VideoToolbox 硬件帧（含不同 FFmpeg 版本下的 videotoolbox / videotoolbox_vld 等命名）。
+static BOOL AFO_AVFrameIsVideoToolboxHardware(AVFrame *frame) {
+    if (!frame) {
+        return NO;
+    }
+    if (frame->format == AV_PIX_FMT_VIDEOTOOLBOX || frame->format == AV_PIX_FMT_VDA) {
+        return YES;
+    }
+    const char *name = av_get_pix_fmt_name(frame->format);
+    return (name != NULL && strstr(name, "videotoolbox") != NULL);
+}
+
+/// VideoToolbox 解码输出：CVPixelBufferRef 以指针宽度保存在 data[3]，需经 uintptr_t 再转为 CVPixelBufferRef。
+static CVPixelBufferRef AFO_CVPixelBufferFromVideoToolboxFrame(AVFrame *frame) {
+    if (!AFO_AVFrameIsVideoToolboxHardware(frame)) {
+        return NULL;
+    }
+    return (CVPixelBufferRef)(uintptr_t)frame->data[3];
+}
+
 @interface AFOMediaManager (){
     AVFormatContext     *avFormatContext;
     AVCodecContext      *avCodecContext;
     AVFrame             *avFrame;
+    struct SwsContext   *swsContext; // 声明 SwsContext 成员变量
+    BOOL                softwareFallbackAttempted;
 }
-- (BOOL)avReadFrame:(NSInteger)duration;
+- (nullable NSError *)avReadFrame:(NSInteger)duration;
 - (void)freeResources;
+- (BOOL)afo_isVideoDecoderHardwareAccelerated;
+- (BOOL)afo_reopenVideoDecoderSoftwareOnly;
 /**输出视频Size*/
 @property (nonatomic, assign) CGSize         outSize;
 /**视频的长度，秒为单位*/
@@ -71,20 +103,25 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
                      codecContext:(AVCodecContext *)codecContext
                             index:(NSInteger)index
                             block:(displayVedioFrameBlock)block{
-    NSLog(@"AFOMediaManager: displayVedioFormatContext called. Video Stream Index: %ld", (long)index);
+    AFOMediaLog(@"AFOMediaManager: displayVedioFormatContext called. Self: %p, formatContext (param): %p, codecContext (param): %p, Video Stream Index: %ld", self, formatContext, codecContext, (long)index);
+
     self.videoStream = index;
     avCodecContext = codecContext;
     avFormatContext =formatContext;
+    AFOMediaLog(@"AFOMediaManager: After assigning avFormatContext. Self: %p, avFormatContext (member): %p", self, self->avFormatContext);
+
+    AFOMediaLog(@"AFOMediaManager: Initial duration: %lld, fps: %f", self.duration, self.fps);
     avFrame = av_frame_alloc();
+    softwareFallbackAttempted = NO;
     
-    // 检查是否配置了硬件解码
-    self.isHardwareDecoding = YES;//(avCodecContext->hw_device_ctx != NULL);
-    if (self.isHardwareDecoding) {
-        NSLog(@"AFOMediaManager: Hardware decoding enabled.");
-        // 如果是硬件解码，需要创建 VTDecompressionSession
-        WeakObject(self);
-        ///------
-        [self.queueManager addCountdownActionFps:self.fps duration:weakself.duration block:^(NSNumber *isEnd) {
+    // VideoToolbox 可能只有 hwaccel_context，无 hw_device_ctx；软解时二者均为空。
+    self.isHardwareDecoding = [self afo_isVideoDecoderHardwareAccelerated];
+    AFOMediaLog(@"AFOMediaManager: hardware decode %s — starting countdown frame pump.", self.isHardwareDecoding ? "yes" : "no (software)");
+    (void)self.queueManager;
+    AFOMediaLog(@"AFOMediaManager: queueManager is initialized: %p", self.queueManager);
+    WeakObject(self);
+    AFOMediaLog(@"AFOMediaManager: Calling addCountdownActionFps with fps: %f, duration: %lld", self.fps, weakself.duration);
+    [self.queueManager addCountdownActionFps:self.fps duration:weakself.duration block:^(NSNumber *isEnd) {
             StrongObject(self); // Create strong reference
             if ([isEnd boolValue]) {
                 block(NULL,
@@ -100,62 +137,230 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
                 }
                 return ;
             }else{
-                NSLog(@"AFOMediaManager: Countdown block executing. Attempting to read frame.");
-                if ([self avReadFrame:self.videoStream]) {
-                    if (self.isHardwareDecoding) {
-                        // 硬件解码，直接从 avFrame 获取 CVPixelBufferRef
-                        CVPixelBufferRef pixelBuffer = (CVPixelBufferRef)self->avFrame->data[3]; // VT 解码后的 CVPixelBufferRef 在 data[3]
+                AFOMediaLog(@"AFOMediaManager: Countdown block executing. Attempting to read frame.");
+                NSError *readFrameError = [self avReadFrame:self.videoStream];
+                if (!readFrameError) {
+                    CVPixelBufferRef pixelBuffer = nil;
+                    BOOL frameIsVT = AFO_AVFrameIsVideoToolboxHardware(self->avFrame);
+                    if (frameIsVT) {
+                        // 硬件帧：直接使用 CVPixelBuffer，禁止对 videotoolbox* 走 libswscale（不支持作输入）。
+                        pixelBuffer = AFO_CVPixelBufferFromVideoToolboxFrame(self->avFrame);
                         if (pixelBuffer) {
-                            block(nil,
-                                  pixelBuffer,
-                                  [AFOMediaTimer timeFormatShort:self.duration],
-                                  [AFOMediaTimer currentTime:self.nowTime],
-                                  self.duration,
-                                  self.nowTime,
-                                  NO // 添加 isVideoEnd 参数
-                                  );
-                            NSLog(@"AFOMediaManager: Output CVPixelBufferRef. Address: %p, Pixel Format: %u, Timestamp: %lld", pixelBuffer, CVPixelBufferGetPixelFormatType(pixelBuffer), self.nowTime);
+                            AFOMediaLog(@"AFOMediaManager: VideoToolbox frame -> CVPixelBuffer %p, FourCC: %u, t: %lld", pixelBuffer, (unsigned)CVPixelBufferGetPixelFormatType(pixelBuffer), self.nowTime);
                         } else {
-                            NSLog(@"AFOMediaManager: Hardware decoded frame is nil.");
+                            AFOMediaLog(@"AFOMediaManager: VideoToolbox frame but data[3] has no CVPixelBuffer; cannot fall back to sws for this format.");
                             block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeDecoderImageFailure], nil, nil, nil, 0, 0, NO);
+                            return;
+                        }
+                    }
+
+                    if (!frameIsVT) {
+                        AFOMediaLog(@"AFOMediaManager: Software frame path (swscale). src fmt: %s", av_get_pix_fmt_name(self->avFrame->format));
+                        if (![self setupSwsContextWithSrcPixelFormat:self->avFrame->format]) {
+                            AFOMediaLog(@"AFOMediaManager: Failed to setup SwsContext for software decoding.");
+                            block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeImageorFormatConversionFailure], nil, nil, nil, 0, 0, NO);
+                            return;
                         }
                         
+                        // 创建 CVPixelBufferRef 用于软解码输出
+                        NSDictionary *pixelBufferAttributes = @{
+                            (id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange), // NV12
+                            (id)kCVPixelBufferWidthKey : @(avCodecContext->width),
+                            (id)kCVPixelBufferHeightKey : @(avCodecContext->height),
+                            (id)kCVPixelBufferBytesPerRowAlignmentKey : @(avCodecContext->width) // 行字节对齐
+                        };
+                        
+                        CVReturn status = CVPixelBufferCreate(kCFAllocatorDefault,
+                                                              avCodecContext->width,
+                                                              avCodecContext->height,
+                                                              kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange, // NV12
+                                                              (__bridge CFDictionaryRef)pixelBufferAttributes,
+                                                              &pixelBuffer);
+                        
+                        if (status != kCVReturnSuccess || !pixelBuffer) {
+                            AFOMediaLog(@"AFOMediaManager: Failed to create CVPixelBufferRef for software decoding. Status: %d", status);
+                            block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeMemoryAllocationFailure], nil, nil, nil, 0, 0, NO);
+                            return;
+                        }
+                        
+                        // 获取 CVPixelBufferRef 的数据指针
+                        CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+                        uint8_t *dest[4] = {0};
+                        int dest_linesize[4] = {0};
+                        
+                        dest[0] = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
+                        dest_linesize[0] = (int)CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0);
+                        dest[1] = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
+                        dest_linesize[1] = (int)CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 1);
+                        
+                        // 进行像素格式转换
+                        sws_scale(swsContext,
+                                  (const uint8_t * const *)avFrame->data,
+                                  avFrame->linesize,
+                                  0,
+                                  avCodecContext->height,
+                                  dest,
+                                  dest_linesize);
+                        
+                        CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+                        
+                        AFOMediaLog(@"AFOMediaManager: Software decoded frame converted to CVPixelBufferRef. Address: %p, Pixel Format: %u, Timestamp: %lld, Width: %zu, Height: %zu, BytesPerRowOfPlane0: %zu, BytesPerRowOfPlane1: %zu", pixelBuffer, CVPixelBufferGetPixelFormatType(pixelBuffer), self.nowTime, CVPixelBufferGetWidth(pixelBuffer), CVPixelBufferGetHeight(pixelBuffer), CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0), CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 1));
+                    }
+
+                    if (pixelBuffer) {
+                        // 硬件解码成功或软解码成功产生了 CVPixelBufferRef
+                        block(nil,
+                              pixelBuffer,
+                              [AFOMediaTimer timeFormatShort:self.duration],
+                              [AFOMediaTimer currentTime:self.nowTime],
+                              self.duration,
+                              self.nowTime,
+                              NO // 添加 isVideoEnd 参数
+                              );
+                    } else {
+                        // 硬件解码失败且软解码也未产生 CVPixelBufferRef（或未实现软解码转换）
+                        AFOMediaLog(@"AFOMediaManager: No valid pixel buffer for rendering.");
+                        block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeDecoderImageFailure], nil, nil, nil, 0, 0, NO);
                     }
                 }else{
-                    block(nil, nil, nil, nil, 0, 0, NO);
+                    block(readFrameError, nil, nil, nil, 0, 0, NO);
                 }
             }
         }];
-    }
 }
+
+#pragma mark ------ setup SwsContext
+- (BOOL)setupSwsContextWithSrcPixelFormat:(enum AVPixelFormat)srcPixelFormat {
+    if (swsContext) {
+        sws_freeContext(swsContext);
+        swsContext = NULL;
+    }
+    
+    // 设置输出像素格式为 NV12，这是 iOS 硬件加速最常用的 YUV 格式
+    enum AVPixelFormat outputPixelFormat = AV_PIX_FMT_NV12; 
+    
+    swsContext = sws_getContext(avCodecContext->width,
+                                avCodecContext->height,
+                                srcPixelFormat,
+                                avCodecContext->width,
+                                avCodecContext->height,
+                                outputPixelFormat,
+                                SWS_FAST_BILINEAR, // 快速双线性插值
+                                NULL, NULL, NULL);
+    
+    if (!swsContext) {
+        AFOMediaLog(@"AFOMediaManager: Could not initialize SwsContext for software scaling.");
+        return NO;
+    }
+    AFOMediaLog(@"AFOMediaManager: SwsContext OK: %s -> %s", av_get_pix_fmt_name(srcPixelFormat), av_get_pix_fmt_name(outputPixelFormat));
+    return YES;
+}
+
 #pragma mark ------ stepFrame
-- (BOOL)avReadFrame:(NSInteger)duration {
+- (BOOL)afo_isVideoDecoderHardwareAccelerated {
+    if (!avCodecContext) {
+        return NO;
+    }
+    if (avCodecContext->hw_device_ctx) {
+        return YES;
+    }
+    if (avCodecContext->hwaccel_context) {
+        return YES;
+    }
+    if (avCodecContext->hwaccel) {
+        return YES;
+    }
+    return NO;
+}
+
+/// 释放硬件解码器并按当前流 codecpar 重建纯软解（不设置 get_format / VideoToolbox）。
+- (BOOL)afo_reopenVideoDecoderSoftwareOnly {
+    if (!avFormatContext || self.videoStream < 0 || (unsigned)self.videoStream >= avFormatContext->nb_streams) {
+        return NO;
+    }
+    AVStream *stream = avFormatContext->streams[self.videoStream];
+    if (swsContext) {
+        sws_freeContext(swsContext);
+        swsContext = NULL;
+    }
+    avcodec_free_context(&avCodecContext);
+    avCodecContext = avcodec_alloc_context3(NULL);
+    if (!avCodecContext) {
+        return NO;
+    }
+    if (avcodec_parameters_to_context(avCodecContext, stream->codecpar) < 0) {
+        avcodec_free_context(&avCodecContext);
+        return NO;
+    }
+    av_codec_set_pkt_timebase(avCodecContext, stream->time_base);
+    const AVCodec *decoder = avcodec_find_decoder(avCodecContext->codec_id);
+    if (!decoder) {
+        avcodec_free_context(&avCodecContext);
+        return NO;
+    }
+    if (avcodec_open2(avCodecContext, decoder, NULL) < 0) {
+        avcodec_free_context(&avCodecContext);
+        return NO;
+    }
+    self.isHardwareDecoding = NO;
+    if (avFrame) {
+        av_frame_unref(avFrame);
+    }
+    AFOMediaLog(@"AFOMediaManager: Switched to software decoder. pix_fmt=%s", av_get_pix_fmt_name(avCodecContext->pix_fmt));
+    return YES;
+}
+
+- (nullable NSError *)avReadFrame:(NSInteger)duration {
     AVPacket  packet;
-    NSLog(@"AFOMediaManager: avReadFrame called for stream: %ld", (long)duration);
+    AFOMediaLog(@"AFOMediaManager: avReadFrame called for stream: %ld", (long)duration);
     while (av_read_frame(avFormatContext, &packet) >= 0) {
+        AFOMediaLog(@"AFOMediaManager: Packet read. Stream Index: %d, Size: %d, PTS: %lld, DTS: %lld", packet.stream_index, packet.size, packet.pts, packet.dts);
         if (packet.stream_index == duration) {
-            NSLog(@"AFOMediaManager: Found video packet. Size: %d, DTS: %lld, PTS: %lld", packet.size, packet.dts, packet.pts);
+            AFOMediaLog(@"AFOMediaManager: Found video packet. Size: %d, DTS: %lld, PTS: %lld", packet.size, packet.dts, packet.pts);
             int ret = avcodec_send_packet(avCodecContext, &packet);
+            if (ret != 0 && ret != AVERROR(EAGAIN)) {
+                if (!softwareFallbackAttempted && [self afo_isVideoDecoderHardwareAccelerated]) {
+                    AFOMediaLog(@"AFOMediaManager: send_packet failed (%d), trying software decoder fallback.", ret);
+                    softwareFallbackAttempted = YES;
+                    if ([self afo_reopenVideoDecoderSoftwareOnly]) {
+                        ret = avcodec_send_packet(avCodecContext, &packet);
+                    }
+                }
+            }
             if (ret == 0) {
-                while (!avcodec_receive_frame(avCodecContext, avFrame)) {
-                    NSLog(@"AFOMediaManager: Successfully decoded video frame. PTS: %lld", avFrame->pts);
+                AFOMediaLog(@"AFOMediaManager: Packet sent to decoder successfully.");
+                int frameReceiveRet;
+                while ((frameReceiveRet = avcodec_receive_frame(avCodecContext, avFrame)) >= 0) {
+                    if (frameReceiveRet < 0 && frameReceiveRet != AVERROR(EAGAIN) && frameReceiveRet != AVERROR_EOF) {
+                        char errbuf[AV_ERROR_MAX_STRING_SIZE];
+                        av_make_error_string(errbuf, AV_ERROR_MAX_STRING_SIZE, frameReceiveRet);
+                        AFOMediaLog(@"AFOMediaManager: avcodec_receive_frame failed with error: %d (%s)", frameReceiveRet, errbuf);
+                        av_packet_unref(&packet);
+                        return [AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeDecoderFrameFailure];
+                    }
+                    AFOMediaLog(@"AFOMediaManager: Successfully decoded video frame. PTS: %lld, Width: %d, Height: %d, Pixel Format: %s", avFrame->pts, avFrame->width, avFrame->height, av_get_pix_fmt_name(avFrame->format));
                     double frameRate = av_q2d([self avStream] -> avg_frame_rate);
                     frameRate += avFrame->repeat_pict * (frameRate * 0.5);
                     self.nowTime = self.currentTime;
                     av_packet_unref(&packet);
-                    return YES;
+                    return nil;
                 }
-            }else{
-                NSLog(@"AFOMediaManager: avcodec_send_packet failed with error: %d", ret);
-                return NO;
+                av_packet_unref(&packet);
+                continue;
+            } else {
+                char errbuf[AV_ERROR_MAX_STRING_SIZE];
+                av_make_error_string(errbuf, AV_ERROR_MAX_STRING_SIZE, ret);
+                AFOMediaLog(@"AFOMediaManager: avcodec_send_packet failed with error: %d (%s)", ret, errbuf);
+                av_packet_unref(&packet);
+                return [AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeDecoderPacketFailure];
             }
         } else {
             // Unref other stream packets to avoid memory leaks
             av_packet_unref(&packet);
         }
     }
-    NSLog(@"AFOMediaManager: End of file or no more frames to read.");
-    return YES;
+    AFOMediaLog(@"AFOMediaManager: End of file or no more frames to read.");
+    return nil;
 }
 #pragma mark ------ AFOCountDownManagerDelegate
 - (void)vedioFilePlayingDelegate{
@@ -183,28 +388,55 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
         avcodec_free_context(&avCodecContext);
         avCodecContext = NULL;
     }
+    //---
+    if (swsContext) {
+        sws_freeContext(swsContext);
+        swsContext = NULL;
+    }
 
     _isRelease = YES;
 }
 #pragma mark ------------ property
 - (AVStream *)avStream{
+    if (!avFormatContext || self.videoStream < 0 || self.videoStream >= avFormatContext->nb_streams) {
+        AFOMediaLog(@"AFOMediaManager: avStream is NULL or videoStream index is invalid.");
+        return NULL;
+    }
     AVStream *stream = avFormatContext -> streams[self.videoStream];
     return stream;
 }
 - (int64_t)duration{
-    int64_t totalTime = [self avStream] -> duration * av_q2d([self avStream] -> time_base);
-    if (totalTime > 0) {
-          return [self avStream] -> duration * av_q2d([self avStream] -> time_base);
+    AVStream *stream = [self avStream];
+    if (!stream) {
+        AFOMediaLog(@"AFOMediaManager: avStream is NULL in duration getter. Returning 0.");
+        // Fallback to avFormatContext->duration if avStream is not available
+        if (avFormatContext) {
+             return [AFOMediaTimer totalNumberSeconds:avFormatContext->duration];
+        }
+        return 0;
     }
-    return  [AFOMediaTimer totalNumberSeconds:avFormatContext->duration];
+    int64_t totalTime = stream -> duration * av_q2d(stream -> time_base);
+    if (totalTime > 0) {
+          return stream -> duration * av_q2d(stream -> time_base);
+    }
+    // If stream duration is not reliable, use format context duration
+    if (avFormatContext) {
+        return  [AFOMediaTimer totalNumberSeconds:avFormatContext->duration];
+    }
+    return 0; // Default to 0 if all else fails
 }
 - (int64_t)currentTime{
     AVRational timeBase = avFormatContext->streams[self.videoStream]->time_base;
     return avFrame->pts * (double)timeBase.num / timeBase.den;
 }
 - (CGFloat)fps{
-    if([self avStream] ->avg_frame_rate.den && [self avStream] ->avg_frame_rate.num){
-        return av_q2d([self avStream] -> avg_frame_rate);
+    AVStream *stream = [self avStream];
+    if (!stream) {
+        AFOMediaLog(@"AFOMediaManager: avStream is NULL in fps getter. Returning default 30.");
+        return 30;
+    }
+    if(stream ->avg_frame_rate.den && stream ->avg_frame_rate.num){
+        return av_q2d(stream -> avg_frame_rate);
     }
     return 30;
 }
@@ -213,15 +445,18 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
 }
 - (AFOCountdownManager *)queueManager{
     if (!_queueManager) {
+        AFOMediaLog(@"AFOMediaManager: Initializing queueManager (AFOCountdownManager).");
         _queueManager = [[AFOCountdownManager alloc] init];
     }
+    AFOMediaLog(@"AFOMediaManager: queueManager getter called. Current instance: %p", _queueManager);
     return _queueManager;
 }
 
 #pragma mark ------------ dealloc
 - (void)dealloc{
+    AFOMediaLog(@"AFOMediaManager: Deallocating instance: %p", self); // 添加日志
     [self freeResources];
-    NSLog(@"AFOPlayMediaManager dealloc");
+    AFOMediaLog(@"AFOPlayMediaManager dealloc");
 }
 //                    [self.delegate videoTimeStamp:av_frame_get_best_effort_timestamp(avFrame) * av_q2d([self avStream] -> time_base) position:_videoTimeBase frameRate:frameRate];
 
@@ -235,7 +470,7 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
                                              CMTime presentationTimeStamp,
                                              CMTime presentationDuration) {
     if (status != noErr) {
-        NSLog(@"VideoToolbox Decompression failed: %d", (int)status);
+        AFOMediaLog(@"VideoToolbox Decompression failed: %d", (int)status);
         return;
     }
 

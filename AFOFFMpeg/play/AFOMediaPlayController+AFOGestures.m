@@ -34,8 +34,16 @@
 #pragma mark ------
 - (void)addMeidaView{
     if (!self.mediaView) {
-        self.mediaView = [[AFOMetalVideoView alloc] initWithFrame:self.view.frame]; // AFOMetalVideoView 不需要 delegate
-        [self.view addSubview:self.mediaView];
+        AFOMetalVideoView *metalView = [[AFOMetalVideoView alloc] initWithFrame:CGRectZero];
+        metalView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addSubview:metalView];
+        [NSLayoutConstraint activateConstraints:@[
+            [metalView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+            [metalView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
+            [metalView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+            [metalView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+        ]];
+        self.mediaView = metalView;
         ///------
         self.isShow = @(NO);
         [self.navigationController setNavigationBarHidden:[self.isShow boolValue] animated:YES];

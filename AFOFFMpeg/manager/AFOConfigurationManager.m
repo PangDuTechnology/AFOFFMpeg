@@ -12,6 +12,7 @@
 #include <libavcodec/videotoolbox.h>
 #include <libavutil/hwcontext.h>
 #include <libavutil/hwcontext_videotoolbox.h>
+#import "AFOMediaManager.h"
 // 辅助函数：从 extradata 中提取 SPS 和 PPS
 static void getSPSAndPPSFromExtraData(const uint8_t *extradata, int extradata_size, NSData **spsData, NSData **ppsData) {
     if (!extradata || extradata_size < 7) { // Minimum size for AVCC extradata
@@ -82,7 +83,9 @@ static void getSPSAndPPSFromExtraData(const uint8_t *extradata, int extradata_si
                                       NSData * _Nullable sps,
                                       NSData * _Nullable pps))block{
     [AFOMediaConditional mediaSesourcesConditionalPath:strPath block:^(NSError *error, NSInteger videoIndex, NSInteger audioIndex) {
+        AFOMediaLog(@"AFOConfigurationManager: mediaSesourcesConditionalPath callback. Error: %ld, videoIndex: %ld, audioIndex: %ld", (long)error.code, (long)videoIndex, (long)audioIndex);
         if (error.code == 0) {
+            AFOMediaLog(@"AFOConfigurationManager: Initializing FFmpeg contexts for stream: %ld", (long)stream);
             ///------------ video
            AVFormatContext *avFormatContext = avformat_alloc_context();
             avformat_open_input(&avFormatContext, [strPath UTF8String], NULL, NULL);
@@ -100,6 +103,7 @@ static void getSPSAndPPSFromExtraData(const uint8_t *extradata, int extradata_si
             if (avCodecContext->extradata_size > 0 && avCodecContext->extradata != NULL) {
                 getSPSAndPPSFromExtraData(avCodecContext->extradata, avCodecContext->extradata_size, &spsData, &ppsData);
             }
+            AFOMediaLog(@"AFOConfigurationManager: Calling block with FFmpeg contexts. avFormatContext: %p, avCodecContext: %p", avFormatContext, avCodecContext);
             block(avCodec,avFormatContext,avCodecContext,videoIndex,audioIndex,spsData,ppsData);
         }else{
             block(NULL,NULL,NULL,0,0,nil,nil);

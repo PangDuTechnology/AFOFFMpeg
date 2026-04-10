@@ -14,6 +14,17 @@
 #import <AFOSchedulerCore/AFOSchedulerPassValueDelegate.h>
 #import "AFOMediaPlayControllerCategory.h"
 #import "AFOTotalDispatchManager.h"
+
+/// Pod 实际指向的 `../../AFORouter` 头文件未必包含扩展属性；在播放器内用静态池延长调度器生命周期，避免依赖 AFORouter 私有 API。
+static NSMutableArray<AFOTotalDispatchManager *> *AFOMediaPlayController_retainedDispatchManagers(void) {
+    static NSMutableArray<AFOTotalDispatchManager *> *pool;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        pool = [NSMutableArray array];
+    });
+    return pool;
+}
+
 @interface AFOMediaPlayController ()<AFOSchedulerPassValueDelegate>
 @property (nonatomic, strong) AFOTotalDispatchManager       *mediaManager;
 @property (nonatomic, copy)   NSString                   *strPath;
@@ -33,14 +44,28 @@
     self.tabBarController.tabBar.hidden = NO;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaQueueManagerTimerCancel" object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaSuspendedManager" object:nil];
+    
+    // 关键：不要立即释放 mediaManager，只停止播放
+    [self.mediaManager stopAudio];
 }
 #pragma mark ------------ viewDidLoad
+// 2. 确保 mediaManager 是强持有，且在 viewDidLoad 中立即创建
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"AFOMediaPlayController: viewDidLoad called. Self address: %p", self);
     NSLog(@"AFOMediaPlayController: Custom viewDidLoad code executed.");
     self.view.backgroundColor = [UIColor whiteColor];
     [INTUAutoRemoveObserver addObserver:self selector:@selector(restartMediaFile) name:@"AFORestartMeidaFileNotification" object:nil];
+    
+    // 强制创建 mediaManager
+    [self mediaManager];
+    
+    [self addMeidaView];
+    
+    if (self.strPath.length > 0) {
+        NSLog(@"AFOMediaPlayController: Starting playback in viewDidLoad with path: %@", self.strPath);
+        [self playerVedioWithPath:self.strPath];
+    }
 }
 #pragma mark ------
 - (void)viewWillLayoutSubviews{
@@ -56,17 +81,43 @@
     self.orientation = [[parameters objectForKey:@"direction"] integerValue];
     self.strPath = value;
     self.title = parameters[@"title"];
-    [self playerVedioWithPath:value];
+    /// 播放改到 `viewDidLoad`（已 `addMeidaView`）之后；若将来在已展示页面上再次注入参数，可立即开播。
+    if (self.isViewLoaded) {
+        [self addMeidaView];
+        [self playerVedioWithPath:value];
+    }
 }
 #pragma mark ------
 - (void)playerVedioWithPath:(NSString *)path{
+    if (path.length == 0) {
+        NSLog(@"AFOMediaPlayController: playerVedioWithPath called with empty path!");
+        return;
+    }
+    
+    NSLog(@"AFOMediaPlayController: playerVedioWithPath called with path: %@", path);
+    NSLog(@"AFOMediaPlayController: mediaView address before playback: %p", self.mediaView);
+    
     WeakObject(self);
+    (void)self.mediaManager;
+    
+    // ... 现有静态池代码 ...
+    
     [self.mediaManager displayVedioForPath:path block:^(NSError * _Nullable error, CVPixelBufferRef  _Nullable pixelBuffer, NSString * _Nullable totalTime, NSString * _Nullable currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds, BOOL isVideoEnd) {
         StrongObject(self);
-        if (!error.code && pixelBuffer) {
+        
+        NSLog(@"AFOMediaPlayController: Video callback received. Error: %@, pixelBuffer: %p, isVideoEnd: %d",
+              error, pixelBuffer, isVideoEnd);
+        
+        if (error) {
+            NSLog(@"AFOMediaPlayController: ERROR - %@", error.localizedDescription);
+            return;
+        }
+        
+        if (pixelBuffer) {
+            NSLog(@"AFOMediaPlayController: ✅ Got valid pixelBuffer, sending to mediaView (%p)", self.mediaView);
             [self.mediaView displayPixelBuffer:pixelBuffer];
-            // 可以在这里更新UI，例如时间信息等，如果需要
-            // [self.mediaView updatePlaybackUIWithTotalTime:totalTime currentTime:currentTime total:totalSeconds current:cuttentSeconds];
+        } else {
+            NSLog(@"AFOMediaPlayController: WARNING - pixelBuffer is nil!");
         }
     }];
 }
@@ -92,7 +143,7 @@
     return _mediaManager;
 }
 - (void)dealloc{
-    [self.mediaManager stopAudio];
+ //   [self.mediaManager stopAudio];
     NSLog(@"AFOMediaPlayController dealloc");
 }
 @end

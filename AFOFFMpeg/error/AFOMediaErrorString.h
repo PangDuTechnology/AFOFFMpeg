@@ -24,10 +24,16 @@ typedef NS_ENUM(NSInteger, AFOPlayMediaErrorCode) {
     AFOPlayMediaErrorCodeDecoderImageFailure              = 5 ,
     
     AFOPlayMediaErrorCodeAllocateCodecContextFailure      = 6 ,
-    AFOPlayMediaErrorCodeMemoryAllocationFailure          = 9 ,
-    AFOPlayMediaErrorCodeImageorFormatConversionFailure   = 7 ,
     
-    AFOPlayMediaErrorCodeRetrieveStreamInformationFailure = 8
+    AFOPlayMediaErrorCodeDecoderPacketFailure             = 7 ,
+    
+    AFOPlayMediaErrorCodeDecoderFrameFailure              = 8 ,
+    
+    AFOPlayMediaErrorCodeMemoryAllocationFailure          = 9 ,
+    
+    AFOPlayMediaErrorCodeImageorFormatConversionFailure   = 10 ,
+    
+    AFOPlayMediaErrorCodeRetrieveStreamInformationFailure = 11
 };
 ///------ AFOPlayMediaErrorNone
 static const NSString *AFOMeidaFaileNone          = @"成功!";
@@ -46,6 +52,12 @@ static const NSString *AFOPlayMediaOpenDecoderFailure = @"打开解码器,失败
 
 ///------ AFOPlayMediaErrorCodeDecoderImageFailure
 static const NSString *AFOPlayMediaDecoderImageFailure = @"AVFrame中data为空";
+
+///------ AFOPlayMediaErrorCodeDecoderPacketFailure
+static const NSString *AFOPlayMediaDecoderPacketFailure = @"向解码器发送视频包失败";
+
+///------ AFOPlayMediaErrorCodeDecoderFrameFailure
+static const NSString *AFOPlayMediaDecoderFrameFailure = @"从解码器接收视频帧失败";
 
 ///------ AFOPlayMediaErrorCodeAllocateCodecContextFailure
 static const NSString *AFOPlayMediaAllocateCodecContextFailure = @"初始化AVCodecContext,失败!";
