@@ -11,6 +11,8 @@
 #import <AFORouter/AFORouter.h>
 #import <AFOFoundation/AFOFoundation.h>
 #import <AFOGitHub/INTUAutoRemoveObserver.h>
+#import <AVKit/AVKit.h>
+#import <AVFoundation/AVFoundation.h>
 #import <AFOSchedulerCore/AFOSchedulerPassValueDelegate.h>
 #import "AFOMediaPlayControllerCategory.h"
 #import "AFOTotalDispatchManager.h"
@@ -29,6 +31,7 @@ static NSMutableArray<AFOTotalDispatchManager *> *AFOMediaPlayController_retaine
 @property (nonatomic, strong) AFOTotalDispatchManager       *mediaManager;
 @property (nonatomic, copy)   NSString                   *strPath;
 @property (nonatomic, assign) UIInterfaceOrientationMask  orientation;
+@property (nonatomic, strong) AVPlayerViewController *systemPlayerController;
 @end
 
 @implementation AFOMediaPlayController
@@ -91,11 +94,22 @@ static NSMutableArray<AFOTotalDispatchManager *> *AFOMediaPlayController_retaine
 - (void)playerVedioWithPath:(NSString *)path{
     if (path.length == 0) {
         NSLog(@"AFOMediaPlayController: playerVedioWithPath called with empty path!");
+        [self showPlaybackError:@"视频路径为空"];
+        return;
+    }
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        NSLog(@"AFOMediaPlayController: file not found at path: %@", path);
+        [self showPlaybackError:@"视频文件不存在"];
         return;
     }
     
     NSLog(@"AFOMediaPlayController: playerVedioWithPath called with path: %@", path);
     NSLog(@"AFOMediaPlayController: mediaView address before playback: %p", self.mediaView);
+
+#if TARGET_OS_SIMULATOR
+    [self playWithSystemPlayer:path];
+    return;
+#endif
     
     WeakObject(self);
     (void)self.mediaManager;
@@ -110,6 +124,7 @@ static NSMutableArray<AFOTotalDispatchManager *> *AFOMediaPlayController_retaine
         
         if (error) {
             NSLog(@"AFOMediaPlayController: ERROR - %@", error.localizedDescription);
+            [self showPlaybackError:error.localizedDescription ?: @"播放器解码失败"];
             return;
         }
         
@@ -120,6 +135,28 @@ static NSMutableArray<AFOTotalDispatchManager *> *AFOMediaPlayController_retaine
             NSLog(@"AFOMediaPlayController: WARNING - pixelBuffer is nil!");
         }
     }];
+}
+
+- (void)playWithSystemPlayer:(NSString *)path {
+    NSURL *url = [NSURL fileURLWithPath:path];
+    AVPlayer *player = [AVPlayer playerWithURL:url];
+    if (!player) {
+        [self showPlaybackError:@"系统播放器初始化失败"];
+        return;
+    }
+    self.systemPlayerController = [[AVPlayerViewController alloc] init];
+    self.systemPlayerController.player = player;
+    [self presentViewController:self.systemPlayerController animated:YES completion:^{
+        [player play];
+    }];
+}
+
+- (void)showPlaybackError:(NSString *)message {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"播放失败"
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 #pragma mark ------------ system
 - (BOOL)shouldAutorotate{

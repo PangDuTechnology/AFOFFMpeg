@@ -79,6 +79,7 @@
 		DB7101432345E49200EF4590 /* AFOAudioThreadDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7101412345E49200EF4590 /* AFOAudioThreadDecoder.m */; };
 		DB7101442345E49200EF4590 /* AFOAudioThreadDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = DB7101422345E49200EF4590 /* AFOAudioThreadDecoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DBCFE38223489BF400E10EE2 /* AFOCountDownManagerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = DBCFE38123489BF400E10EE2 /* AFOCountDownManagerDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F75320707C6C99BBB4B1B634 /* libPods-AFOFFMpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 076EDEDC9A36E2FBE868B20B /* libPods-AFOFFMpeg.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -94,6 +95,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		076EDEDC9A36E2FBE868B20B /* libPods-AFOFFMpeg.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AFOFFMpeg.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		144470BA2F83DA0A003CA8FC /* AFOMetalVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMetalVideoView.h; sourceTree = "<group>"; };
 		144470BB2F83DA0A003CA8FC /* AFOMetalVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMetalVideoView.m; sourceTree = "<group>"; };
 		14F9FAB32F8390E200D98EA3 /* libobjc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libobjc.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/usr/lib/libobjc.tbd; sourceTree = DEVELOPER_DIR; };
@@ -165,6 +167,8 @@
 		24DAD2782331CA72001D2CE4 /* AFOMediaYUV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaYUV.h; sourceTree = "<group>"; };
 		24DAD2792331CA72001D2CE4 /* AFOMediaSeekFrame+Conditional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFOMediaSeekFrame+Conditional.h"; sourceTree = "<group>"; };
 		24DAD27A2331CA72001D2CE4 /* AFOMediaControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaControlView.m; sourceTree = "<group>"; };
+		2781492B6FE3185E1A7E6357 /* Pods-AFOFFMpeg.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AFOFFMpeg.debug.xcconfig"; path = "Target Support Files/Pods-AFOFFMpeg/Pods-AFOFFMpeg.debug.xcconfig"; sourceTree = "<group>"; };
+		C93F6422ABA1E8350D1B8186 /* Pods-AFOFFMpeg.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AFOFFMpeg.release.xcconfig"; path = "Target Support Files/Pods-AFOFFMpeg/Pods-AFOFFMpeg.release.xcconfig"; sourceTree = "<group>"; };
 		DB18A9982348447E0045C87A /* AFOVideoFrameRGB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOVideoFrameRGB.h; sourceTree = "<group>"; };
 		DB18A9992348447E0045C87A /* AFOVideoFrameRGB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOVideoFrameRGB.m; sourceTree = "<group>"; };
 		DB21CFDF2346E7B600DE9674 /* AFOConfigurationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFOConfigurationManager.h; sourceTree = "<group>"; };
@@ -186,6 +190,7 @@
 				24BAFECA1FF4BCD200D2EAB9 /* OpenGLES.framework in Frameworks */,
 				24BAFEC81FF4BCBF00D2EAB9 /* AVFoundation.framework in Frameworks */,
 				24BAFEC61FF4BCB400D2EAB9 /* AudioToolbox.framework in Frameworks */,
+				F75320707C6C99BBB4B1B634 /* libPods-AFOFFMpeg.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,6 +246,7 @@
 				24BAFEC91FF4BCD200D2EAB9 /* OpenGLES.framework */,
 				24BAFEC71FF4BCBF00D2EAB9 /* AVFoundation.framework */,
 				24BAFEC51FF4BCB400D2EAB9 /* AudioToolbox.framework */,
+				076EDEDC9A36E2FBE868B20B /* libPods-AFOFFMpeg.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -310,6 +316,8 @@
 		D355983552DD45887E11029F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				2781492B6FE3185E1A7E6357 /* Pods-AFOFFMpeg.debug.xcconfig */,
+				C93F6422ABA1E8350D1B8186 /* Pods-AFOFFMpeg.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -408,6 +416,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 24BAFDC31FF4B12900D2EAB9 /* Build configuration list for PBXNativeTarget "AFOFFMpeg" */;
 			buildPhases = (
+				A3110961A6BB86705AD835F4 /* [CP] Check Pods Manifest.lock */,
 				24BAFDB61FF4B12900D2EAB9 /* Sources */,
 				24BAFDB71FF4B12900D2EAB9 /* Frameworks */,
 				24BAFDB81FF4B12900D2EAB9 /* Headers */,
@@ -465,6 +474,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A3110961A6BB86705AD835F4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AFOFFMpeg-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		24BAFDB61FF4B12900D2EAB9 /* Sources */ = {
@@ -623,6 +657,7 @@
 		};
 		24BAFDC41FF4B12900D2EAB9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2781492B6FE3185E1A7E6357 /* Pods-AFOFFMpeg.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = NO;
@@ -661,6 +696,7 @@
 		};
 		24BAFDC51FF4B12900D2EAB9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C93F6422ABA1E8350D1B8186 /* Pods-AFOFFMpeg.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = NO;
