@@ -12,9 +12,14 @@
 #import <AFOGitHub/AFOGitHub.h>
 #import <AFOFoundation/AFOFoundation.h>
 #import "AFOMediaView.h"
+#import "AFOMediaPlayViewModel.h"
 
 @interface AFOMediaPlayController ()<AFOMediaViewDelegate>
 @property (nonatomic, strong) NSNumber *isShow;
+@end
+
+@interface AFOMediaPlayController (AFOViewModelAccess)
+- (AFOMediaPlayViewModel *)viewModel;
 @end
 
 @implementation AFOMediaPlayController (AFOGestures)
@@ -59,6 +64,6 @@
 }
 #pragma mark ------------ AFOMediaViewDelegate
 - (void)buttonTouchActionDelegate:(BOOL)isSuspended{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaQueueManagerTimerNotifaction:" object:@(!isSuspended)];
+    [self.viewModel setSuspended:isSuspended];
 }
 @end
