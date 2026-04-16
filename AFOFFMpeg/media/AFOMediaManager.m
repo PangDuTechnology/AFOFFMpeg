@@ -21,6 +21,7 @@
 #import "AFOMediaManager.h"
 #import "AFOMediaErrorCodeManager.h"
 #import "AFOCountdownManager.h"
+#import "AFOCountDownManagerDelegate.h"
 
 #include <libavutil/frame.h>
 #include <libavcodec/avcodec.h>
@@ -45,7 +46,7 @@ static CVPixelBufferRef AFO_CVPixelBufferFromVideoToolboxFrame(AVFrame *frame) {
     return (CVPixelBufferRef)(uintptr_t)frame->data[3];
 }
 
-@interface AFOMediaManager (){
+@interface AFOMediaManager ()<AFOCountDownManagerDelegate>{
     AVFormatContext     *avFormatContext;
     AVCodecContext      *avCodecContext;
     AVFrame             *avFrame;
@@ -130,8 +131,6 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
                       self.duration,
                       self.nowTime + 1,
                       YES); // 添加 isVideoEnd 参数
-                //
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaSuspendedManager" object:nil];
                 if ([self.delegate respondsToSelector:@selector(videoDidPauseDelegate:)]) {
                     [self.delegate videoDidPauseDelegate:YES];
                 }
@@ -227,6 +226,24 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
                 }
             }
         }];
+}
+
+- (void)setSuspended:(BOOL)suspended {
+    if (suspended) {
+        [self.queueManager pause];
+        if ([self.delegate respondsToSelector:@selector(videoDidPauseDelegate:)]) {
+            [self.delegate videoDidPauseDelegate:YES];
+        }
+    } else {
+        [self.queueManager resume];
+        if ([self.delegate respondsToSelector:@selector(videoDidPauseDelegate:)]) {
+            [self.delegate videoDidPauseDelegate:NO];
+        }
+    }
+}
+
+- (void)cancelFramePump {
+    [self.queueManager cancel];
 }
 
 #pragma mark ------ setup SwsContext
@@ -447,9 +464,30 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
     if (!_queueManager) {
         AFOMediaLog(@"AFOMediaManager: Initializing queueManager (AFOCountdownManager).");
         _queueManager = [[AFOCountdownManager alloc] init];
+        _queueManager.delegate = self;
     }
     AFOMediaLog(@"AFOMediaManager: queueManager getter called. Current instance: %p", _queueManager);
     return _queueManager;
+}
+
+#pragma mark - AFOCountDownManagerDelegate
+
+- (void)vedioFilePlayingDelegate {
+    if ([self.delegate respondsToSelector:@selector(videoNowPlayingDelegate)]) {
+        [self.delegate videoNowPlayingDelegate];
+    }
+}
+
+- (void)vedioFileSuspendedDelegate {
+    if ([self.delegate respondsToSelector:@selector(videoDidPauseDelegate:)]) {
+        [self.delegate videoDidPauseDelegate:YES];
+    }
+}
+
+- (void)vedioFileFinishDelegate {
+    if ([self.delegate respondsToSelector:@selector(videoFinishPlayingDelegate)]) {
+        [self.delegate videoFinishPlayingDelegate];
+    }
 }
 
 #pragma mark ------------ dealloc

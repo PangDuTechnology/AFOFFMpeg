@@ -38,19 +38,11 @@
 }
 
 - (void)stop {
-    [self.dispatchManager stopAudio];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaQueueManagerTimerCancel" object:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaSuspendedManager" object:nil];
+    [self.dispatchManager stop];
 }
 
 - (void)setSuspended:(BOOL)suspended {
-    // 沿用现有机制：通过通知驱动帧泵暂停/恢复，避免大范围改动底层
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaQueueManagerTimerNotifaction:" object:@(!suspended)];
-    if (suspended) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaSuspendedManager" object:nil];
-    } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaStartManagerNotifacation" object:nil];
-    }
+    [self.dispatchManager setSuspended:suspended];
 }
 
 @end

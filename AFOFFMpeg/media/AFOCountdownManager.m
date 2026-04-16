@@ -14,49 +14,53 @@
 @property (nonatomic, strong)     dispatch_source_t    sourceTimer;
 @property (nonatomic, assign)       BOOL               isFinish;
 @property (nonatomic, assign)       BOOL               isSuspend;
+@property (nonatomic, assign)       BOOL               isResumedOnce;
 @end
 @implementation AFOCountdownManager
 #pragma mark ------------ init
 - (instancetype)init{
     if (self = [super init]) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(AFOMediaQueueManagerTimerNotifaction:) name:NSStringFromSelector(@selector(AFOMediaQueueManagerTimerNotifaction:)) object:nil];
-        ///------
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(AFOMediaQueueManagerTimerCancel) name:NSStringFromSelector(@selector(AFOMediaQueueManagerTimerCancel)) object:nil];
     }
     return self;
 }
-- (void)AFOMediaQueueManagerTimerNotifaction:(NSNotification *)object{
-    NSNumber *number = object.object;
-    if ([object.object isKindOfClass:[NSNumber class]]) {
-        BOOL isPause = [number boolValue];
-        if (isPause) {
-            // 只有在计时器存在且未暂停时才暂停
-            if (_sourceTimer && !self.isSuspend) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaSuspendedManager" object:nil];
-                self.isSuspend = YES;
-            }
-        }else{
-            // 只有在计时器存在且已暂停时才恢复
-            if (_sourceTimer && self.isSuspend) {
-                self.isSuspend = NO;
-                if (!self.isFinish) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaStartManagerNotifacation" object:nil];
-                }
-                else{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFORestartMeidaFileNotification" object:nil];
-                }
-            }
+
+- (void)pause {
+    if (!_sourceTimer || self.isSuspend) {
+        return;
+    }
+    if (self.isResumedOnce) {
+        dispatch_suspend(_sourceTimer);
+        self.isSuspend = YES;
+        if ([self.delegate respondsToSelector:@selector(vedioFileSuspendedDelegate)]) {
+            [self.delegate vedioFileSuspendedDelegate];
         }
     }
 }
-- (void)AFOMediaQueueManagerTimerCancel{
-    if (_sourceTimer) {
-        // 在取消之前，确保 dispatch source 不处于暂停状态。
-        // 如果 self.isSuspend 为 YES，表示我们手动暂停了它，需要恢复。
-        // dispatch_resume 对非暂停的源调用是安全的。
-        dispatch_source_cancel(_sourceTimer);
-        _sourceTimer = nil; // 取消后将计时器置空
+
+- (void)resume {
+    if (!_sourceTimer || !self.isSuspend) {
+        return;
     }
+    // 仅对确实 suspend 过的 timer resume，避免 over-resume 崩溃
+    dispatch_resume(_sourceTimer);
+    self.isSuspend = NO;
+    if ([self.delegate respondsToSelector:@selector(vedioFilePlayingDelegate)]) {
+        [self.delegate vedioFilePlayingDelegate];
+    }
+}
+
+- (void)cancel {
+    if (!_sourceTimer) {
+        return;
+    }
+    // cancel 前若处于 suspend，需要先 resume 一次保证 cancel handler 能执行，避免资源泄露
+    if (self.isSuspend) {
+        dispatch_resume(_sourceTimer);
+        self.isSuspend = NO;
+    }
+    dispatch_source_cancel(_sourceTimer);
+    _sourceTimer = nil;
+    self.isResumedOnce = NO;
 }
 #pragma mark ------ 倒计时
 - (void)addCountdownActionFps:(float)fps
@@ -65,8 +69,7 @@
     AFOMediaLog(@"AFOCountdownManager: addCountdownActionFps called. Initial fps: %f, duration: %lld", fps, time);
     // 每次重新配置前取消旧 source，否则末尾 dispatch_resume 会对已激活的 source 再次 resume（Over-resume 崩溃）。
     if (_sourceTimer) {
-        dispatch_source_cancel(_sourceTimer);
-        _sourceTimer = nil;
+        [self cancel];
     }
     __block int timeout = time * fps;
     AFOMediaLog(@"AFOCountdownManager: Initial timeout (time * fps): %d", timeout);
@@ -85,9 +88,10 @@
             self.isFinish = YES;
             AFOMediaLog(@"AFOCountdownManager: Timeout reached. Calling block with isEnd: YES");
             block(@(YES));
-            // 确保在暂停之前，计时器是恢复状态，避免过度暂停
-            // 计时器结束时，直接取消，不再进行 suspend/resume 操作
-            [self AFOMediaQueueManagerTimerCancel]; // 调用取消方法进行清理
+            if ([self.delegate respondsToSelector:@selector(vedioFileFinishDelegate)]) {
+                [self.delegate vedioFileFinishDelegate];
+            }
+            [self cancel];
         } else {
             self.isFinish = NO;
             timeout--;
@@ -95,8 +99,12 @@
             block(@(NO));
         }
         });
-        dispatch_resume(self.sourceTimer); // 确保在设置事件处理后启动或恢复计时器
-        AFOMediaLog(@"AFOCountdownManager: Timer resumed after setting event handler.");
+        if (!self.isResumedOnce) {
+            dispatch_resume(self.sourceTimer); // 新建 timer 初始为 suspend，需要 resume 一次
+            self.isResumedOnce = YES;
+            self.isSuspend = NO;
+            AFOMediaLog(@"AFOCountdownManager: Timer resumed after setting event handler.");
+        }
     }
 #pragma mark ------------ property
 - (dispatch_source_t)sourceTimer{
@@ -108,14 +116,6 @@
 }
 - (void)dealloc{
     AFOMediaLog(@"AFOCountdownManager dealloc");
-    [[NSNotificationCenter defaultCenter] removeObserver:self]; // 移除所有通知观察者
-
-    if (_sourceTimer) {
-        // 确保在 dealloc 中只取消 dispatch source，不进行 resume 操作。
-        // 如果它在此时仍然是暂停状态，它的取消处理程序将会在其暂停计数归零时执行。
-        // 这可以避免“过度恢复”的崩溃。
-        dispatch_source_cancel(_sourceTimer);
-        _sourceTimer = nil;
-    }
+    [self cancel];
 }
 @end

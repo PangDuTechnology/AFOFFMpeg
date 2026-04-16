@@ -7,7 +7,6 @@
 //
 
 #import "AFOTotalDispatchManager.h"
-#import <AFOGitHub/INTUAutoRemoveObserver.h>
 #import <AFOFoundation/AFOWeakInstance.h>
 #import "AFOConfigurationManager.h"
 #import "AFOMediaManager.h"
@@ -28,10 +27,6 @@
 - (instancetype)init{
     if (self = [super init]) {
         NSLog(@"AFOTotalDispatchManager: init called. Self address: %p", self);
-        [INTUAutoRemoveObserver addObserver:self selector:@selector(playAudio) name:@"AFOMediaStartManagerNotifacation" object:nil];
-        
-        [INTUAutoRemoveObserver addObserver:self selector:@selector(suspendedAudioNotifacation:) name:@"AFOMediaSuspendedManager" object:nil];
-        
     }
     return self;
 }
@@ -118,23 +113,34 @@
 - (void)stopAudio{
     [self.audioManager stopAudio];
 }
-- (void)suspendedAudioNotifacation:(NSNotification *)notification{
+
+- (void)setSuspended:(BOOL)suspended {
+    [self.videoManager setSuspended:suspended];
+    if (suspended) {
+        [self stopAudio];
+    } else {
+        [self playAudio];
+    }
+}
+
+- (void)stop {
     [self stopAudio];
+    [self.videoManager cancelFramePump];
 }
 #pragma mark ------ AFOPlayMediaManager
 - (void)videoNowPlayingDelegate{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFORestartMeidaFileNotification" object:nil];
+    // 帧泵恢复/开始时确保音频处于播放状态
+    [self playAudio];
 }
 
 - (void)videoFinishPlayingDelegate{
-    // AFOMediaManager 已经调用了 videoDidPauseDelegate:YES，这里不需要额外操作
+    [self stopAudio];
 }
 
 - (void)videoDidPauseDelegate:(BOOL)isPaused {
-    // 这里可以将 isPaused 状态通过通知或 delegate 传递给 AFOMetalVideoView 的持有者
-    // 由于 AFOTotalDispatchManager 的 block 已经添加了 isVideoEnd 参数，
-    // 我将通过 block 回调的方式传递这个状态，而不是在这里发送通知。
-    // For now, no direct action here, relying on the block callback.
+    if (isPaused) {
+        [self stopAudio];
+    }
 }
 #pragma mark ------ property
 - (AFOAudioManager *)audioManager{
@@ -153,7 +159,6 @@
 - (void)dealloc{
     AFOMediaLog(@"AFOTotalDispatchManager: Deallocating instance: %p", self); // 添加日志
     NSLog(@"AFOTotalDispatchManager dealloc");
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     // 尝试停止音视频管理器中的相关 dispatch 对象
     [self.audioManager stopAudio]; // 假设 AFOAudioManager 有 stopAudio 方法
     // TODO: 检查 AFOMediaManager 和 AFOCountdownManager 的 dealloc，确保所有 dispatch 对象都被正确取消或停止。

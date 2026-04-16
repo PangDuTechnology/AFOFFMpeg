@@ -37,6 +37,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)displayVedioForPath:(NSString *)strPath
                            block:(displayVedioBlock)block;
 - (void)stopAudio;
+/// 暂停/恢复音视频（视频帧泵 + 音频）。
+- (void)setSuspended:(BOOL)suspended;
+/// 停止播放并释放帧泵
+- (void)stop;
 @end
 
 NS_ASSUME_NONNULL_END

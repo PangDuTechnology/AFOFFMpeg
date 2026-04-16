@@ -56,7 +56,6 @@ static NSMutableArray<AFOTotalDispatchManager *> *AFOMediaPlayController_retaine
     NSLog(@"AFOMediaPlayController: viewDidLoad called. Self address: %p", self);
     NSLog(@"AFOMediaPlayController: Custom viewDidLoad code executed.");
     self.view.backgroundColor = [UIColor whiteColor];
-    [INTUAutoRemoveObserver addObserver:self selector:@selector(restartMediaFile) name:@"AFORestartMeidaFileNotification" object:nil];
 
     [self bindViewModel];
     [self addMeidaView];

@@ -55,4 +55,9 @@ typedef void(^displayVedioFrameBlock)(NSError *error,
                             index:(NSInteger)index
                             block:(displayVedioFrameBlock)block;
 
+/// 暂停/恢复解码帧泵（仅影响视频帧读取节奏）。
+- (void)setSuspended:(BOOL)suspended;
+/// 取消帧泵并释放相关 timer（视频停止时调用）。
+- (void)cancelFramePump;
+
 @end
