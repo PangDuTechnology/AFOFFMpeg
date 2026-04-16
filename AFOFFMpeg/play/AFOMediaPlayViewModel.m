@@ -6,11 +6,11 @@
 //
 
 #import "AFOMediaPlayViewModel.h"
-#import "AFOTotalDispatchManager.h"
+#import "AFOMediaPlaybackEngine.h"
 #import <AFOFoundation/AFOFoundation.h>
 
 @interface AFOMediaPlayViewModel ()
-@property (nonatomic, strong) AFOTotalDispatchManager *dispatchManager;
+@property (nonatomic, strong) AFOMediaPlaybackEngine *engine;
 @property (nonatomic, assign, readwrite) UIInterfaceOrientationMask orientationMask;
 @property (nonatomic, copy, readwrite, nullable) NSString *path;
 @property (nonatomic, copy, readwrite, nullable) NSString *title;
@@ -21,7 +21,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _dispatchManager = [[AFOTotalDispatchManager alloc] init];
+        _engine = [[AFOMediaPlaybackEngine alloc] init];
         _orientationMask = UIInterfaceOrientationMaskPortrait;
     }
     return self;
@@ -70,13 +70,13 @@
     }
 
     WeakObject(self);
-    [self.dispatchManager displayVedioForPath:path block:^(NSError * _Nullable error,
-                                                           CVPixelBufferRef  _Nullable pixelBuffer,
-                                                           NSString * _Nullable totalTime,
-                                                           NSString * _Nullable currentTime,
-                                                           NSInteger totalSeconds,
-                                                           NSUInteger cuttentSeconds,
-                                                           BOOL isVideoEnd) {
+    [self.engine playPath:path callback:^(NSError * _Nullable error,
+                                         CVPixelBufferRef  _Nullable pixelBuffer,
+                                         NSString * _Nullable totalTime,
+                                         NSString * _Nullable currentTime,
+                                         NSInteger totalSeconds,
+                                         NSUInteger cuttentSeconds,
+                                         BOOL isVideoEnd) {
         StrongObject(self);
         if (!self) {
             return;
@@ -101,19 +101,11 @@
 }
 
 - (void)stop {
-    [self.dispatchManager stopAudio];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaQueueManagerTimerCancel" object:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaSuspendedManager" object:nil];
+    [self.engine stop];
 }
 
 - (void)setSuspended:(BOOL)suspended {
-    // 保持现有机制：通过通知驱动帧泵暂停/恢复，避免大范围改动
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaQueueManagerTimerNotifaction:" object:@(!suspended)];
-    if (suspended) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaSuspendedManager" object:nil];
-    } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"AFOMediaStartManagerNotifacation" object:nil];
-    }
+    [self.engine setSuspended:suspended];
 }
 
 @end
