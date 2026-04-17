@@ -19,11 +19,12 @@
  @param cuttentSeconds <#cuttentSeconds description#>
  */
 typedef void(^displayVedioBlock)(NSError *_Nullable error,
-                                UIImage  *_Nullable image,
+                                CVPixelBufferRef  _Nullable pixelBuffer,
                                 NSString *_Nullable totalTime,
                                 NSString *_Nullable currentTime,
                                 NSInteger totalSeconds,
-                                NSUInteger cuttentSeconds);
+                                NSUInteger cuttentSeconds,
+                                BOOL isVideoEnd);
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AFOTotalDispatchManager : NSObject
@@ -35,6 +36,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)displayVedioForPath:(NSString *)strPath
                            block:(displayVedioBlock)block;
+- (void)stopAudio;
+/// 暂停/恢复音视频（视频帧泵 + 音频）。
+- (void)setSuspended:(BOOL)suspended;
+/// 停止播放并释放帧泵
+- (void)stop;
 @end
 
 NS_ASSUME_NONNULL_END

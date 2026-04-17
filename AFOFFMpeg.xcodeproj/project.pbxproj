@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		144470BC2F83DA0B003CA8FC /* AFOMetalVideoView.h in Headers */ = {isa = PBXBuildFile; fileRef = 144470BA2F83DA0A003CA8FC /* AFOMetalVideoView.h */; };
+		144470BD2F83DA0B003CA8FC /* AFOMetalVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 144470BB2F83DA0A003CA8FC /* AFOMetalVideoView.m */; };
+		14F9FAB42F8390E200D98EA3 /* libobjc.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 14F9FAB32F8390E200D98EA3 /* libobjc.tbd */; };
 		2404875E2008459600D369FB /* AFOMediaForeignInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 240487562008459600D369FB /* AFOMediaForeignInterface.m */; };
 		240487632008459600D369FB /* AFOMediaForeignInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 2404875B2008459600D369FB /* AFOMediaForeignInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24BAFDC01FF4B12900D2EAB9 /* AFOFFMpeg.h in Headers */ = {isa = PBXBuildFile; fileRef = 24BAFDBE1FF4B12900D2EAB9 /* AFOFFMpeg.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -16,7 +19,6 @@
 		24BAFECC1FF4BCEB00D2EAB9 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BAFECB1FF4BCEB00D2EAB9 /* CoreImage.framework */; };
 		24BAFECE1FF4BCF800D2EAB9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BAFECD1FF4BCF800D2EAB9 /* CoreGraphics.framework */; };
 		24BAFED01FF4BD0700D2EAB9 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BAFECF1FF4BD0700D2EAB9 /* CoreMedia.framework */; };
-		24BAFED21FF4BD1D00D2EAB9 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24BAFED11FF4BD1D00D2EAB9 /* VideoToolbox.framework */; };
 		24DAD27B2331CA72001D2CE4 /* AFOMediaManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2362331CA6E001D2CE4 /* AFOMediaManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD27C2331CA72001D2CE4 /* AFOMediaSeekFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD2372331CA6E001D2CE4 /* AFOMediaSeekFrame.m */; };
 		24DAD27F2331CA72001D2CE4 /* AFOMediaTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD23A2331CA6E001D2CE4 /* AFOMediaTimer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -70,7 +72,6 @@
 		24DAD2BD2331CA72001D2CE4 /* AFOMediaYUV.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2782331CA72001D2CE4 /* AFOMediaYUV.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD2BE2331CA72001D2CE4 /* AFOMediaSeekFrame+Conditional.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DAD2792331CA72001D2CE4 /* AFOMediaSeekFrame+Conditional.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24DAD2BF2331CA72001D2CE4 /* AFOMediaControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DAD27A2331CA72001D2CE4 /* AFOMediaControlView.m */; };
-		922E6559DEB8E99FA090F6B5 /* libPods-AFOFFMpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C3DF97E31429DA00550B5A /* libPods-AFOFFMpeg.a */; };
 		DB18A99A2348447E0045C87A /* AFOVideoFrameRGB.h in Headers */ = {isa = PBXBuildFile; fileRef = DB18A9982348447E0045C87A /* AFOVideoFrameRGB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB18A99B2348447E0045C87A /* AFOVideoFrameRGB.m in Sources */ = {isa = PBXBuildFile; fileRef = DB18A9992348447E0045C87A /* AFOVideoFrameRGB.m */; };
 		DB21CFE12346E7B600DE9674 /* AFOConfigurationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DB21CFDF2346E7B600DE9674 /* AFOConfigurationManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -78,6 +79,7 @@
 		DB7101432345E49200EF4590 /* AFOAudioThreadDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7101412345E49200EF4590 /* AFOAudioThreadDecoder.m */; };
 		DB7101442345E49200EF4590 /* AFOAudioThreadDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = DB7101422345E49200EF4590 /* AFOAudioThreadDecoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DBCFE38223489BF400E10EE2 /* AFOCountDownManagerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = DBCFE38123489BF400E10EE2 /* AFOCountDownManagerDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F75320707C6C99BBB4B1B634 /* libPods-AFOFFMpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 076EDEDC9A36E2FBE868B20B /* libPods-AFOFFMpeg.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -93,6 +95,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		076EDEDC9A36E2FBE868B20B /* libPods-AFOFFMpeg.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AFOFFMpeg.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		144470BA2F83DA0A003CA8FC /* AFOMetalVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMetalVideoView.h; sourceTree = "<group>"; };
+		144470BB2F83DA0A003CA8FC /* AFOMetalVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMetalVideoView.m; sourceTree = "<group>"; };
+		14F9FAB32F8390E200D98EA3 /* libobjc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libobjc.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/usr/lib/libobjc.tbd; sourceTree = DEVELOPER_DIR; };
 		240487562008459600D369FB /* AFOMediaForeignInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaForeignInterface.m; sourceTree = "<group>"; };
 		2404875B2008459600D369FB /* AFOMediaForeignInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaForeignInterface.h; sourceTree = "<group>"; };
 		2408BB3C200877D80049060F /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -161,8 +167,8 @@
 		24DAD2782331CA72001D2CE4 /* AFOMediaYUV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOMediaYUV.h; sourceTree = "<group>"; };
 		24DAD2792331CA72001D2CE4 /* AFOMediaSeekFrame+Conditional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFOMediaSeekFrame+Conditional.h"; sourceTree = "<group>"; };
 		24DAD27A2331CA72001D2CE4 /* AFOMediaControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOMediaControlView.m; sourceTree = "<group>"; };
-		8D4CA313006449D6B479D8FD /* Pods-AFOFFMpeg.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AFOFFMpeg.release.xcconfig"; path = "Target Support Files/Pods-AFOFFMpeg/Pods-AFOFFMpeg.release.xcconfig"; sourceTree = "<group>"; };
-		C215BB64AD96FF0492A70BBA /* Pods-AFOFFMpeg.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AFOFFMpeg.debug.xcconfig"; path = "Target Support Files/Pods-AFOFFMpeg/Pods-AFOFFMpeg.debug.xcconfig"; sourceTree = "<group>"; };
+		2781492B6FE3185E1A7E6357 /* Pods-AFOFFMpeg.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AFOFFMpeg.debug.xcconfig"; path = "Target Support Files/Pods-AFOFFMpeg/Pods-AFOFFMpeg.debug.xcconfig"; sourceTree = "<group>"; };
+		C93F6422ABA1E8350D1B8186 /* Pods-AFOFFMpeg.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AFOFFMpeg.release.xcconfig"; path = "Target Support Files/Pods-AFOFFMpeg/Pods-AFOFFMpeg.release.xcconfig"; sourceTree = "<group>"; };
 		DB18A9982348447E0045C87A /* AFOVideoFrameRGB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOVideoFrameRGB.h; sourceTree = "<group>"; };
 		DB18A9992348447E0045C87A /* AFOVideoFrameRGB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOVideoFrameRGB.m; sourceTree = "<group>"; };
 		DB21CFDF2346E7B600DE9674 /* AFOConfigurationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFOConfigurationManager.h; sourceTree = "<group>"; };
@@ -170,7 +176,6 @@
 		DB7101412345E49200EF4590 /* AFOAudioThreadDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOAudioThreadDecoder.m; sourceTree = "<group>"; };
 		DB7101422345E49200EF4590 /* AFOAudioThreadDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOAudioThreadDecoder.h; sourceTree = "<group>"; };
 		DBCFE38123489BF400E10EE2 /* AFOCountDownManagerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFOCountDownManagerDelegate.h; sourceTree = "<group>"; };
-		E6C3DF97E31429DA00550B5A /* libPods-AFOFFMpeg.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AFOFFMpeg.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,14 +183,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				922E6559DEB8E99FA090F6B5 /* libPods-AFOFFMpeg.a in Frameworks */,
-				24BAFED21FF4BD1D00D2EAB9 /* VideoToolbox.framework in Frameworks */,
+				14F9FAB42F8390E200D98EA3 /* libobjc.tbd in Frameworks */,
 				24BAFED01FF4BD0700D2EAB9 /* CoreMedia.framework in Frameworks */,
 				24BAFECE1FF4BCF800D2EAB9 /* CoreGraphics.framework in Frameworks */,
 				24BAFECC1FF4BCEB00D2EAB9 /* CoreImage.framework in Frameworks */,
 				24BAFECA1FF4BCD200D2EAB9 /* OpenGLES.framework in Frameworks */,
 				24BAFEC81FF4BCBF00D2EAB9 /* AVFoundation.framework in Frameworks */,
 				24BAFEC61FF4BCB400D2EAB9 /* AudioToolbox.framework in Frameworks */,
+				F75320707C6C99BBB4B1B634 /* libPods-AFOFFMpeg.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,6 +234,7 @@
 		24BAFEC41FF4BCB400D2EAB9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				14F9FAB32F8390E200D98EA3 /* libobjc.tbd */,
 				2408BB3C200877D80049060F /* libsqlite3.tbd */,
 				24A59FBC2008387200311ACB /* libiconv.tbd */,
 				24A59FBA2008386B00311ACB /* libbz2.tbd */,
@@ -240,7 +246,7 @@
 				24BAFEC91FF4BCD200D2EAB9 /* OpenGLES.framework */,
 				24BAFEC71FF4BCBF00D2EAB9 /* AVFoundation.framework */,
 				24BAFEC51FF4BCB400D2EAB9 /* AudioToolbox.framework */,
-				E6C3DF97E31429DA00550B5A /* libPods-AFOFFMpeg.a */,
+				076EDEDC9A36E2FBE868B20B /* libPods-AFOFFMpeg.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -290,6 +296,8 @@
 				24DAD27A2331CA72001D2CE4 /* AFOMediaControlView.m */,
 				24DAD24D2331CA6F001D2CE4 /* AFOMediaView.h */,
 				24DAD2692331CA71001D2CE4 /* AFOMediaView.m */,
+				144470BA2F83DA0A003CA8FC /* AFOMetalVideoView.h */,
+				144470BB2F83DA0A003CA8FC /* AFOMetalVideoView.m */,
 			);
 			path = play;
 			sourceTree = "<group>";
@@ -308,8 +316,8 @@
 		D355983552DD45887E11029F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				C215BB64AD96FF0492A70BBA /* Pods-AFOFFMpeg.debug.xcconfig */,
-				8D4CA313006449D6B479D8FD /* Pods-AFOFFMpeg.release.xcconfig */,
+				2781492B6FE3185E1A7E6357 /* Pods-AFOFFMpeg.debug.xcconfig */,
+				C93F6422ABA1E8350D1B8186 /* Pods-AFOFFMpeg.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -363,6 +371,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24DAD27B2331CA72001D2CE4 /* AFOMediaManager.h in Headers */,
 				24DAD27F2331CA72001D2CE4 /* AFOMediaTimer.h in Headers */,
 				24DAD2BA2331CA72001D2CE4 /* AFOAudioSession.h in Headers */,
 				24DAD2882331CA72001D2CE4 /* AFOMediaSeekFrame.h in Headers */,
@@ -370,7 +379,6 @@
 				24DAD2B02331CA72001D2CE4 /* AFOMediaControlView.h in Headers */,
 				24DAD2AC2331CA72001D2CE4 /* AFOGenerateImages.h in Headers */,
 				24DAD2952331CA72001D2CE4 /* AFOAudioManager.h in Headers */,
-				24DAD27B2331CA72001D2CE4 /* AFOMediaManager.h in Headers */,
 				24DAD28D2331CA72001D2CE4 /* AFOMediaPlayController+AFOOrientation.h in Headers */,
 				24DAD2B52331CA72001D2CE4 /* AFOAudioPacket.h in Headers */,
 				24DAD2B82331CA72001D2CE4 /* AFOMediaErrorCodeManager.h in Headers */,
@@ -384,6 +392,7 @@
 				24DAD2822331CA72001D2CE4 /* AFOCountdownManager.h in Headers */,
 				24DAD28B2331CA72001D2CE4 /* AFOTotalDispatchManager.h in Headers */,
 				24DAD28E2331CA72001D2CE4 /* AFOMediaPlayController.h in Headers */,
+				144470BC2F83DA0B003CA8FC /* AFOMetalVideoView.h in Headers */,
 				24DAD28A2331CA72001D2CE4 /* AFOMediaThumbnail.h in Headers */,
 				24DAD2A32331CA72001D2CE4 /* AFOAudioOutPut.h in Headers */,
 				24DAD2942331CA72001D2CE4 /* AFOMediaErrorString.h in Headers */,
@@ -407,7 +416,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 24BAFDC31FF4B12900D2EAB9 /* Build configuration list for PBXNativeTarget "AFOFFMpeg" */;
 			buildPhases = (
-				2C4FF7EA286325D2E2E38260 /* [CP] Check Pods Manifest.lock */,
+				A3110961A6BB86705AD835F4 /* [CP] Check Pods Manifest.lock */,
 				24BAFDB61FF4B12900D2EAB9 /* Sources */,
 				24BAFDB71FF4B12900D2EAB9 /* Frameworks */,
 				24BAFDB81FF4B12900D2EAB9 /* Headers */,
@@ -467,7 +476,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2C4FF7EA286325D2E2E38260 /* [CP] Check Pods Manifest.lock */ = {
+		A3110961A6BB86705AD835F4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -507,6 +516,7 @@
 				24DAD2A72331CA72001D2CE4 /* AFOMediaYUV.m in Sources */,
 				24DAD2B92331CA72001D2CE4 /* AFOCountdownManager.m in Sources */,
 				24DAD2932331CA72001D2CE4 /* AFOAudioCache.m in Sources */,
+				144470BD2F83DA0B003CA8FC /* AFOMetalVideoView.m in Sources */,
 				24DAD28F2331CA72001D2CE4 /* AFOVideoFrame.m in Sources */,
 				24DAD2B12331CA72001D2CE4 /* AFOMediaManager.m in Sources */,
 				24DAD29D2331CA72001D2CE4 /* AFOMediaErrorCodeManager.m in Sources */,
@@ -647,7 +657,7 @@
 		};
 		24BAFDC41FF4B12900D2EAB9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C215BB64AD96FF0492A70BBA /* Pods-AFOFFMpeg.debug.xcconfig */;
+			baseConfigurationReference = 2781492B6FE3185E1A7E6357 /* Pods-AFOFFMpeg.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = NO;
@@ -666,6 +676,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACH_O_TYPE = staticlib;
@@ -685,7 +696,7 @@
 		};
 		24BAFDC51FF4B12900D2EAB9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8D4CA313006449D6B479D8FD /* Pods-AFOFFMpeg.release.xcconfig */;
+			baseConfigurationReference = C93F6422ABA1E8350D1B8186 /* Pods-AFOFFMpeg.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = NO;
@@ -704,6 +715,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACH_O_TYPE = staticlib;

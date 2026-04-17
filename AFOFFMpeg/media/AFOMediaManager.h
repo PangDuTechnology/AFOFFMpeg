@@ -7,6 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#ifdef DEBUG
+#define AFOMediaLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+#define AFOMediaLog(fmt, ...) 
+#endif
 #include <UIKit/UIKit.h>
 #import <libavformat/avformat.h>
 @protocol AFOPlayMediaManager <NSObject>
@@ -16,6 +21,7 @@
              frameRate:(float)frameRate;
 - (void)videoNowPlayingDelegate;
 - (void)videoFinishPlayingDelegate;
+- (void)videoDidPauseDelegate:(BOOL)isPaused;
 @end
 /**
  <#Description#>
@@ -28,11 +34,12 @@
  @param cuttentSeconds <#cuttentSeconds description#>
  */
 typedef void(^displayVedioFrameBlock)(NSError *error,
-                                      UIImage *image,
+                                      CVPixelBufferRef _Nullable pixelBuffer,
                                       NSString *totalTime,
                                       NSString *currentTime,
                                       NSInteger totalSeconds,
-                                      NSUInteger cuttentSeconds);
+                                      NSUInteger cuttentSeconds,
+                                      BOOL isVideoEnd);
 
 @interface AFOMediaManager : NSObject
 - (instancetype)initWithDelegate:(id<AFOPlayMediaManager>)delegate;
@@ -47,4 +54,10 @@ typedef void(^displayVedioFrameBlock)(NSError *error,
                      codecContext:(AVCodecContext *)codecContext
                             index:(NSInteger)index
                             block:(displayVedioFrameBlock)block;
+
+/// 暂停/恢复解码帧泵（仅影响视频帧读取节奏）。
+- (void)setSuspended:(BOOL)suspended;
+/// 取消帧泵并释放相关 timer（视频停止时调用）。
+- (void)cancelFramePump;
+
 @end

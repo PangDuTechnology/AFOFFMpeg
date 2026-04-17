@@ -20,6 +20,7 @@
     short               *audioBuffer;
     AVPacket             packet;
 }
+@property (nonatomic, assign)            NSInteger       channel;
 @property (nonatomic, assign)            NSInteger       audioStream;
 @property (nonatomic, assign)            CGFloat         audioTimeBase;
 @property (nonatomic, assign)            float           audioClock;
@@ -45,11 +46,12 @@
     formatContext = avFormatContext;
     codecContext = avCodecContext;
     self.audioStream = index;
+    self.channel = avCodecContext -> channels;
     ///---
     AVStream *audioStream =formatContext -> streams[self.audioStream];
     if (!(codecContext->sample_fmt == AV_SAMPLE_FMT_S16)) {
         swrContext = swr_alloc_set_opts(NULL,
-                                        av_get_default_channel_layout(2),
+                                        av_get_default_channel_layout((int)self.channel),
                                         AV_SAMPLE_FMT_S16,
                                         audioStream->codecpar->sample_rate,
                                         av_get_default_channel_layout(audioStream->codecpar->channels),
@@ -115,7 +117,7 @@
                 }
                 ///---
                 if (gotFrame) {
-                    int numChannels = 2;
+                    int numChannels = (int)self.channel;
                     int numFrames = 0;
                     void *audioData;
                     if (swrContext) {

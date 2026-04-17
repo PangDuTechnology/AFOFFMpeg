@@ -33,6 +33,11 @@
 - (void)audioFormatContext:(AVFormatContext *)formatContext
               codecContext:(AVCodecContext *)codecContext
                      index:(NSInteger)index{
+    // If _audioOutPut already exists, stop it before creating a new one
+    if (_audioOutPut) {
+        [_audioOutPut audioStop];
+        _audioOutPut = nil; // Clear the strong reference
+    }
     self.channel = codecContext -> channels;
     [self settingAudioSession:codecContext];
     ///---
@@ -50,7 +55,11 @@
 - (void)playAudio{
     [self.audioOutPut audioPlay];
 }
+- (void)pauseAudio{
+    [self.audioOutPut audioPause];
+}
 - (void)stopAudio{
+    NSLog(@"AFOAudioManager: stopAudio called. AudioOutPut: %p", self.audioOutPut);
     [self.audioOutPut audioStop];
 }
 #pragma mark ------ delegate
@@ -81,6 +90,7 @@
 }
 #pragma mark ------ dealloc
 - (void)dealloc{
+    [self stopAudio];
     NSLog(@"AFOAudioManager dealloc");
 }
 @end

@@ -8,6 +8,7 @@
 #import "AFOMediaYUV.h"
 #import <AFOlibyuv/libyuv.h>
 #import <libavutil/imgutils.h>
+#import "AFOMediaErrorCodeManager.h"
 @interface AFOMediaYUV ()
 @property (nonatomic, assign) CVPixelBufferPoolRef pixelBufferPool;
 @property (nonatomic, assign) CVPixelBufferRef     pixelBuffer;
@@ -19,8 +20,20 @@
                    width:(int)inWidth
                   height:(int)inHeight
                    scale:(int)scale
-                    block:(void (^)(UIImage *image))block{
+                    block:(void (^)(UIImage * _Nullable image, NSError * _Nullable error))block{
+    if (!avFrame || !avFrame->data[0]) {
+        block(nil, [AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeDecoderImageFailure]);
+        return;
+    }
+    NSLog(@"AFOMediaYUV: makeYUVToRGB - Starting conversion. Width: %d, Height: %d", inWidth, inHeight);
+
     uint8 *argb  = (uint8 *) malloc(inWidth * inHeight * 4 *3 * sizeof(uint8));
+    if (!argb) {
+        NSLog(@"AFOMediaYUV: makeYUVToRGB - Failed to allocate ARGB buffer.");
+        block(nil, [AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeMemoryAllocationFailure]);
+        return;
+    }
+
     I420ToBGRA(avFrame ->data[0],
                avFrame ->linesize[0],
                avFrame ->data[1],
@@ -31,16 +44,55 @@
                inWidth * 4,
                inWidth,
                inHeight);
+    NSLog(@"AFOMediaYUV: makeYUVToRGB - I420ToBGRA conversion complete.");
+
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    if (!colorSpace) {
+        NSLog(@"AFOMediaYUV: makeYUVToRGB - Failed to create CGColorSpace.");
+        free(argb);
+        block(nil, [AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeImageorFormatConversionFailure]);
+        return;
+    }
+
     CGContextRef context = CGBitmapContextCreate(argb, inWidth, inHeight, 8, inWidth * 4 , colorSpace,kCGImageAlphaPremultipliedFirst);
+    if (!context) {
+        NSLog(@"AFOMediaYUV: makeYUVToRGB - Failed to create CGBitmapContext.");
+        CGColorSpaceRelease(colorSpace);
+        free(argb);
+        block(nil, [AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeImageorFormatConversionFailure]);
+        return;
+    }
+    NSLog(@"AFOMediaYUV: makeYUVToRGB - CGBitmapContext created.");
+
     CGImageRef quartzImage = CGBitmapContextCreateImage(context);
+    if (!quartzImage) {
+        NSLog(@"AFOMediaYUV: makeYUVToRGB - Failed to create CGImage.");
+        CGContextRelease(context);
+        CGColorSpaceRelease(colorSpace);
+        free(argb);
+        block(nil, [AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeImageorFormatConversionFailure]);
+        return;
+    }
+    NSLog(@"AFOMediaYUV: makeYUVToRGB - CGImage created.");
+
     UIImage *image = [UIImage imageWithCGImage:quartzImage scale:scale orientation:UIImageOrientationUp];
+    if (!image) {
+        NSLog(@"AFOMediaYUV: makeYUVToRGB - Failed to create UIImage.");
+        CGContextRelease(context);
+        CGColorSpaceRelease(colorSpace);
+        CGImageRelease(quartzImage);
+        free(argb);
+        block(nil, [AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeImageorFormatConversionFailure]);
+        return;
+    }
+    NSLog(@"AFOMediaYUV: makeYUVToRGB - UIImage created successfully.");
+
     CGContextRelease(context);
     CGColorSpaceRelease(colorSpace);
     CGImageRelease(quartzImage);
     free(argb);
     argb = NULL;
-    block(image);
+    block(image, nil);
 }
 #pragma mark ------ 420P -> nv12 -> CIImage -> image
 - (void)dispatchAVFrame:(AVFrame*) frame

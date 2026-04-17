@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
                     width:(int)inWidth
                    height:(int)inHeight
                     scale:(int)scale
-                    block:(void (^)(UIImage *image))block;
+                    block:(void (^)(UIImage * _Nullable image, NSError * _Nullable error))block;
 - (void)dispatchAVFrame:(AVFrame*) frame
                   block:(void (^)(UIImage *image))block;
 @end

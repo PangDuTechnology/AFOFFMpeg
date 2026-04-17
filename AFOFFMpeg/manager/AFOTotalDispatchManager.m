@@ -7,7 +7,6 @@
 //
 
 #import "AFOTotalDispatchManager.h"
-#import <AFOGitHub/INTUAutoRemoveObserver.h>
 #import <AFOFoundation/AFOWeakInstance.h>
 #import "AFOConfigurationManager.h"
 #import "AFOMediaManager.h"
@@ -27,30 +26,84 @@
 #pragma mark ------ init
 - (instancetype)init{
     if (self = [super init]) {
-        [INTUAutoRemoveObserver addObserver:self selector:@selector(playAudio) name:@"AFOMediaStartManagerNotifacation" object:nil];
-        
-        [INTUAutoRemoveObserver addObserver:self selector:@selector(suspendedAudioNotifacation:) name:@"AFOMediaSuspendedManager" object:nil];
-        
+        NSLog(@"AFOTotalDispatchManager: init called. Self address: %p", self);
     }
     return self;
 }
 - (void)displayVedioForPath:(NSString *)strPath
                       block:(displayVedioFrameBlock)block{
+    NSLog(@"AFOTotalDispatchManager: displayVedioForPath called for path: %@", strPath);
+    if (strPath.length == 0 || ![[NSFileManager defaultManager] fileExistsAtPath:strPath]) {
+        NSError *pathError = [NSError errorWithDomain:@"AFOTotalDispatchManager"
+                                                 code:-1
+                                             userInfo:@{NSLocalizedDescriptionKey: @"视频文件不存在或路径为空"}];
+        if (block) {
+            block(pathError, nil, nil, nil, 0, 0, NO);
+        }
+        return;
+    }
     WeakObject(self);
     [AFOConfigurationManager configurationStreamPath:strPath block:^(NSError * _Nonnull error, NSInteger videoIndex, NSInteger audioIndex) {
         StrongObject(self);
+        if (!self) {
+            return;
+        }
+        if (error.code != 0) {
+            if (block) {
+                block(error, nil, nil, nil, 0, 0, NO);
+            }
+            return;
+        }
         self.videoStream = videoIndex;
         self.audioStream = audioIndex;
-    }];
-    ///--- play audio
-    [AFOConfigurationManager configurationForPath:strPath stream:self.audioStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream) {
-        [self.audioManager audioFormatContext:format codecContext:context index:self.audioStream];
-        [self playAudio];
-    }];
-    ///------ display video
-    [AFOConfigurationManager configurationForPath:strPath stream:self.videoStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream) {
-        [self.videoManager displayVedioFormatContext:format codecContext:context index:self.videoStream block:^(NSError *error, UIImage *image, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds) {
-            block(error,image,totalTime,currentTime,totalSeconds,cuttentSeconds);
+        NSLog(@"AFOTotalDispatchManager: Video stream index: %ld, Audio stream index: %ld", (long)videoIndex, (long)audioIndex);
+
+        AFOMediaLog(@"AFOTotalDispatchManager: configurationStreamPath finished, start codec setup with resolved streams.");
+        ///--- play audio
+        if (self.audioStream >= 0) {
+            [AFOConfigurationManager configurationForPath:strPath stream:self.audioStream block:^(AVCodec * _Nullable codec, AVFormatContext * _Nullable format, AVCodecContext * _Nullable context, NSInteger videoStream, NSInteger audioStream, NSData * _Nullable sps, NSData * _Nullable pps) {
+                if (!format || !context) {
+                    return;
+                }
+                [self.audioManager audioFormatContext:format codecContext:context index:self.audioStream];
+                [self playAudio];
+            }];
+        }
+
+        if (self.videoStream < 0) {
+            NSError *videoStreamError = [NSError errorWithDomain:@"AFOTotalDispatchManager"
+                                                             code:-2
+                                                         userInfo:@{NSLocalizedDescriptionKey: @"未找到可播放的视频流"}];
+            if (block) {
+                block(videoStreamError, nil, nil, nil, 0, 0, NO);
+            }
+            return;
+        }
+
+        ///------ display video
+        [AFOConfigurationManager configurationForPath:strPath stream:self.videoStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream, NSData * _Nullable sps, NSData * _Nullable pps) {
+            AFOMediaLog(@"AFOTotalDispatchManager: Received AFOConfigurationManager video callback. format: %p, context: %p", format, context);
+            StrongObject(self);
+            if (!self) {
+                return;
+            }
+            if (!format || !context) {
+                NSError *videoInitError = [NSError errorWithDomain:@"AFOTotalDispatchManager"
+                                                               code:-3
+                                                           userInfo:@{NSLocalizedDescriptionKey: @"视频解码器初始化失败"}];
+                if (block) {
+                    block(videoInitError, nil, nil, nil, 0, 0, NO);
+                }
+                return;
+            }
+            AFOMediaLog(@"AFOTotalDispatchManager: Calling videoManager displayVedioFormatContext. format: %p, context: %p", format, context);
+            [self.videoManager displayVedioFormatContext:format codecContext:context index:self.videoStream block:^(NSError *error, CVPixelBufferRef pixelBuffer, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds, BOOL isVideoEnd) {
+                AFOMediaLog(@"AFOTotalDispatchManager: AFOConfigurationManager callback for video. format: %p, context: %p", format, context);
+                NSLog(@"AFOTotalDispatchManager: pixelBuffer received: %p", pixelBuffer);
+                if (block) {
+                    block(error,pixelBuffer,totalTime,currentTime,totalSeconds,cuttentSeconds, isVideoEnd);
+                }
+            }];
         }];
     }];
 }
@@ -60,12 +113,34 @@
 - (void)stopAudio{
     [self.audioManager stopAudio];
 }
-- (void)suspendedAudioNotifacation:(NSNotification *)notification{
+
+- (void)setSuspended:(BOOL)suspended {
+    [self.videoManager setSuspended:suspended];
+    if (suspended) {
+        [self.audioManager pauseAudio];
+    } else {
+        [self playAudio];
+    }
+}
+
+- (void)stop {
     [self stopAudio];
+    [self.videoManager cancelFramePump];
 }
 #pragma mark ------ AFOPlayMediaManager
 - (void)videoNowPlayingDelegate{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"AFORestartMeidaFileNotification" object:nil];
+    // 帧泵恢复/开始时确保音频处于播放状态
+    [self playAudio];
+}
+
+- (void)videoFinishPlayingDelegate{
+    [self stopAudio];
+}
+
+- (void)videoDidPauseDelegate:(BOOL)isPaused {
+    if (isPaused) {
+        [self stopAudio];
+    }
 }
 #pragma mark ------ property
 - (AFOAudioManager *)audioManager{
@@ -82,7 +157,15 @@
 }
 #pragma mark ------ dealloc
 - (void)dealloc{
+    AFOMediaLog(@"AFOTotalDispatchManager: Deallocating instance: %p", self); // 添加日志
     NSLog(@"AFOTotalDispatchManager dealloc");
+    // 尝试停止音视频管理器中的相关 dispatch 对象
+    [self.audioManager stopAudio]; // 假设 AFOAudioManager 有 stopAudio 方法
+    // TODO: 检查 AFOMediaManager 和 AFOCountdownManager 的 dealloc，确保所有 dispatch 对象都被正确取消或停止。
+
+    // 假设 AFOMediaManager 有一个 stopVideo 方法来清理其内部资源
+    // [self.videoManager stopVideo]; // 已注释掉，因为编译错误
+    NSLog(@"AFOTotalDispatchManager: Deallocating. Please ensure AFOMediaManager and AFOCountdownManager are properly cleaned.");
 }
 @end
 //@property (nonatomic, assign)            float      audioTimeStamp;

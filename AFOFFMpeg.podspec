@@ -54,7 +54,7 @@ Pod::Spec.new do |s|
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
-  s.frameworks = 'VideoToolbox','CoreMedia','CoreGraphics','CoreImage','OpenGLES','AVFoundation','AudioToolbox'
+  s.frameworks = 'VideoToolbox','CoreMedia','CoreVideo','CoreGraphics','CoreImage','OpenGLES','AVFoundation','AudioToolbox'
   s.pod_target_xcconfig  =  {'OTHER_LDFLAGS'  =>  '-lObjC' }
   s.requires_arc = true
   s.dependency "AFOFoundation"
