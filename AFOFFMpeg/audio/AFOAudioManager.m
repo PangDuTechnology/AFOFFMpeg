@@ -55,6 +55,9 @@
 - (void)playAudio{
     [self.audioOutPut audioPlay];
 }
+- (void)pauseAudio{
+    [self.audioOutPut audioPause];
+}
 - (void)stopAudio{
     NSLog(@"AFOAudioManager: stopAudio called. AudioOutPut: %p", self.audioOutPut);
     [self.audioOutPut audioStop];

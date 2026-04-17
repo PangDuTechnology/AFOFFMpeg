@@ -87,8 +87,8 @@
         self.timeLabel.text = [NSString stringWithFormat:@"%@/%@",currentTime,totalTime];
         ///------
         if (isEnd) {
-            self.playButton.selected = YES;
-            [self buttonTouchAction:self.playButton];
+            // 播放结束：按钮显示“播放”图标，等待用户点击后重播
+            self.playButton.selected = NO;
         }
         ///------
         block(isEnd);

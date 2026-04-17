@@ -206,10 +206,23 @@ static OSStatus renderCallback(void * inRefCon,
     return noErr;
 }
 - (BOOL)audioPlay{
+    if (self.af_didStop || !_auGraph) {
+        NSLog(@"AFOAudioOutPut: audioPlay called but graph already disposed/stopped. Self=%p auGraph=%p", self, _auGraph);
+        return NO;
+    }
     OSStatus status = AUGraphStart(_auGraph);
-    CheckStatus(status, @"Could not start AUGraph", YES);
-    return YES;
+    CheckStatus(status, @"Could not start AUGraph", NO);
+    return (status == noErr);
 }
+
+- (void)audioPause{
+    if (self.af_didStop || !_auGraph) {
+        return;
+    }
+    OSStatus status = AUGraphStop(_auGraph);
+    CheckStatus(status, @"Could not stop AUGraph (pause)", NO);
+}
+
 - (void)audioStop{
     NSLog(@"AFOAudioOutPut: audioStop called. Self address: %p", self);
     if (self.af_didStop) {

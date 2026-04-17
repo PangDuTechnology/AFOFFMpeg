@@ -32,6 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
                  bytesPerSample:(NSInteger)bytesPerSample
                        delegate:(id<AFOAudioFillDataDelegate>)delegate;
 - (BOOL)audioPlay;
+/// 暂停播放（仅停止 graph，不释放资源，支持后续继续播放）
+- (void)audioPause;
+/// 停止播放并释放底层 AudioUnit/AUGraph（不可继续播放）
 - (void)audioStop;
 @end
 

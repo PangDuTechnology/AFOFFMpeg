@@ -14,6 +14,7 @@
 @property (nonatomic, assign, readwrite) UIInterfaceOrientationMask orientationMask;
 @property (nonatomic, copy, readwrite, nullable) NSString *path;
 @property (nonatomic, copy, readwrite, nullable) NSString *title;
+@property (nonatomic, assign) BOOL hasEnded;
 @end
 
 @implementation AFOMediaPlayViewModel
@@ -69,6 +70,7 @@
         return;
     }
 
+    self.hasEnded = NO;
     WeakObject(self);
     [self.engine playPath:path callback:^(NSError * _Nullable error,
                                          CVPixelBufferRef  _Nullable pixelBuffer,
@@ -90,6 +92,9 @@
         if (self.onTime) {
             self.onTime(totalTime, currentTime, totalSeconds, cuttentSeconds, isVideoEnd);
         }
+        if (isVideoEnd) {
+            self.hasEnded = YES;
+        }
         if (pixelBuffer && self.onFrame) {
             self.onFrame(pixelBuffer);
         }
@@ -105,6 +110,13 @@
 }
 
 - (void)setSuspended:(BOOL)suspended {
+    // 播放结束后，用户再次点击播放按钮应走“重播”，而不是简单 resume。
+    if (self.hasEnded) {
+        self.hasEnded = NO;
+        [self stop];
+        [self play];
+        return;
+    }
     [self.engine setSuspended:suspended];
 }
 

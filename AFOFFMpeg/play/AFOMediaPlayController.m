@@ -17,6 +17,7 @@
 #import "AFOMediaPlayControllerCategory.h"
 #import "AFOTotalDispatchManager.h"
 #import "AFOMediaPlayViewModel.h"
+#import "AFOMediaView.h"
 
 /// Pod 实际指向的 `../../AFORouter` 头文件未必包含扩展属性；在播放器内用静态池延长调度器生命周期，避免依赖 AFORouter 私有 API。
 static NSMutableArray<AFOTotalDispatchManager *> *AFOMediaPlayController_retainedDispatchManagers(void) {
@@ -157,6 +158,21 @@ static NSMutableArray<AFOTotalDispatchManager *> *AFOMediaPlayController_retaine
         if (!self) { return; }
         if (pixelBuffer) {
             [self.mediaView displayPixelBuffer:pixelBuffer];
+        }
+    };
+    self.viewModel.onTime = ^(NSString * _Nullable totalTime,
+                             NSString * _Nullable currentTime,
+                             NSInteger totalSeconds,
+                             NSUInteger cuttentSeconds,
+                             BOOL isVideoEnd) {
+        StrongObject(self);
+        if (!self) { return; }
+        if (self.mediaOverlayView) {
+            [self.mediaOverlayView settingMovieImage:nil
+                                           totalTime:totalTime ?: @""
+                                         currentTime:currentTime ?: @""
+                                               total:totalSeconds
+                                             current:(NSInteger)cuttentSeconds];
         }
     };
     self.viewModel.onError = ^(NSString * _Nonnull message) {

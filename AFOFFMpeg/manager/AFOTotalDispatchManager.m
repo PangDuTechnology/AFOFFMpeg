@@ -117,7 +117,7 @@
 - (void)setSuspended:(BOOL)suspended {
     [self.videoManager setSuspended:suspended];
     if (suspended) {
-        [self stopAudio];
+        [self.audioManager pauseAudio];
     } else {
         [self playAudio];
     }

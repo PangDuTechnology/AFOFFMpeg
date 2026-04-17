@@ -93,10 +93,56 @@ typedef struct {
     NSString *shaderPath = [[NSBundle mainBundle] pathForResource:@"default" ofType:@"metallib"];
     NSLog(@"AFOMetalVideoView: Attempting to load Metal library from path: %@", shaderPath);
 
-    id<MTLLibrary> defaultLibrary = [self.device newLibraryWithFile:shaderPath error:&error];
+    id<MTLLibrary> defaultLibrary = nil;
+    if (shaderPath.length > 0) {
+        defaultLibrary = [self.device newLibraryWithFile:shaderPath error:&error];
+    }
     if (error || !defaultLibrary) {
-        NSLog(@"AFOMetalVideoView: Failed to create library: %@", error.localizedDescription);
-        return;
+        // 兜底：工程未打包 metallib 时，运行时编译最小 NV12 Shader，避免黑屏。
+        error = nil;
+        static NSString * const kAFOEmbeddedMetalSource =
+        @"#include <metal_stdlib>\n"
+        @"using namespace metal;\n"
+        @"\n"
+        @"struct VertexIn {\n"
+        @"  float2 position [[attribute(0)]];\n"
+        @"  float2 texCoord [[attribute(1)]];\n"
+        @"};\n"
+        @"\n"
+        @"struct VertexOut {\n"
+        @"  float4 position [[position]];\n"
+        @"  float2 texCoord;\n"
+        @"};\n"
+        @"\n"
+        @"vertex VertexOut vertexShader(VertexIn in [[stage_in]]) {\n"
+        @"  VertexOut out;\n"
+        @"  out.position = float4(in.position, 0.0, 1.0);\n"
+        @"  out.texCoord = in.texCoord;\n"
+        @"  return out;\n"
+        @"}\n"
+        @"\n"
+        @"fragment float4 fragmentShader(VertexOut in [[stage_in]],\n"
+        @"                             texture2d<float, access::sample> yTex [[texture(0)]],\n"
+        @"                             texture2d<float, access::sample> uvTex [[texture(1)]]) {\n"
+        @"  constexpr sampler s(address::clamp_to_edge, filter::linear);\n"
+        @"  float y = yTex.sample(s, in.texCoord).r;\n"
+        @"  float2 uv = uvTex.sample(s, in.texCoord).rg - float2(0.5, 0.5);\n"
+        @"  float r = y + 1.402 * uv.y;\n"
+        @"  float g = y - 0.344136 * uv.x - 0.714136 * uv.y;\n"
+        @"  float b = y + 1.772 * uv.x;\n"
+        @"  return float4(r, g, b, 1.0);\n"
+        @"}\n";
+
+        MTLCompileOptions *options = [[MTLCompileOptions alloc] init];
+        if (@available(iOS 16.0, *)) {
+            options.languageVersion = MTLLanguageVersion3_0;
+        }
+        defaultLibrary = [self.device newLibraryWithSource:kAFOEmbeddedMetalSource options:options error:&error];
+        if (error || !defaultLibrary) {
+            NSLog(@"AFOMetalVideoView: Failed to create library (file+embedded). %@", error.localizedDescription);
+            return;
+        }
+        NSLog(@"AFOMetalVideoView: Using embedded Metal shader library.");
     }
 
     id<MTLFunction> vertexFunction = [defaultLibrary newFunctionWithName:@"vertexShader"];

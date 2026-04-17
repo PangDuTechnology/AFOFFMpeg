@@ -18,5 +18,8 @@
               codecContext:(AVCodecContext *)codecContext
                      index:(NSInteger)index;
 - (void)playAudio;
+/// 暂停音频（可恢复）
+- (void)pauseAudio;
+/// 停止并释放音频资源（不可直接恢复，需重新配置）
 - (void)stopAudio;
 @end
