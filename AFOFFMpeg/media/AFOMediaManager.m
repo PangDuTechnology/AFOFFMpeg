@@ -380,12 +380,6 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
     return nil;
 }
 #pragma mark ------ AFOCountDownManagerDelegate
-- (void)vedioFilePlayingDelegate{
-    [self.delegate videoNowPlayingDelegate];
-}
-- (void)vedioFileFinishDelegate{
-    [self.delegate videoFinishPlayingDelegate];
-}
 #pragma mark ------ 释放资源
 - (void)freeResources{
     if (_isRelease) {
