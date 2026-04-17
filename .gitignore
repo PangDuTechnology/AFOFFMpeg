@@ -10,3 +10,6 @@ Podfile.lock
 
 # CocoaPods workspace artifacts (keep project, ignore workspace if it is generated)
 *.xcworkspace/
+
+# Xcode auto-generated workspace inside .xcodeproj
+*.xcodeproj/project.xcworkspace/
