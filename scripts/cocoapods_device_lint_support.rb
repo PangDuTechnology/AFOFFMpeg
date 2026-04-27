@@ -8,37 +8,89 @@ require "rbconfig"
 module CocoapodsDeviceLintSupport
   module_function
 
+  def pod_shim_paths
+    [ ENV["POD_PATH"], `command -v pod 2>/dev/null`.strip, "/usr/local/bin/pod", "/opt/homebrew/bin/pod" ]
+      .compact
+      .uniq
+      .select { |p| p && !p.empty? && File.file?(p) }
+  end
+
+  # Homebrew: /usr/local/bin/pod 第一行是 bash，用 GEM_HOME=.../libexec 指向已打包的 gem 树
+  def gem_root_from_brew_pod_wrapper
+    pod_shim_paths.each do |pod|
+      s = begin
+        File.read(pod, 12_288)
+      rescue StandardError
+        next
+      end
+      gem_home = nil
+      m = s.match(/GEM_HOME=["']([^"']+)["']/) || s.match(/GEM_HOME=([^\s\n]+)/)
+      if m
+        gem_home = m[1]
+      elsif (m2 = s.match(/exec\s+["']([^"']+)["']/))
+        # e.g. exec ".../Cellar/cocoapods/1.16.2_1/libexec/bin/pod"
+        pod_path = m2[1]
+        if pod_path.end_with?("/libexec/bin/pod")
+          gem_home = File.dirname(File.dirname(pod_path))
+        end
+      end
+      next unless gem_home && File.directory?(gem_home)
+      r = find_cocoapods_gem_under_gem_home(gem_home)
+      return r if r
+    end
+    nil
+  end
+
+  def find_cocoapods_gem_under_gem_home(gem_home)
+    Dir.glob(File.join(gem_home, "gems", "cocoapods-*")).sort.reverse_each do |d|
+      v = File.join(d, "lib", "cocoapods", "validator.rb")
+      return d if File.file?(v)
+    end
+    nil
+  end
+
   def cocoapods_gem_root
+    g = gem_root_from_brew_pod_wrapper
+    return g if g
+
     each_candidate_ruby do |r|
-      g = gem_root_from_ruby(r)
-      return g if g
+      g2 = gem_root_from_ruby(r)
+      return g2 if g2
     end
     from_current_ruby
   end
 
-  # 供错误提示用：从 pod 脚本解析出的 ruby 路径（可能多个，逗号拼接）
+  # 供错误提示
+  def gem_home_from_pod_shim
+    pod_shim_paths.each do |pod|
+      s = File.read(pod, 12_288) rescue next
+      m = s.match(/GEM_HOME=["']([^"']+)["']/) || s.match(/GEM_HOME=([^\s\n]+)/)
+      return m[1] if m
+      m2 = s.match(/exec\s+["']([^"']+)["']/)
+      if m2 && m2[1].end_with?("/libexec/bin/pod")
+        return File.dirname(File.dirname(m2[1]))
+      end
+    end
+    nil
+  end
+
+  # 供错误提示用：从 pod 解析出的 ruby / Homebrew 等路径
   def ruby_from_pod_shebang
     list = []
-    [ ENV["POD_PATH"], `command -v pod 2>/dev/null`.strip, "/usr/local/bin/pod", "/opt/homebrew/bin/pod" ].compact.uniq.each do |pod|
-      next if pod.empty? || !File.file?(pod)
+    pod_shim_paths.each do |pod|
       list += ruby_from_pod_shebang_line(pod) + rubies_mentioned_in_pod_script(pod)
     end
     list += homebrew_ruby_candidates
     list = list.uniq.compact
+    g = gem_home_from_pod_shim
+    list.unshift("GEM_HOME=#{g}") if g
     return nil if list.empty?
     list.join(", ")
   end
 
   def each_candidate_ruby
-    pod_candidates = [
-      ENV["POD_PATH"],
-      `command -v pod 2>/dev/null`.strip,
-      "/usr/local/bin/pod",
-      "/opt/homebrew/bin/pod"
-    ]
     seen = {}
-    pod_candidates.compact.uniq.each do |pod|
-      next if pod.empty? || !File.file?(pod)
+    pod_shim_paths.each do |pod|
       next if seen[pod]
       seen[pod] = true
 
