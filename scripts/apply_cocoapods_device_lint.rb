@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby
 # Patches the installed CocoaPods `Validator#xcodebuild` so iOS `pod spec lint` /
-# `pod trunk push` use -sdk iphoneos + generic platform (not Simulator).
+# `pod trunk push` use -sdk iphoneos + generic platform (not Simulator), and
+# disable code signing (lint App has entitlements; device build otherwise needs a team).
 # Restore: ruby scripts/restore_cocoapods_validator.rb
 #
-# Resolves the gem using the same Ruby as `pod` (reads shebang from /usr/local/bin/pod etc.).
+# Resolves the gem via scripts/cocoapods_device_lint_support.rb
 #
 # Usage: ruby scripts/apply_cocoapods_device_lint.rb
 
@@ -31,25 +32,47 @@ unless File.file?(path)
   exit 1
 end
 
-s = File.read(path)
+original = File.read(path)
+s = original.dup
 
 a = "command += %w(CODE_SIGN_IDENTITY=- -sdk iphonesimulator)"
 b = "command += Fourflusher::SimControl.new.destination(:oldest, 'iOS', deployment_target)"
 
-if !s.include?(a) && s.include?("command += %w(-destination generic/platform=iOS)")
-  puts "CocoaPods validator already uses device SDK for iOS spec lint."
+# --- Phase 1: iphonesimulator -> iphoneos + generic device destination
+if s.include?(a) && s.include?(b)
+  if s.scan(a).length != 1 || s.scan(b).length != 1
+    warn "Ambiguous simulator snippet; aborting."
+    exit 1
+  end
+  s = s.sub(a, "command += %w(CODE_SIGN_IDENTITY=- -sdk iphoneos)")
+  s = s.sub(b, "command += %w(-destination generic/platform=iOS)")
+elsif s.include?("command += %w(CODE_SIGN_IDENTITY=- -sdk iphoneos)") && s.include?("generic/platform=iOS")
+  # 已做过 phase1
+else
+  warn "在 #{path} 中未找到预期的 iOS 模拟器分支，无法打补丁："
+  warn "  期望仍含: #{a}"
+  warn "  或已含:   iphoneos + generic/platform=iOS"
+  exit 1
+end
+
+# --- Phase 2: 真机编 lint 时关闭代码签名，避免 'App' has entitlements 要求开发证书
+unless s.include?("CODE_SIGNING_ALLOWED=NO")
+  s2 = s.sub(
+    /(command \+= %w\(-destination generic\/platform=iOS\))(\R)([\t ]+)(xcconfig = consumer\.pod_target_xcconfig)/m,
+    "\\1\\2\\3command += %w(CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO)\\2\\3\\4"
+  )
+  if s2 == s
+    warn "无法在 destination 后插入签名豁免（CocoaPods 版本可能已改行结构）。可手动在"
+    warn "  Validator#xcodebuild 的 `when :ios` 中，在 generic/platform=iOS 之后增加："
+    warn "  command += %w(CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO)"
+    exit 1
+  end
+  s = s2
+end
+
+if s == original
+  puts "Already up to date (device SDK + no code signing for lint)."
   exit 0
-end
-
-unless s.include?(a) && s.include?(b)
-  warn "Expected iOS simulator snippet not found in:\n  #{path}"
-  warn "若 CocoaPods 大版本已改版，请手动把 `when :ios` 下两行改为 iphoneos + generic/platform=iOS"
-  exit 1
-end
-
-if s.scan(a).length != 1 || s.scan(b).length != 1
-  warn "Ambiguous: multiple matches; aborting."
-  exit 1
 end
 
 ts = Time.now.to_i
@@ -57,9 +80,6 @@ FileUtils.cp(path, "#{path}.bak.#{ts}")
 puts "Backup: #{path}.bak.#{ts}"
 puts "Using gem at: #{root}"
 
-s2 = s.sub(a, "command += %w(CODE_SIGN_IDENTITY=- -sdk iphoneos)")
-s2 = s2.sub(b, "command += %w(-destination generic/platform=iOS)")
-
-File.write(path, s2)
-puts "Patched — iOS spec lint will use device SDK (not Simulator)."
+File.write(path, s)
+puts "Patched — iOS spec lint: iphoneos + generic iOS, signing disabled for lint."
 exit 0
