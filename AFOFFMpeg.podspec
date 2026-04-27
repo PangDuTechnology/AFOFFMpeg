@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
 
   # ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   s.name         = "AFOFFMpeg"
-  s.version      = "0.1.7"
+  s.version      = "0.1.8"
   s.summary      = "decoding."
 
   # This description is used to generate tags and improve search results.
@@ -61,7 +61,10 @@ Pod::Spec.new do |s|
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   s.frameworks = 'VideoToolbox','CoreMedia','CoreVideo','CoreGraphics','CoreImage','OpenGLES','AVFoundation','AudioToolbox'
-  s.pod_target_xcconfig  =  {'OTHER_LDFLAGS'  =>  '-lObjC' }
+  s.pod_target_xcconfig = {
+    'OTHER_LDFLAGS' => '-lObjC',
+    'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES',
+  }
   s.static_framework = true
   s.requires_arc = true
   s.dependency "AFOFoundation"
