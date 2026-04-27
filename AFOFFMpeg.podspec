@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
 
   # ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   s.name         = "AFOFFMpeg"
-  s.version      = "0.1.6"
+  s.version      = "0.1.7"
   s.summary      = "decoding."
 
   # This description is used to generate tags and improve search results.
@@ -17,21 +17,26 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = "13.0"
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   s.source       = { :git => "https://github.com/PangDuTechnology/AFOFFMpeg.git", :tag => s.version.to_s }
+  s.default_subspecs = 'play', 'media', 'screenshots', 'audio', 'error', 'manager'
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   s.source_files  = "AFOFFMpeg/*.{h,m}"
   s.public_header_files = "AFOFFMpeg/*.h"
 
   s.subspec 'play' do |play|
+      play.dependency 'AFOFFMpeg/manager'
       play.source_files = 'AFOFFMpeg/play/*.{h,m}' 
       play.public_header_files = 'AFOFFMpeg/play/*.h'
   end
 
   s.subspec 'media' do |media|
+      media.dependency 'AFOFFMpeg/error'
       media.source_files = 'AFOFFMpeg/media/*.{h,m}' 
       media.public_header_files = 'AFOFFMpeg/media/*.h'
   end
 
   s.subspec 'screenshots' do |screenshots|
+      screenshots.dependency 'AFOFFMpeg/media'
+      screenshots.dependency 'AFOFFMpeg/error'
       screenshots.source_files = 'AFOFFMpeg/screenshots/*.{h,m}' 
       screenshots.public_header_files = 'AFOFFMpeg/screenshots/*.h'
   end
@@ -47,6 +52,8 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'manager' do |manager|
+      manager.dependency 'AFOFFMpeg/media'
+      manager.dependency 'AFOFFMpeg/audio'
       manager.source_files = 'AFOFFMpeg/manager/*.{h,m}' 
       manager.public_header_files = 'AFOFFMpeg/manager/*.h'
   end
@@ -55,6 +62,7 @@ Pod::Spec.new do |s|
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   s.frameworks = 'VideoToolbox','CoreMedia','CoreVideo','CoreGraphics','CoreImage','OpenGLES','AVFoundation','AudioToolbox'
   s.pod_target_xcconfig  =  {'OTHER_LDFLAGS'  =>  '-lObjC' }
+  s.static_framework = true
   s.requires_arc = true
   s.dependency "AFOFoundation"
   s.dependency "AFORouter"
