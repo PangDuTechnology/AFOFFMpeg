@@ -75,7 +75,7 @@ Pod::Spec.new do |s|
   s.dependency "AFODelegateExtension"
   s.dependency "AFOFFMpegLib"
   s.dependency "AFOlibyuv"
-  s.dependency "libxvidcore"
-  s.dependency "AFOx264"
+  s.dependency "libxvidcore", "~> 0.0.4"
+  s.dependency "AFOx264", "~> 0.1.1"
   s.dependency "AFOSchedulerCore"
 end
