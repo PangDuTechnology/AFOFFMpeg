@@ -20,7 +20,7 @@ unless root
   warn "找不到 cocoapods gem。"
   warn "  当前执行脚本的 ruby: #{RbConfig.ruby} (#{RUBY_VERSION})"
   warn "  `pod` 路径: #{pod.empty? ? '（无）' : pod}"
-  warn "  从 pod shebang 解析到的 ruby: #{r || '（无）'}"
+  warn "  试过的 ruby 路径: #{r || '（无）'}"
   warn "可设置:  export POD_PATH=/你的/pod  再重试本脚本"
   exit 1
 end

@@ -23,6 +23,7 @@ module CocoapodsDeviceLintSupport
       next if pod.empty? || !File.file?(pod)
       list += ruby_from_pod_shebang_line(pod) + rubies_mentioned_in_pod_script(pod)
     end
+    list += homebrew_ruby_candidates
     list = list.uniq.compact
     return nil if list.empty?
     list.join(", ")
@@ -44,7 +45,26 @@ module CocoapodsDeviceLintSupport
       rubies = ruby_from_pod_shebang_line(pod) + rubies_mentioned_in_pod_script(pod)
       rubies.uniq.compact.each { |r| yield r if r && File.executable?(r) }
     end
+    homebrew_ruby_candidates.each { |r| yield r if r && File.executable?(r) }
     yield RbConfig.ruby
+  end
+
+  def homebrew_ruby_candidates
+    c = []
+    %w[
+      /opt/homebrew/opt/ruby/bin/ruby
+      /usr/local/opt/ruby/bin/ruby
+    ].each { |p| c << p if File.executable?(p) }
+    Dir.glob("/opt/homebrew/Cellar/ruby/*/bin/ruby").sort.reverse_each { |p| c << p }
+    Dir.glob("/usr/local/Cellar/ruby/*/bin/ruby").sort.reverse_each { |p| c << p }
+    # cocoapods formula often bundles ruby under libexec
+    %w[
+      /opt/homebrew/Cellar/cocoapods/*/libexec/bin/ruby
+      /usr/local/Cellar/cocoapods/*/libexec/bin/ruby
+    ].each { |g| Dir.glob(g).each { |p| c << p } }
+    Dir.glob("/opt/homebrew/Cellar/cocoapods/**/libexec/**/bin/ruby").each { |p| c << p }
+    Dir.glob("/usr/local/Cellar/cocoapods/**/libexec/**/bin/ruby").each { |p| c << p }
+    c.uniq
   end
 
   def ruby_from_pod_shebang_line(pod)
@@ -63,24 +83,53 @@ module CocoapodsDeviceLintSupport
       cmd = sh.sub(/\A\/usr\/bin\/env\s+/, "").split(/\s+/).first
       return [] if !cmd || cmd.empty?
 
+      # env ruby 或 env bash —— 只对能解析为 ruby 的可执行文件返回
+      if cmd == "ruby" || cmd.end_with?("ruby")
+        resolved = `command -v ruby 2>/dev/null`.strip
+        return [ resolved ] if !resolved.empty? && File.executable?(resolved) && ruby_executable?(resolved)
+      end
+      if %w[bash sh zsh].include?(cmd)
+        return []
+      end
       resolved = `command -v #{cmd} 2>/dev/null`.strip
-      return [ resolved ] if !resolved.empty? && File.executable?(resolved)
+      if !resolved.empty? && File.executable?(resolved) && ruby_executable?(resolved)
+        return [ resolved ]
+      end
+      return []
     else
       exe = sh.split(/\s+/).first
-      return [ exe ] if exe && File.executable?(exe)
+      return [] unless exe && File.executable?(exe)
+      return [] if shell_executable?(exe)
+      return [ exe ] if ruby_executable?(exe)
     end
     []
   end
 
-  # Homebrew/Cellar wrappers sometimes use bash + exec; scan for .../bin/ruby
+  def shell_executable?(path)
+    %w[bash sh zsh fish dash csh ksh].include?(File.basename(path))
+  end
+
+  def ruby_executable?(path)
+    return false if path.to_s.empty?
+    b = File.basename(path)
+    return true if b == "ruby" || b.start_with?("ruby")
+    path.end_with?("/bin/ruby")
+  end
+
+  # bash 包装的 pod：从全文里找 .../bin/ruby
   def rubies_mentioned_in_pod_script(pod)
     s =
       begin
-        File.read(pod, 12_288)
+        t = File.read(pod)
+        t.size > 65_535 ? t[0, 65_535] : t
       rescue StandardError
         return []
       end
-    s.scan(%r{(/[A-Za-z0-9._+/-]+/bin/ruby)(?:\b|[\s'"])}).flatten.uniq.select { |p| File.executable?(p) }
+    found = []
+    found += s.scan(%r{((?:/[\w.+-]+)+/bin/ruby)\b}).flatten
+    found += s.scan(%r{((?:/usr/local/Cellar|/opt/homebrew/Cellar)/[^'"\s\n]+/bin/ruby)}).flatten
+    found += s.scan(%r{((?:/usr/local|/opt/homebrew)/[^'"\s\n]*libexec[^'"\s\n]*/bin/ruby)}).flatten
+    found.uniq.compact.select { |p| File.executable?(p) }
   end
 
   def gem_root_from_ruby(ruby_exe)
