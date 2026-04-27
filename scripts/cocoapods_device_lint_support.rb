@@ -16,6 +16,18 @@ module CocoapodsDeviceLintSupport
     from_current_ruby
   end
 
+  # 供错误提示用：从 pod 脚本解析出的 ruby 路径（可能多个，逗号拼接）
+  def ruby_from_pod_shebang
+    list = []
+    [ ENV["POD_PATH"], `command -v pod 2>/dev/null`.strip, "/usr/local/bin/pod", "/opt/homebrew/bin/pod" ].compact.uniq.each do |pod|
+      next if pod.empty? || !File.file?(pod)
+      list += ruby_from_pod_shebang_line(pod) + rubies_mentioned_in_pod_script(pod)
+    end
+    list = list.uniq.compact
+    return nil if list.empty?
+    list.join(", ")
+  end
+
   def each_candidate_ruby
     pod_candidates = [
       ENV["POD_PATH"],
