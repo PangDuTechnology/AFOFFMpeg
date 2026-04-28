@@ -68,6 +68,8 @@ Pod::Spec.new do |s|
   # 压缩/运行时库由 s.libraries 展开为 -lz -lbz2 -liconv -lc++，勿在 OTHER_LDFLAGS 里重复写两套。
   s.pod_target_xcconfig = {
     'OTHER_LDFLAGS' => '$(inherited) -ObjC',
+    # AFOFFMpegLib/AFOlibyuv 等为第三方头；-Wdocumentation 等会在 trunk/spec lint（未加 allow-warnings）时被记为告警失败
+    'OTHER_CFLAGS' => '$(inherited) -Wno-documentation -Wno-documentation-deprecated-sync -Wno-strict-prototypes',
     'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES',
   }
   s.user_target_xcconfig = {
