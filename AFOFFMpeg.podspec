@@ -62,9 +62,13 @@ Pod::Spec.new do |s|
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   s.frameworks = 'VideoToolbox','CoreMedia','CoreVideo','CoreGraphics','CoreImage','OpenGLES','AVFoundation','AudioToolbox','CoreAudioTypes'
   s.pod_target_xcconfig = {
-    'OTHER_LDFLAGS' => '-lObjC',
+    'OTHER_LDFLAGS' => '$(inherited) -lObjC',
     'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES',
+    'GCC_TREAT_WARNINGS_AS_ERRORS' => 'NO',
+    'OTHER_CFLAGS' => '$(inherited) -Wno-non-modular-include-in-framework-module',
+    'OTHER_CPLUSPLUSFLAGS' => '$(inherited) -Wno-non-modular-include-in-framework-module',
   }
+  s.compiler_flags = '-Wno-non-modular-include-in-framework-module'
   s.static_framework = true
   s.requires_arc = true
   s.dependency "AFOFoundation"
