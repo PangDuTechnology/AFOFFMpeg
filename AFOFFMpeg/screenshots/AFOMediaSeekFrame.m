@@ -5,6 +5,13 @@
 //  Created by xueguang xian on 2018/1/5.
 //  Copyright © 2018年 AFO Science Technology Ltd. All rights reserved.
 //
+
+#include <libavformat/avformat.h>
+#include <libavcodec/avcodec.h>
+#include <libavutil/frame.h>
+#include <libavutil/imgutils.h>
+#include <libavutil/dict.h>
+
 #import "AFOMediaSeekFrame.h"
 #import <AFOFoundation/AFOFoundation.h>
 #import "AFOMediaSeekFrame+Conditional.h"
@@ -12,15 +19,11 @@
 #import "AFOMediaConditional.h"
 #import "AFOMediaYUV.h"
 
-#include <libavformat/avformat.h>
-#include <libavcodec/avcodec.h>
-#include <libavutil/dict.h>
-
 @interface AFOMediaSeekFrame (){
-    AVCodec             *avcodec;
-    AVFormatContext     *avFormatContext;
-    AVCodecContext      *avCodecContext;
-    AVFrame             *avFrame;
+    AVCodec *avcodec;
+    AVFormatContext *avFormatContext;
+    AVCodecContext *avCodecContext;
+    AVFrame *avFrame;
 }
 @property (nonatomic, assign)  NSInteger              videoStream;
 @property (nonatomic, assign)  int                    zoomFacto;
@@ -45,7 +48,7 @@
                      path:(NSString *)path
                 imagePath:(NSString *)imagePath
                     plist:(NSString *)plist
-                    block:(mediaSeekFrameDetailBlock)block{
+                    block:(mediaSeekFrameDetailBlock)detailCompletion{
     AFOMediaSeekFrame *seekFrame = NULL;
     if (name != NULL || name != nil){
         AFOMediaSeekFrame *temp = [[AFOMediaSeekFrame alloc] init];
@@ -57,7 +60,7 @@
                                                                                   NSString *imageName,
                                                                                   int width,
                                                                                   int height) {
-            block(isWrite, isCutting, createTime, vedioName, imageName, width, height);
+            detailCompletion(isWrite, isCutting, createTime, vedioName, imageName, width, height);
         }];
         seekFrame = temp;
     }
@@ -68,15 +71,15 @@
                 name:(NSString *)name
            imagePath:(NSString *)imagePath
                plist:(NSString *)plist
-               block:(mediaSeekFrameDetailBlock)block{
-    __block NSError *verror;
+               block:(mediaSeekFrameDetailBlock)detailCompletion{
+    __block NSError *pathError = nil;
     WeakObject(self);
     [AFOMediaConditional mediaSesourcesConditionalPath:[AFOMediaSeekFrame vedioAddress:path name:name] block:^(NSError *error, NSInteger videoIndex, NSInteger audioIndex) {
         StrongObject(self);
         self.videoStream = videoIndex;
-        verror = error;
+        pathError = error;
     }];
-    if (verror.code != 0) {
+    if (pathError.code != 0) {
         return;
     }
     ///------ Open video file.
@@ -95,15 +98,15 @@
     ///------ 正常流程，分配视频帧
     avFrame = av_frame_alloc();
     ///------
-    [self firstFrameToCover:[AFOMediaThumbnail vedioAddress:path name:name] name:name imagePath:imagePath block:^(BOOL isWrite, BOOL isCutting){
-            block(isWrite, isCutting, [self createTime], name, [AFOMediaThumbnail imageName:name], self.outWidth, self.outHeight);
+    [self firstFrameToCover:[AFOMediaThumbnail vedioAddress:path name:name] name:name imagePath:imagePath completion:^(BOOL isWrite, BOOL isCutting){
+            detailCompletion(isWrite, isCutting, [self createTime], name, [AFOMediaThumbnail imageName:name], self.outWidth, self.outHeight);
         }];
 }
 #pragma mark ------ 将第一帧作为封面
 - (void)firstFrameToCover:(NSString *)path
                      name:(NSString *)name
                 imagePath:(NSString *)imagePath
-                    block:(mediaSeekFrameBlock)block{
+                completion:(mediaSeekFrameBlock)completion{
     AVPacket packet;
     while (av_read_frame(avFormatContext, &packet) >= 0) {
         if (packet.stream_index == self.videoStream) {
@@ -117,12 +120,12 @@
                 [AFOMediaYUV makeYUVToRGB:avFrame width:avFrame->width height:avFrame->height scale:1.0 block:^(UIImage * _Nullable image, NSError * _Nullable error) {
                     if (error) {
                         NSLog(@"AFOMediaSeekFrame: Error converting YUV to RGB for thumbnail: %@", error.localizedDescription);
-                        block(NO, NO);
+                        completion(NO, NO);
                         return;
                     }
                     NSString *strPath = [NSString stringWithFormat:@"%@/%@",imagePath,[AFOMediaThumbnail imageName:name]];
                     BOOL result = [UIImagePNGRepresentation(image) writeToFile:strPath atomically:YES];
-                    block(result,result);
+                    completion(result, result);
                 }];
                 break;
             }

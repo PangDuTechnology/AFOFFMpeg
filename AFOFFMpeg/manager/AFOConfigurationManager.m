@@ -98,14 +98,7 @@ static enum AVPixelFormat AFOHWVideoToolboxGetFormat(AVCodecContext *s, const en
 }
 + (void)configurationForPath:(NSString *)strPath
                       stream:(NSInteger)stream
-                       block:(void(^)(
-                                      struct AVCodec * _Nullable codec,
-                                      struct AVFormatContext * _Nullable format,
-                                      struct AVCodecContext * _Nullable context,
-                                      NSInteger videoStream,
-                                      NSInteger audioStream,
-                                      NSData * _Nullable sps,
-                                      NSData * _Nullable pps))block{
+                       block:(AFOCodecConfiguredBlock)configured{
     [AFOMediaConditional mediaSesourcesConditionalPath:strPath block:^(NSError *error, NSInteger videoIndex, NSInteger audioIndex) {
         AFOMediaLog(@"AFOConfigurationManager: mediaSesourcesConditionalPath callback. Error: %ld, videoIndex: %ld, audioIndex: %ld", (long)error.code, (long)videoIndex, (long)audioIndex);
         if (error.code == 0) {
@@ -128,9 +121,9 @@ static enum AVPixelFormat AFOHWVideoToolboxGetFormat(AVCodecContext *s, const en
                 getSPSAndPPSFromExtraData(avCodecContext->extradata, avCodecContext->extradata_size, &spsData, &ppsData);
             }
             AFOMediaLog(@"AFOConfigurationManager: Calling block with FFmpeg contexts. avFormatContext: %p, avCodecContext: %p", avFormatContext, avCodecContext);
-            block(avCodec,avFormatContext,avCodecContext,videoIndex,audioIndex,spsData,ppsData);
+            configured(avCodec, avFormatContext, avCodecContext, videoIndex, audioIndex, spsData, ppsData);
         }else{
-            block(NULL,NULL,NULL,0,0,nil,nil);
+            configured(nil, nil, nil, 0, 0, nil, nil);
             return;
         }
     }];

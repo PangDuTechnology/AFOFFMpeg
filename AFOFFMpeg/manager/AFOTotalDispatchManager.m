@@ -30,14 +30,14 @@
     return self;
 }
 - (void)displayVedioForPath:(NSString *)strPath
-                      block:(displayVedioFrameBlock)block{
+                      block:(displayVedioFrameBlock)playbackBlock{
     NSLog(@"AFOTotalDispatchManager: displayVedioForPath called for path: %@", strPath);
     if (strPath.length == 0 || ![[NSFileManager defaultManager] fileExistsAtPath:strPath]) {
         NSError *pathError = [NSError errorWithDomain:@"AFOTotalDispatchManager"
                                                  code:-1
                                              userInfo:@{NSLocalizedDescriptionKey: @"视频文件不存在或路径为空"}];
-        if (block) {
-            block(pathError, nil, nil, nil, 0, 0, NO);
+        if (playbackBlock) {
+            playbackBlock(pathError, nil, nil, nil, 0, 0, NO);
         }
         return;
     }
@@ -48,8 +48,8 @@
             return;
         }
         if (error.code != 0) {
-            if (block) {
-                block(error, nil, nil, nil, 0, 0, NO);
+            if (playbackBlock) {
+                playbackBlock(error, nil, nil, nil, 0, 0, NO);
             }
             return;
         }
@@ -60,11 +60,15 @@
         AFOMediaLog(@"AFOTotalDispatchManager: configurationStreamPath finished, start codec setup with resolved streams.");
         ///--- play audio
         if (self.audioStream >= 0) {
-            [AFOConfigurationManager configurationForPath:strPath stream:self.audioStream block:^(struct AVCodec * _Nullable codec, struct AVFormatContext * _Nullable format, struct AVCodecContext * _Nullable context, NSInteger videoStream, NSInteger audioStream, NSData * _Nullable sps, NSData * _Nullable pps) {
-                if (!format || !context) {
+            [AFOConfigurationManager configurationForPath:strPath stream:self.audioStream block:^(struct AVCodec * _Nullable codec, struct AVFormatContext * _Nullable formatCtx, struct AVCodecContext * _Nullable codecCtx, NSInteger resolvedVideoStream, NSInteger resolvedAudioStream, NSData * _Nullable sps, NSData * _Nullable pps) {
+                StrongObject(self);
+                if (!self) {
                     return;
                 }
-                [self.audioManager audioFormatContext:format codecContext:context index:self.audioStream];
+                if (!formatCtx || !codecCtx) {
+                    return;
+                }
+                [self.audioManager audioFormatContext:formatCtx codecContext:codecCtx index:self.audioStream];
                 [self playAudio];
             }];
         }
@@ -73,34 +77,33 @@
             NSError *videoStreamError = [NSError errorWithDomain:@"AFOTotalDispatchManager"
                                                              code:-2
                                                          userInfo:@{NSLocalizedDescriptionKey: @"未找到可播放的视频流"}];
-            if (block) {
-                block(videoStreamError, nil, nil, nil, 0, 0, NO);
+            if (playbackBlock) {
+                playbackBlock(videoStreamError, nil, nil, nil, 0, 0, NO);
             }
             return;
         }
 
         ///------ display video
-        [AFOConfigurationManager configurationForPath:strPath stream:self.videoStream block:^(struct AVCodec * _Nonnull codec, struct AVFormatContext * _Nonnull format, struct AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream, NSData * _Nullable sps, NSData * _Nullable pps) {
-            AFOMediaLog(@"AFOTotalDispatchManager: Received AFOConfigurationManager video callback. format: %p, context: %p", format, context);
+        [AFOConfigurationManager configurationForPath:strPath stream:self.videoStream block:^(struct AVCodec * _Nullable codec, struct AVFormatContext * _Nullable formatCtx, struct AVCodecContext * _Nullable codecCtx, NSInteger resolvedVideoStream, NSInteger resolvedAudioStream, NSData * _Nullable sps, NSData * _Nullable pps) {
             StrongObject(self);
             if (!self) {
                 return;
             }
-            if (!format || !context) {
+            AFOMediaLog(@"AFOTotalDispatchManager: Received AFOConfigurationManager video callback. format: %p, context: %p", formatCtx, codecCtx);
+            if (!formatCtx || !codecCtx) {
                 NSError *videoInitError = [NSError errorWithDomain:@"AFOTotalDispatchManager"
                                                                code:-3
                                                            userInfo:@{NSLocalizedDescriptionKey: @"视频解码器初始化失败"}];
-                if (block) {
-                    block(videoInitError, nil, nil, nil, 0, 0, NO);
+                if (playbackBlock) {
+                    playbackBlock(videoInitError, nil, nil, nil, 0, 0, NO);
                 }
                 return;
             }
-            AFOMediaLog(@"AFOTotalDispatchManager: Calling videoManager displayVedioFormatContext. format: %p, context: %p", format, context);
-            [self.videoManager displayVedioFormatContext:format codecContext:context index:self.videoStream block:^(NSError *frameError, CVPixelBufferRef framePixelBuffer, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds, BOOL isVideoEnd) {
-                AFOMediaLog(@"AFOTotalDispatchManager: AFOConfigurationManager callback for video. format: %p, context: %p", format, context);
+            AFOMediaLog(@"AFOTotalDispatchManager: Calling videoManager displayVedioFormatContext. format: %p, context: %p", formatCtx, codecCtx);
+            [self.videoManager displayVedioFormatContext:formatCtx codecContext:codecCtx index:self.videoStream block:^(NSError * _Nullable frameError, CVPixelBufferRef _Nullable framePixelBuffer, NSString * _Nullable totalTime, NSString * _Nullable currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds, BOOL isVideoEnd) {
                 NSLog(@"AFOTotalDispatchManager: pixelBuffer received: %p", framePixelBuffer);
-                if (block) {
-                    block(frameError, framePixelBuffer, totalTime, currentTime, totalSeconds, cuttentSeconds, isVideoEnd);
+                if (playbackBlock) {
+                    playbackBlock(frameError, framePixelBuffer, totalTime, currentTime, totalSeconds, cuttentSeconds, isVideoEnd);
                 }
             }];
         }];
