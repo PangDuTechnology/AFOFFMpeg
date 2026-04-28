@@ -60,17 +60,18 @@ Pod::Spec.new do |s|
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
-  s.frameworks = 'VideoToolbox','CoreMedia','CoreVideo','CoreGraphics','CoreImage','OpenGLES','Metal','MetalKit','AVFoundation','AudioToolbox','CoreAudioTypes'
+  s.frameworks = 'UIKit', 'Foundation', 'VideoToolbox','CoreMedia','CoreVideo','CoreGraphics','CoreImage','OpenGLES','Metal','MetalKit','AVFoundation','AudioToolbox','CoreAudioTypes','Accelerate','QuartzCore'
   # FFmpeg/AFOFFMpegLib 静态链路常见依赖；lint 宿主 App 不会自动补全时需显式声明
   s.libraries = 'z', 'bz2', 'iconv', 'c++'
   # 编译本 Pod（含 AFOFFMpegLib/ffmpeg 静态依赖的常见符号）
+  # 与同仓库 Xcode 工程中 AFOFFMpeg Target 对齐：静态 FFmpeg + ObjC Pods 常以 -ObjC/-all_load 避免漏链 .a；iOS pthread 已由 libSystem 提供，无需 -lpthread
   s.pod_target_xcconfig = {
-    'OTHER_LDFLAGS' => '$(inherited) -lObjC -lm -lpthread',
+    'OTHER_LDFLAGS' => '$(inherited) -ObjC -all_load -lObjC -lm',
     'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES',
   }
-  # static_framework：lint/App 最终链接时需与 Pod 一致的系统库，否则常为 ld 失败而无具体报错行被摘出
   s.user_target_xcconfig = {
-    'OTHER_LDFLAGS' => '$(inherited) -ObjC -lObjC -lz -lbz2 -liconv -lc++ -lm -lpthread',
+    'OTHER_LDFLAGS' => '$(inherited) -ObjC -all_load -lObjC -lz -lbz2 -liconv -lc++ -lm',
+    'LD_RUNPATH_SEARCH_PATHS' => '$(inherited) @executable_path/Frameworks',
   }
   s.static_framework = true
   s.requires_arc = true
