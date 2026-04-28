@@ -60,16 +60,18 @@ Pod::Spec.new do |s|
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
-  s.frameworks = 'UIKit', 'Foundation', 'VideoToolbox','CoreMedia','CoreVideo','CoreGraphics','CoreImage','OpenGLES','Metal','MetalKit','AVFoundation','AudioToolbox','CoreAudioTypes','Accelerate','QuartzCore'
+  # CoreAudioTypes 勿写进 s.frameworks：部分 Xcode/iOS SDK 下 ld 报「framework 'CoreAudioTypes' not found」；类型与符号由 AudioToolbox、AVFoundation 等已覆盖。
+  s.frameworks = 'UIKit', 'Foundation', 'VideoToolbox', 'CoreMedia', 'CoreVideo', 'CoreGraphics', 'CoreImage', 'OpenGLES', 'Metal', 'MetalKit', 'AVFoundation', 'AudioToolbox', 'Accelerate', 'QuartzCore'
   # FFmpeg/AFOFFMpegLib 静态链路常见依赖；lint 宿主 App 不会自动补全时需显式声明
   s.libraries = 'z', 'bz2', 'iconv', 'c++'
-  # 勿对宿主 App 使用 -all_load：多 Pod 静态 .a + FFmpeg 易产生 duplicate symbol / 异常 ld。ObjC Categories 用 -ObjC -lObjC；系统依赖见 s.libraries。
+  # 勿对宿主 App 使用 -all_load。Categories 仅用 -ObjC（勿用 -lObjC：会按 libObjC 解析，易链接失败）。
+  # 压缩/运行时库由 s.libraries 展开为 -lz -lbz2 -liconv -lc++，勿在 OTHER_LDFLAGS 里重复写两套。
   s.pod_target_xcconfig = {
-    'OTHER_LDFLAGS' => '$(inherited) -ObjC -lObjC -lm',
+    'OTHER_LDFLAGS' => '$(inherited) -ObjC',
     'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES',
   }
   s.user_target_xcconfig = {
-    'OTHER_LDFLAGS' => '$(inherited) -ObjC -lObjC -lz -lbz2 -liconv -lc++ -lm',
+    'OTHER_LDFLAGS' => '$(inherited) -ObjC',
     'LD_RUNPATH_SEARCH_PATHS' => '$(inherited) @executable_path/Frameworks',
   }
   s.static_framework = true
