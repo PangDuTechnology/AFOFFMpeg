@@ -7,6 +7,7 @@
 //
 
 #import <VideoToolbox/VideoToolbox.h>
+#include <libavformat/avformat.h>
 #include <string.h>
 #include <libavutil/hwcontext.h>
 #include <libavutil/opt.h>
@@ -100,8 +101,8 @@ static void videoDecompressionOutputCallback(void *decompressionOutputRefCon,
     return self;
 }
 #pragma mark ------ displayVedio
-- (void)displayVedioFormatContext:(AVFormatContext *)formatContext
-                     codecContext:(AVCodecContext *)codecContext
+- (void)displayVedioFormatContext:(struct AVFormatContext *)formatContext
+                     codecContext:(struct AVCodecContext *)codecContext
                             index:(NSInteger)index
                             block:(displayVedioFrameBlock)block{
     AFOMediaLog(@"AFOMediaManager: displayVedioFormatContext called. Self: %p, formatContext (param): %p, codecContext (param): %p, Video Stream Index: %ld", self, formatContext, codecContext, (long)index);

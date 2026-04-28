@@ -13,7 +13,10 @@
 #define AFOMediaLog(fmt, ...) 
 #endif
 #include <UIKit/UIKit.h>
-#import <libavformat/avformat.h>
+
+struct AVFormatContext;
+struct AVCodecContext;
+
 @protocol AFOPlayMediaManager <NSObject>
 @optional
 - (void)videoTimeStamp:(float)videoTime
@@ -50,8 +53,8 @@ typedef void(^displayVedioFrameBlock)(NSError *error,
  @param index <#index description#>
  @param block <#block description#>
  */
-- (void)displayVedioFormatContext:(AVFormatContext *)formatContext
-                     codecContext:(AVCodecContext *)codecContext
+- (void)displayVedioFormatContext:(struct AVFormatContext *)formatContext
+                     codecContext:(struct AVCodecContext *)codecContext
                             index:(NSInteger)index
                             block:(displayVedioFrameBlock)block;
 

@@ -6,6 +6,8 @@
 //  Copyright © 2018 AFO Science and technology Ltd. All rights reserved.
 //
 #import "AFOMediaYUV.h"
+#include <libavutil/frame.h>
+#include <libswresample/swresample.h>
 #import <AFOlibyuv/libyuv.h>
 #import <libavutil/imgutils.h>
 #import "AFOMediaErrorCodeManager.h"
@@ -16,7 +18,7 @@
 
 @implementation AFOMediaYUV
 #pragma mark ------ 420P -> RGBA -> CGImageRef -> image
-+ (void)makeYUVToRGB:(AVFrame *)avFrame
++ (void)makeYUVToRGB:(struct AVFrame *)avFrame
                    width:(int)inWidth
                   height:(int)inHeight
                    scale:(int)scale
@@ -95,7 +97,7 @@
     block(image, nil);
 }
 #pragma mark ------ 420P -> nv12 -> CIImage -> image
-- (void)dispatchAVFrame:(AVFrame*) frame
+- (void)dispatchAVFrame:(struct AVFrame*) frame
                   block:(void (^)(UIImage *image))block{
     if(!frame || !frame->data[0]){
         return;

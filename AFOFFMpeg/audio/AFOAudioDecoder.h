@@ -7,12 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <libavformat/avformat.h>
+
 typedef void(^audioTimeStampBlock)(float timeStamp);
+
+struct AVFormatContext;
+struct AVCodecContext;
+
 NS_ASSUME_NONNULL_BEGIN
 @interface AFOAudioDecoder : NSObject
-- (void)audioDecoder:(nonnull AVFormatContext *)avFormatContext
-        codecContext:(nonnull AVCodecContext *)avCodecContext
+- (void)audioDecoder:(nonnull struct AVFormatContext *)avFormatContext
+        codecContext:(nonnull struct AVCodecContext *)avCodecContext
                index:(NSInteger)index
           packetSize:(int)packetSize;
 - (int)readAudioSamples:(short *)samples

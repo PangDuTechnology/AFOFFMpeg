@@ -7,7 +7,10 @@
 //
 #import "AFOGenerateImages.h"
 #import <AFOFoundation/AFOFoundation.h>
-#import <libavutil/imgutils.h>
+#include <libavcodec/avcodec.h>
+#include <libavutil/imgutils.h>
+#include <libavutil/pixfmt.h>
+#include <libswscale/swscale.h>
 #import "AFOMediaErrorCodeManager.h"
 #import "AFOMediaYUV.h"
 @interface AFOGenerateImages ()
@@ -33,11 +36,11 @@
 //    block(image,error);
 //}];
 - (void)decodingImageWithAVFrame:(struct AVFrame *)avFrame
-                    codecContext:(AVCodecContext *)avCodecContext
+                    codecContext:(struct AVCodecContext *)avCodecContext
                          outSize:(CGSize)outSize
-                       srcFormat:(enum AVPixelFormat)srcFormat
-                       dstFormat:(enum AVPixelFormat)dstFormat
-                     pixelFormat:(enum AVPixelFormat)format
+                       srcFormat:(int)srcFormat
+                       dstFormat:(int)dstFormat
+                     pixelFormat:(int)format
                 bitsPerComponent:(size_t)component
                     bitsPerPixel:(size_t)pixel
                             block:(generateImageBlock)block{
@@ -47,7 +50,7 @@
     __block NSError *swsError;
     dispatch_async(weakself.patchQueue, ^{
         StrongObject(self)
-        [self swsContextWithAVFrame:avFrame codecContext:avCodecContext outSize:outSize srcFormat:srcFormat dstFormat:dstFormat block:^(struct SwsContext *context, NSError *error) {
+        [self swsContextWithAVFrame:avFrame codecContext:avCodecContext outSize:outSize srcFormat:(enum AVPixelFormat)srcFormat dstFormat:(enum AVPixelFormat)dstFormat block:^(struct SwsContext *context, NSError *error) {
             swsContenxt = context;
             swsError = error;
             if (swsError.code != 0) {
@@ -61,7 +64,7 @@
     __block uint8_t  *YUVBuffer;
     dispatch_async(weakself.patchQueue, ^{
         StrongObject(self);
-        [self frameWithContext:swsContenxt frame:avFrame size:outSize pixelFormat:format block:^(struct AVFrame *frame,
+        [self frameWithContext:swsContenxt frame:avFrame size:outSize pixelFormat:(enum AVPixelFormat)format block:^(struct AVFrame *frame,
                                                                                                  uint8_t *buffer) {
             avframeYUN = frame;
             YUVBuffer = buffer;
@@ -83,7 +86,7 @@
 }
 #pragma mark ------ 图像数据格式的转换
 - (void)swsContextWithAVFrame:(struct AVFrame *)avFrame
-                 codecContext:(AVCodecContext *)avCodecContext
+                 codecContext:(struct AVCodecContext *)avCodecContext
                       outSize:(CGSize)outSize
                     srcFormat:(enum AVPixelFormat)srcFormat
                     dstFormat:(enum AVPixelFormat)dstFormat

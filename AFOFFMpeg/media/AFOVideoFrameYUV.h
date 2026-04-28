@@ -11,6 +11,6 @@
 @property (nonatomic, strong, readonly) NSData *luma;
 @property (nonatomic, strong, readonly) NSData *chromaB;
 @property (nonatomic, strong, readonly) NSData *chromaR;
-+ (instancetype)videoFrameYUV:(AVFrame *)avFrame
-                 codecContext:(AVCodecContext *)codecContext;
++ (instancetype)videoFrameYUV:(struct AVFrame *)avFrame
+                 codecContext:(struct AVCodecContext *)codecContext;
 @end

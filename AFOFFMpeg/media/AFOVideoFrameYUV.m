@@ -7,6 +7,8 @@
 //
 
 #import "AFOVideoFrameYUV.h"
+#include <libavutil/frame.h>
+#include <libavcodec/avcodec.h>
 @interface  AFOVideoFrameYUV ()
 @property (nonatomic, strong, readwrite) NSData *luma;
 @property (nonatomic, strong, readwrite) NSData *chromaB;
@@ -14,8 +16,8 @@
 @end
 @implementation AFOVideoFrameYUV
 #pragma mark ------------
-+ (instancetype)videoFrameYUV:(AVFrame *)avFrame
-                 codecContext:(AVCodecContext *)codecContext{
++ (instancetype)videoFrameYUV:(struct AVFrame *)avFrame
+                 codecContext:(struct AVCodecContext *)codecContext{
     AFOVideoFrameYUV *YUV = [[AFOVideoFrameYUV alloc] init];
     ///------   Y
     YUV.luma = [YUV frameData:avFrame -> data[0]

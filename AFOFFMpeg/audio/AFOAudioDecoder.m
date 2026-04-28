@@ -6,6 +6,8 @@
 //  Copyright © 2018 AFO Science and technology Ltd. All rights reserved.
 //
 
+#include <libavformat/avformat.h>
+#include <libavcodec/avcodec.h>
 #import "AFOAudioDecoder.h"
 #import <UIKit/UIKit.h>
 #import <libswresample/swresample.h>
@@ -39,8 +41,8 @@
     return self;
 }
 #pragma mark ------ add method
-- (void)audioDecoder:(nonnull AVFormatContext *)avFormatContext
-        codecContext:(nonnull AVCodecContext *)avCodecContext
+- (void)audioDecoder:(nonnull struct AVFormatContext *)avFormatContext
+        codecContext:(nonnull struct AVCodecContext *)avCodecContext
                index:(NSInteger)index
           packetSize:(int)packetSize{
     formatContext = avFormatContext;

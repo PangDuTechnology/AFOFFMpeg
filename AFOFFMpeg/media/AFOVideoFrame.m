@@ -7,6 +7,8 @@
 //
 
 #import "AFOVideoFrame.h"
+#include <libavutil/frame.h>
+#include <libavcodec/avcodec.h>
 #import "AFOVideoFrameYUV.h"
 #import "AFOVideoFrameRGB.h"
 
@@ -17,8 +19,8 @@
 @end
 
 @implementation AFOVideoFrame
-+ (id)videoFrame:(AVFrame *)frame
-    codecContext:(AVCodecContext *)codecContext
++ (id)videoFrame:(struct AVFrame *)frame
+    codecContext:(struct AVCodecContext *)codecContext
             type:(AFOVideoFrameFormatType)formatType{
     switch (formatType) {
         case AFOVideoFrameFormatRGB:

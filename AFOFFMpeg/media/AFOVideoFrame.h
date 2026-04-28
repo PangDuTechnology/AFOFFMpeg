@@ -7,7 +7,9 @@
 //
 
 #import "AFOMediaFrame.h"
-#import <libavformat/avformat.h>
+
+struct AVFrame;
+struct AVCodecContext;
 typedef NS_ENUM(NSInteger, AFOVideoFrameFormatType) {
     AFOVideoFrameFormatRGB       =   0,
     AFOVideoFrameFormatYUV       =   1,
@@ -16,7 +18,7 @@ typedef NS_ENUM(NSInteger, AFOVideoFrameFormatType) {
 @property (nonatomic, assign, readonly) AFOVideoFrameFormatType    formatType;
 @property (nonatomic, assign, readonly) NSInteger                  width;
 @property (nonatomic, assign, readonly) NSInteger                  hight;
-+ (id)videoFrame:(AVFrame *)frame
-    codecContext:(AVCodecContext *)codecContext
++ (id)videoFrame:(struct AVFrame *)frame
+    codecContext:(struct AVCodecContext *)codecContext
             type:(AFOVideoFrameFormatType)formatType;
 @end

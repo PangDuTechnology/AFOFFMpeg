@@ -8,16 +8,18 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import <libswresample/swresample.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
+struct AVFrame;
+
 @interface AFOMediaYUV : NSObject
-+ (void)makeYUVToRGB:(AVFrame *)avFrame
++ (void)makeYUVToRGB:(struct AVFrame *)avFrame
                     width:(int)inWidth
                    height:(int)inHeight
                     scale:(int)scale
                     block:(void (^)(UIImage * _Nullable image, NSError * _Nullable error))block;
-- (void)dispatchAVFrame:(AVFrame*) frame
+- (void)dispatchAVFrame:(struct AVFrame*) frame
                   block:(void (^)(UIImage *image))block;
 @end
 

@@ -8,10 +8,12 @@
 
 #import "AFOMediaSeekFrame+Conditional.h"
 #import "AFOMediaErrorCodeManager.h"
+#include <libavformat/avformat.h>
+#include <libavcodec/avcodec.h>
 @implementation AFOMediaSeekFrame (Conditional)
 + (void)mediaSesourcesConditionalPath:(NSString *)path
-                        formatContext:(AVFormatContext *)avFormatContext
-                         codecContext:(AVCodecContext *)avCodecContext
+                        formatContext:(struct AVFormatContext *)avFormatContext
+                         codecContext:(struct AVCodecContext *)avCodecContext
                                 block:(MediaSeekFrameBlock) block{
     __block NSInteger videoStream = -1;
     ///------ Open video file.

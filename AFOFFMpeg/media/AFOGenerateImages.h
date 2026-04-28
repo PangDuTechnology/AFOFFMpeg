@@ -8,63 +8,29 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import <libavformat/avformat.h>
-#import <libswscale/swscale.h>
-/**
- <#Description#>
 
- @param error <#error description#>
- @param context <#context description#>
- */
+struct AVFrame;
+struct AVCodecContext;
+struct SwsContext;
+
 typedef void(^generateSwsContextBlock)(struct SwsContext *context, NSError *error);
 
-/**
- <#Description#>
-
- @param image <#image description#>
- @param error <#error description#>
- */
 typedef void(^generateImageBlock)(UIImage *image, NSError *error);
 
-/**
- <#Description#>
-
- @param frame <#frame description#>
- */
 typedef void(^avframeWithContextBlock)(struct AVFrame *frame, uint8_t *buffer);
 
 @interface AFOGenerateImages : NSObject
 
-/**
- <#Description#>
-
- @param avFrame <#avFrame description#>
- @param avCodecContext <#avCodecContext description#>
- @param outSize <#outSize description#>
- @param srcFormat <#srcFormat description#>
- @param dstFormat <#dstFormat description#>
- @param format <#format description#>
- @param component <#component description#>
- @param pixel <#pixel description#>
- @param block <#block description#>
- */
 - (void)decodingImageWithAVFrame:(struct AVFrame *)avFrame
-                    codecContext:(AVCodecContext *)avCodecContext
+                    codecContext:(struct AVCodecContext *)avCodecContext
                          outSize:(CGSize)outSize
-                       srcFormat:(enum AVPixelFormat)srcFormat
-                       dstFormat:(enum AVPixelFormat)dstFormat
-                     pixelFormat:(enum AVPixelFormat)format
+                       srcFormat:(int)srcFormat
+                       dstFormat:(int)dstFormat
+                     pixelFormat:(int)format
                 bitsPerComponent:(size_t)component
                     bitsPerPixel:(size_t)pixel
                            block:(generateImageBlock)block;
 
-/**
- <#Description#>
-
- @param avFrame <#avFrame description#>
- @param outSize <#outSize description#>
- @param block <#block description#>
- */
 - (void)decoedImageForYUV:(struct AVFrame *)avFrame
                   outSize:(CGSize)outSize
                     block:(generateImageBlock)block;

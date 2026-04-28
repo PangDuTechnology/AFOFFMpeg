@@ -7,17 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <libavformat/avformat.h>
-NS_ASSUME_NONNULL_BEGIN
-enum AVPixelFormat AFOHWVideoToolboxGetFormat(AVCodecContext *s, const enum AVPixelFormat *fmt);
 
+NS_ASSUME_NONNULL_BEGIN
+
+struct AVCodec;
+struct AVFormatContext;
+struct AVCodecContext;
 
 @interface AFOConfigurationManager : NSObject
 + (void)configurationForPath:(NSString *)strPath
                       stream:(NSInteger)stream
                        block:(void(^)(
-                                      AVCodec * _Nullable codec,
-                                      AVFormatContext * _Nullable format, AVCodecContext * _Nullable context,
+                                      struct AVCodec * _Nullable codec,
+                                      struct AVFormatContext * _Nullable format,
+                                      struct AVCodecContext * _Nullable context,
                                       NSInteger videoStream,
                                       NSInteger audioStream,
                                       NSData * _Nullable sps,

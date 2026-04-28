@@ -6,6 +6,8 @@
 //  Copyright © 2018年 AFO Science and technology Ltd. All rights reserved.
 //
 
+#include <libavformat/avformat.h>
+#include <libavcodec/avcodec.h>
 #import "AFOAudioManager.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AFOFoundation/AFOFoundation.h>
@@ -30,8 +32,8 @@
     return self;
 }
 #pragma mark ------  method
-- (void)audioFormatContext:(AVFormatContext *)formatContext
-              codecContext:(AVCodecContext *)codecContext
+- (void)audioFormatContext:(struct AVFormatContext *)formatContext
+              codecContext:(struct AVCodecContext *)codecContext
                      index:(NSInteger)index{
     // If _audioOutPut already exists, stop it before creating a new one
     if (_audioOutPut) {

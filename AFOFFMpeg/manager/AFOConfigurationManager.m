@@ -9,6 +9,9 @@
 #import "AFOConfigurationManager.h"
 #import "AFOMediaConditional.h"
 #import <VideoToolbox/VideoToolbox.h>
+#include <libavformat/avformat.h>
+#include <libavcodec/avcodec.h>
+#include <libavutil/pixfmt.h>
 #include <libavcodec/videotoolbox.h>
 #include <libavutil/hwcontext.h>
 #include <libavutil/hwcontext_videotoolbox.h>
@@ -57,6 +60,27 @@ static void getSPSAndPPSFromExtraData(const uint8_t *extradata, int extradata_si
         p += pps_length;
     }
 }
+
+static enum AVPixelFormat AFOHWVideoToolboxGetFormat(AVCodecContext *s, const enum AVPixelFormat *fmt) {
+    const enum AVPixelFormat *p;
+    for (p = fmt; *p != AV_PIX_FMT_NONE; p++) {
+        if (*p == AV_PIX_FMT_VIDEOTOOLBOX) {
+            if (s->hwaccel_context == NULL) {
+                NSLog(@"AFOConfigurationManager: Attempting to initialize VideoToolbox hardware acceleration.");
+                int result = av_videotoolbox_default_init(s);
+                if (result < 0) {
+                    NSLog(@"AFOConfigurationManager: av_videotoolbox_default_init failed with error code: %d", result);
+                    return s->pix_fmt;
+                }
+                NSLog(@"AFOConfigurationManager: av_videotoolbox_default_init successful. hwaccel_context: %p", s->hwaccel_context);
+            }
+            return *p;
+        }
+        ++p;
+    }
+    return AV_PIX_FMT_NONE;
+}
+
 @interface AFOConfigurationManager ()
 @end
 @implementation AFOConfigurationManager
@@ -76,8 +100,9 @@ static void getSPSAndPPSFromExtraData(const uint8_t *extradata, int extradata_si
 + (void)configurationForPath:(NSString *)strPath
                       stream:(NSInteger)stream
                        block:(void(^)(
-                                      AVCodec * _Nullable codec,
-                                      AVFormatContext * _Nullable format, AVCodecContext * _Nullable context,
+                                      struct AVCodec * _Nullable codec,
+                                      struct AVFormatContext * _Nullable format,
+                                      struct AVCodecContext * _Nullable context,
                                       NSInteger videoStream,
                                       NSInteger audioStream,
                                       NSData * _Nullable sps,
@@ -112,24 +137,3 @@ static void getSPSAndPPSFromExtraData(const uint8_t *extradata, int extradata_si
     }];
 }
 @end
-
-enum AVPixelFormat AFOHWVideoToolboxGetFormat(AVCodecContext *s, const enum AVPixelFormat *fmt) {
-    const enum AVPixelFormat *p;
-    for (p = fmt; *p != AV_PIX_FMT_NONE; p++) {
-        if (*p == AV_PIX_FMT_VIDEOTOOLBOX) {
-            // 如果尚未初始化,调用 VideoToolbox 初始化函数
-            if (s->hwaccel_context == NULL) {
-                NSLog(@"AFOConfigurationManager: Attempting to initialize VideoToolbox hardware acceleration.");
-                int result = av_videotoolbox_default_init(s);
-                if (result < 0) {
-                    NSLog(@"AFOConfigurationManager: av_videotoolbox_default_init failed with error code: %d", result);
-                    return s->pix_fmt; // 初始化失败则回退
-                }
-                NSLog(@"AFOConfigurationManager: av_videotoolbox_default_init successful. hwaccel_context: %p", s->hwaccel_context);
-            }
-            return *p;
-        }
-        ++p;
-    }
-    return AV_PIX_FMT_NONE;
-}

@@ -6,6 +6,8 @@
 //  Copyright © 2018 AFO Science and technology Ltd. All rights reserved.
 //
 
+#include <libavformat/avformat.h>
+#include <libavcodec/avcodec.h>
 #import "AFOAudioThreadDecoder.h"
 #import "AFOAudioDecoder.h"
 #import "AFOAudioCache.h"
@@ -40,8 +42,8 @@
     int audioByteCountPerSec = _audioSampleRate * CHANNEL_PER_FRAME * BITS_PER_CHANNEL / BITS_PER_BYTE;
     _packetBufferSize = (int)( ( audioByteCountPerSec / 2 ) * self.timePercent);
 }
-- (void)audioDecoder:(nonnull AVFormatContext *)avFormatContext
-        codecContext:(nonnull AVCodecContext *)avCodecContext
+- (void)audioDecoder:(nonnull struct AVFormatContext *)avFormatContext
+        codecContext:(nonnull struct AVCodecContext *)avCodecContext
                index:(NSInteger)index{
     [self createBaseData:avCodecContext -> sample_rate];
     ///---

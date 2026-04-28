@@ -7,15 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <libavformat/avformat.h>
+
+struct AVFormatContext;
+struct AVCodecContext;
+
 @protocol AFOAudioManagerDelegate <NSObject>
 @optional
 - (void)audioTimeStamp:(float)audioTime;
 @end
 @interface AFOAudioManager : NSObject
 - (instancetype)initWithDelegate:(id<AFOAudioManagerDelegate>)delegate;
-- (void)audioFormatContext:(AVFormatContext *)formatContext
-              codecContext:(AVCodecContext *)codecContext
+- (void)audioFormatContext:(struct AVFormatContext *)formatContext
+              codecContext:(struct AVCodecContext *)codecContext
                      index:(NSInteger)index;
 - (void)playAudio;
 /// 暂停音频（可恢复）

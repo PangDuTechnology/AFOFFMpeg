@@ -7,15 +7,20 @@
 //
 
 #import "AFOMediaSeekFrame.h"
-#import <libavformat/avformat.h>
+
 NS_ASSUME_NONNULL_BEGIN
+
+struct AVFormatContext;
+struct AVCodecContext;
+
 typedef void(^MediaSeekFrameBlock)(NSError * error,
                                    NSInteger videoIndex,
-                                   AVFormatContext *formatContext);
+                                   struct AVFormatContext *formatContext);
+
 @interface AFOMediaSeekFrame (Conditional)
 + (void)mediaSesourcesConditionalPath:(NSString *)path
-                        formatContext:(AVFormatContext *)avFormatContext
-                         codecContext:(AVCodecContext *)avCodecContext
+                        formatContext:(struct AVFormatContext *)avFormatContext
+                         codecContext:(struct AVCodecContext *)avCodecContext
                                 block:(MediaSeekFrameBlock) block;
 + (NSString *)vedioAddress:(NSString *)path
                       name:(NSString *)name;

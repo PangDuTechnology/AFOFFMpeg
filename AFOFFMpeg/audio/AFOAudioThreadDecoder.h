@@ -7,11 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <libavformat/avformat.h>
+
 NS_ASSUME_NONNULL_BEGIN
+
+struct AVFormatContext;
+struct AVCodecContext;
+
 @interface AFOAudioThreadDecoder : NSObject
-- (void)audioDecoder:(nonnull AVFormatContext *)avFormatContext
-        codecContext:(nonnull AVCodecContext *)avCodecContext
+- (void)audioDecoder:(nonnull struct AVFormatContext *)avFormatContext
+        codecContext:(nonnull struct AVCodecContext *)avCodecContext
                index:(NSInteger)index;
 - (void)packetBufferTimePercent:(float)timePercent;
 - (void)readAudioPacket:(short *)samples
