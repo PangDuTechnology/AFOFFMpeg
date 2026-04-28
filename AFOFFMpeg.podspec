@@ -60,9 +60,11 @@ Pod::Spec.new do |s|
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
-  s.frameworks = 'VideoToolbox','CoreMedia','CoreVideo','CoreGraphics','CoreImage','OpenGLES','AVFoundation','AudioToolbox','CoreAudioTypes'
+  s.frameworks = 'VideoToolbox','CoreMedia','CoreVideo','CoreGraphics','CoreImage','OpenGLES','Metal','MetalKit','AVFoundation','AudioToolbox','CoreAudioTypes'
+  # FFmpeg/AFOFFMpegLib 静态链路常见依赖；lint 宿主 App 不会自动补全时需显式声明
+  s.libraries = 'z', 'bz2', 'iconv', 'c++'
   s.pod_target_xcconfig = {
-    'OTHER_LDFLAGS' => '$(inherited) -lObjC',
+    'OTHER_LDFLAGS' => '$(inherited) -lObjC -lm -lpthread',
     'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES',
   }
   s.static_framework = true
