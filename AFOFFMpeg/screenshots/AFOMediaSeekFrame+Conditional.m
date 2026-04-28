@@ -10,14 +10,28 @@
 #import "AFOMediaErrorCodeManager.h"
 #include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
+
+static const char *AFOFFmpegOpenPathCStringSeek(NSString *path) {
+    if (path.length == 0) {
+        return NULL;
+    }
+    NSString *standard = path.stringByStandardizingPath;
+    const char *fs = standard.fileSystemRepresentation;
+    if (fs && fs[0] != '\0') {
+        return fs;
+    }
+    return standard.UTF8String;
+}
+
 @implementation AFOMediaSeekFrame (Conditional)
 + (void)mediaSesourcesConditionalPath:(NSString *)path
                         formatContext:(struct AVFormatContext *)avFormatContext
                          codecContext:(struct AVCodecContext *)avCodecContext
                                 block:(MediaSeekFrameBlock) block{
     __block NSInteger videoStream = -1;
+    const char *pathC = AFOFFmpegOpenPathCStringSeek(path);
     ///------ Open video file.
-    if(avformat_open_input(&avFormatContext, [path UTF8String], NULL, NULL) != 0){
+    if(!pathC || avformat_open_input(&avFormatContext, pathC, NULL, NULL) != 0){
         block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeReadFailure],0, avFormatContext);
         return;
     }
@@ -29,7 +43,7 @@
     }
     ///------ Dump information about file onto standard error.
 #if DEBUG
-    av_dump_format(avFormatContext, 0, [path UTF8String], 0);
+    av_dump_format(avFormatContext, 0, pathC, 0);
 #endif
     ///------
     [self audioVideoStreamFormat:avFormatContext block:^(NSInteger video) {

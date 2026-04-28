@@ -16,6 +16,25 @@
 #include <libavutil/hwcontext.h>
 #include <libavutil/hwcontext_videotoolbox.h>
 #import "AFOMediaManager.h"
+// 与 AFOMediaConditional 一致：向 FFmpeg 传与文件系统一致的 C 路径。
+static const char *AFOConfigurationFFmpegPathCString(NSString *path) {
+    if (path.length == 0) {
+        return NULL;
+    }
+    NSString *standard = path.stringByStandardizingPath;
+    const char *fs = standard.fileSystemRepresentation;
+    if (fs && fs[0] != '\0') {
+        return fs;
+    }
+    return standard.UTF8String;
+}
+
+static void AFOConfigurationCloseFormatContext(AVFormatContext **ctx) {
+    if (ctx && *ctx) {
+        avformat_close_input(ctx);
+        *ctx = NULL;
+    }
+}
 // 辅助函数：从 extradata 中提取 SPS 和 PPS
 static void getSPSAndPPSFromExtraData(const uint8_t *extradata, int extradata_size, NSData **spsData, NSData **ppsData) {
     if (!extradata || extradata_size < 7) { // Minimum size for AVCC extradata
@@ -103,11 +122,26 @@ static enum AVPixelFormat AFOHWVideoToolboxGetFormat(AVCodecContext *s, const en
         AFOMediaLog(@"AFOConfigurationManager: mediaSesourcesConditionalPath callback. Error: %ld, videoIndex: %ld, audioIndex: %ld", (long)error.code, (long)videoIndex, (long)audioIndex);
         if (error.code == 0) {
             AFOMediaLog(@"AFOConfigurationManager: Initializing FFmpeg contexts for stream: %ld", (long)stream);
-            ///------------ video
-           AVFormatContext *avFormatContext = avformat_alloc_context();
-            avformat_open_input(&avFormatContext, [strPath UTF8String], NULL, NULL);
+            ///------------ video（需先 find_stream_info 再读 streams[index]，否则 codecpar 可能无效）
+            AVFormatContext *avFormatContext = avformat_alloc_context();
+            const char *pathC = AFOConfigurationFFmpegPathCString(strPath);
+            if (!pathC || avformat_open_input(&avFormatContext, pathC, NULL, NULL) != 0) {
+                AFOConfigurationCloseFormatContext(&avFormatContext);
+                configured(nil, nil, nil, 0, 0, nil, nil);
+                return;
+            }
+            if (avformat_find_stream_info(avFormatContext, NULL) < 0) {
+                AFOConfigurationCloseFormatContext(&avFormatContext);
+                configured(nil, nil, nil, 0, 0, nil, nil);
+                return;
+            }
+            if (stream < 0 || stream >= (NSInteger)avFormatContext->nb_streams || !avFormatContext->streams[stream]) {
+                AFOConfigurationCloseFormatContext(&avFormatContext);
+                configured(nil, nil, nil, 0, 0, nil, nil);
+                return;
+            }
             AVCodecContext *avCodecContext = avcodec_alloc_context3(NULL);
-            avcodec_parameters_to_context(avCodecContext, avFormatContext -> streams[stream] -> codecpar);
+            avcodec_parameters_to_context(avCodecContext, avFormatContext->streams[stream]->codecpar);
             AVCodec *avCodec = avcodec_find_decoder(avCodecContext -> codec_id);
             avCodecContext->get_format = AFOHWVideoToolboxGetFormat; // 自定义获取格式回调
             // 查找支持 VideoToolbox 的像素格式

@@ -11,6 +11,7 @@
 #include <libavutil/frame.h>
 #include <libavutil/imgutils.h>
 #include <libavutil/dict.h>
+#include <libavutil/error.h>
 
 #import "AFOMediaSeekFrame.h"
 #import <AFOFoundation/AFOFoundation.h>
@@ -18,6 +19,19 @@
 #import "AFOMediaThumbnail.h"
 #import "AFOMediaConditional.h"
 #import "AFOMediaYUV.h"
+#import "AFOMediaErrorString.h"
+
+static const char *AFOFFmpegOpenPathCStringFrame(NSString *path) {
+    if (path.length == 0) {
+        return NULL;
+    }
+    NSString *standard = path.stringByStandardizingPath;
+    const char *fs = standard.fileSystemRepresentation;
+    if (fs && fs[0] != '\0') {
+        return fs;
+    }
+    return standard.UTF8String;
+}
 
 @interface AFOMediaSeekFrame (){
     AVCodec *avcodec;
@@ -43,24 +57,25 @@
     }
     return self;
 }
-#pragma mark ------------ 
+#pragma mark ------------
 + (instancetype)vedioName:(NSString *)name
                      path:(NSString *)path
                 imagePath:(NSString *)imagePath
                     plist:(NSString *)plist
                     block:(mediaSeekFrameDetailBlock)detailCompletion{
     AFOMediaSeekFrame *seekFrame = NULL;
-    if (name != NULL || name != nil){
+    if (name.length > 0){
         AFOMediaSeekFrame *temp = [[AFOMediaSeekFrame alloc] init];
         [temp avInitialize:path name:name imagePath:imagePath plist:plist block:^(BOOL isWrite,
                                                                                   BOOL isCutting,
-                                                                                  
-                                                        NSString *createTime,
+                                                                                  NSString *createTime,
                                                                                   NSString *vedioName,
                                                                                   NSString *imageName,
                                                                                   int width,
                                                                                   int height) {
-            detailCompletion(isWrite, isCutting, createTime, vedioName, imageName, width, height);
+            if (detailCompletion) {
+                detailCompletion(isWrite, isCutting, createTime, vedioName, imageName, width, height);
+            }
         }];
         seekFrame = temp;
     }
@@ -72,6 +87,13 @@
            imagePath:(NSString *)imagePath
                plist:(NSString *)plist
                block:(mediaSeekFrameDetailBlock)detailCompletion{
+    void (^notifyFail)(void) = ^{
+        if (!detailCompletion) {
+            return;
+        }
+        detailCompletion(NO, NO, @"0", name ?: @"", @"", 0, 0);
+    };
+
     __block NSError *pathError = nil;
     WeakObject(self);
     [AFOMediaConditional mediaSesourcesConditionalPath:[AFOMediaSeekFrame vedioAddress:path name:name] block:^(NSError *error, NSInteger videoIndex, NSInteger audioIndex) {
@@ -79,28 +101,54 @@
         self.videoStream = videoIndex;
         pathError = error;
     }];
-    if (pathError.code != 0) {
+    if (pathError.code != AFOPlayMediaErrorNone) {
+        notifyFail();
+        return;
+    }
+    if (self.videoStream < 0) {
+        notifyFail();
         return;
     }
     ///------ Open video file.
-    if(avformat_open_input(&avFormatContext, [[AFOMediaSeekFrame vedioAddress:path name:name] UTF8String], NULL, NULL) != 0){
+    NSString *fullMediaPath = [AFOMediaSeekFrame vedioAddress:path name:name];
+    const char *openPath = AFOFFmpegOpenPathCStringFrame(fullMediaPath);
+    if (!openPath || avformat_open_input(&avFormatContext, openPath, NULL, NULL) != 0) {
+        notifyFail();
         return;
     }
     ///------ Retrieve stream information.
     if (avformat_find_stream_info(avFormatContext, NULL) < 0) {
+        notifyFail();
         return;
     }
-    avcodec_parameters_to_context(avCodecContext, avFormatContext -> streams[self.videoStream] -> codecpar);
+    if (self.videoStream >= (NSInteger)avFormatContext->nb_streams) {
+        notifyFail();
+        return;
+    }
+    avcodec_parameters_to_context(avCodecContext, avFormatContext->streams[self.videoStream]->codecpar);
     ///------ Find the decoder for the video stream.
-    avcodec = avcodec_find_decoder(avCodecContext -> codec_id);
+    avcodec = avcodec_find_decoder(avCodecContext->codec_id);
+    if (!avcodec) {
+        notifyFail();
+        return;
+    }
     ///------ Open codec
-    avcodec_open2(avCodecContext, avcodec, NULL);
+    if (avcodec_open2(avCodecContext, avcodec, NULL) < 0) {
+        notifyFail();
+        return;
+    }
     ///------ 正常流程，分配视频帧
     avFrame = av_frame_alloc();
-    ///------
-    [self firstFrameToCover:[AFOMediaThumbnail vedioAddress:path name:name] name:name imagePath:imagePath completion:^(BOOL isWrite, BOOL isCutting){
-            detailCompletion(isWrite, isCutting, [self createTime], name, [AFOMediaThumbnail imageName:name], self.outWidth, self.outHeight);
-        }];
+    if (!avFrame) {
+        notifyFail();
+        return;
+    }
+    [self firstFrameToCover:[AFOMediaThumbnail vedioAddress:path name:name] name:name imagePath:imagePath completion:^(BOOL isWrite, BOOL isCutting) {
+        if (!detailCompletion) {
+            return;
+        }
+        detailCompletion(isWrite, isCutting, [self createTime], name ?: @"", [AFOMediaThumbnail imageName:name], self.outWidth, self.outHeight);
+    }];
 }
 #pragma mark ------ 将第一帧作为封面
 - (void)firstFrameToCover:(NSString *)path
@@ -108,30 +156,46 @@
                 imagePath:(NSString *)imagePath
                 completion:(mediaSeekFrameBlock)completion{
     AVPacket packet;
-    while (av_read_frame(avFormatContext, &packet) >= 0) {
-        if (packet.stream_index == self.videoStream) {
-            if (avcodec_send_packet(avCodecContext, &packet) != 0) {
-                continue;
-            }
-            if (avcodec_receive_frame(avCodecContext, avFrame) != 0) {
-                continue;
-            }
-            if (avFrame ->key_frame == 1) {
-                [AFOMediaYUV makeYUVToRGB:avFrame width:avFrame->width height:avFrame->height scale:1.0 block:^(UIImage * _Nullable image, NSError * _Nullable error) {
-                    if (error) {
-                        NSLog(@"AFOMediaSeekFrame: Error converting YUV to RGB for thumbnail: %@", error.localizedDescription);
-                        completion(NO, NO);
-                        return;
-                    }
-                    NSString *strPath = [NSString stringWithFormat:@"%@/%@",imagePath,[AFOMediaThumbnail imageName:name]];
-                    BOOL result = [UIImagePNGRepresentation(image) writeToFile:strPath atomically:YES];
-                    completion(result, result);
-                }];
-                break;
-            }
+    av_init_packet(&packet);
+    int readRet;
+    while ((readRet = av_read_frame(avFormatContext, &packet)) >= 0) {
+        if (packet.stream_index != self.videoStream) {
             av_packet_unref(&packet);
+            continue;
+        }
+        if (avcodec_send_packet(avCodecContext, &packet) < 0) {
+            av_packet_unref(&packet);
+            continue;
+        }
+        av_packet_unref(&packet);
+
+        int frm;
+        while ((frm = avcodec_receive_frame(avCodecContext, avFrame)) == 0) {
+            if (avFrame->width <= 0 || avFrame->height <= 0) {
+                continue;
+            }
+            // H.264/HEVC 等常不把 key_frame 置 1；旧逻辑只在 key_frame==1 时出图会导致无回调。
+            [AFOMediaYUV makeYUVToRGB:avFrame width:avFrame->width height:avFrame->height scale:1.0 block:^(UIImage * _Nullable image, NSError * _Nullable error) {
+                if (error) {
+                    NSLog(@"AFOMediaSeekFrame: Error converting YUV to RGB for thumbnail: %@", error.localizedDescription);
+                    completion(NO, NO);
+                    return;
+                }
+                NSString *strPath = [NSString stringWithFormat:@"%@/%@", imagePath, [AFOMediaThumbnail imageName:name]];
+                BOOL result = [UIImagePNGRepresentation(image) writeToFile:strPath atomically:YES];
+                completion(result, result);
+            }];
+            return;
+        }
+        if (frm != AVERROR(EAGAIN) && frm < 0) {
+            break;
         }
     }
+
+    if (readRet < 0 && readRet != AVERROR_EOF) {
+        NSLog(@"AFOMediaSeekFrame: av_read_frame failed: %d", readRet);
+    }
+    completion(NO, NO);
 }
 #pragma mark ------------ free
 - (void)freeResources{
@@ -185,7 +249,7 @@
     }
     return [NSString stringWithUTF8String:entry -> value];
 }
-#pragma mark ------ 
+#pragma mark ------
 - (AFOMediaConditional *)conditonal{
     if (!_conditonal) {
         _conditonal = [[AFOMediaConditional alloc] init];
