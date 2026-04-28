@@ -12,6 +12,7 @@
 #include <libavutil/imgutils.h>
 #include <libavutil/dict.h>
 #include <libavutil/error.h>
+#include <errno.h>
 
 #import "AFOMediaSeekFrame.h"
 #import <AFOFoundation/AFOFoundation.h>
@@ -52,7 +53,7 @@ static const char *AFOFFmpegOpenPathCStringFrame(NSString *path) {
     if (self = [super init]) {
         ///---
         _videoStream = -1;
-        avFormatContext = avformat_alloc_context();
+        avFormatContext = NULL;
         avCodecContext = avcodec_alloc_context3(NULL);
     }
     return self;
@@ -109,10 +110,18 @@ static const char *AFOFFmpegOpenPathCStringFrame(NSString *path) {
         notifyFail();
         return;
     }
-    ///------ Open video file.
+    ///------ Open video file（由 avformat_open_input 内部分配 context，勿预先 alloc）
     NSString *fullMediaPath = [AFOMediaSeekFrame vedioAddress:path name:name];
     const char *openPath = AFOFFmpegOpenPathCStringFrame(fullMediaPath);
-    if (!openPath || avformat_open_input(&avFormatContext, openPath, NULL, NULL) != 0) {
+    if (avFormatContext) {
+        avformat_close_input(&avFormatContext);
+        avFormatContext = NULL;
+    }
+    int openRet = (!openPath) ? AVERROR(ENOENT) : avformat_open_input(&avFormatContext, openPath, NULL, NULL);
+    if (openRet != 0) {
+        char errbuf[128];
+        av_strerror(openRet, errbuf, sizeof(errbuf));
+        NSLog(@"AFOMediaSeekFrame: avformat_open_input failed (%d) %s — path=%@", openRet, errbuf, fullMediaPath);
         notifyFail();
         return;
     }

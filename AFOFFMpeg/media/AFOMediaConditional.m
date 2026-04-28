@@ -7,6 +7,8 @@
 //
 #import "AFOMediaConditional.h"
 #import <libavformat/avformat.h>
+#import <libavutil/error.h>
+#import <errno.h>
 #import "AFOMediaErrorCodeManager.h"
 
 /// FFmpeg/POSIX 应使用与文件系统一致的 C 路径；仅用 UTF8String 在部分含特殊字符/规范化路径下会导致 avformat_open_input 失败，而 NSFileManager 仍认为文件存在。
@@ -26,21 +28,27 @@ static const char *AFOFFmpegOpenPathCString(NSString *path) {
 #pragma mark ------------ 
 + (void)mediaSesourcesConditionalPath:(NSString *)path
                             block:(MediaConditionalBlock) block{
-    AVFormatContext   *avFormatContext;
+    AVFormatContext   *avFormatContext = NULL;
     AVCodecContext    *avCodecContext;
     AVCodec           *avCodec;
    __block NSInteger videoStream = -1;
    __block NSInteger audioStream = -1;
-    avFormatContext = avformat_alloc_context();
     const char *pathC = AFOFFmpegOpenPathCString(path);
-    ///------ Open video file.
-    if (!pathC || avformat_open_input(&avFormatContext, pathC, NULL, NULL) != 0){
+    ///------ Open video file（勿先 avformat_alloc_context：部分 iOS/FFmpeg 组合下会导致 open_input 失败）
+    int openRet = (!pathC) ? AVERROR(ENOENT) : avformat_open_input(&avFormatContext, pathC, NULL, NULL);
+    if (openRet != 0){
+        char errbuf[128];
+        av_strerror(openRet, errbuf, sizeof(errbuf));
+        NSLog(@"AFOMediaConditional: avformat_open_input failed (%d) %s — path=%@", openRet, errbuf, path);
+        if (avFormatContext) {
+            avformat_close_input(&avFormatContext);
+        }
         block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeReadFailure],0,0);
         return;
     }
     ///------ Retrieve stream information.
     if (avformat_find_stream_info(avFormatContext, NULL) < 0) {
-        // Couldn't find stream information.
+        avformat_close_input(&avFormatContext);
         block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeRetrieveStreamInformationFailure],0,0);
         return;
     }

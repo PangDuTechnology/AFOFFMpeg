@@ -9,6 +9,21 @@
 #import "AFOMediaPlaybackEngine.h"
 #import <AFOFoundation/AFOFoundation.h>
 
+/// 路由或外部可能传入 file:// URL；FFmpeg 与 fileExistsAtPath 需要标准 POSIX 路径。
+static NSString *AFONormalizeLocalPlayPath(NSString *raw) {
+    if (raw.length == 0) {
+        return raw;
+    }
+    NSString *t = [raw stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if ([t hasPrefix:@"file:"]) {
+        NSURL *u = [NSURL URLWithString:t];
+        if (u.path.length > 0) {
+            t = u.path;
+        }
+    }
+    return t.stringByStandardizingPath;
+}
+
 @interface AFOMediaPlayViewModel ()
 @property (nonatomic, strong) AFOMediaPlaybackEngine *engine;
 @property (nonatomic, assign, readwrite) UIInterfaceOrientationMask orientationMask;
@@ -31,7 +46,7 @@
 - (void)configureWithPath:(NSString *)path
                     title:(nullable NSString *)title
            orientationMask:(UIInterfaceOrientationMask)mask {
-    self.path = path;
+    self.path = AFONormalizeLocalPlayPath(path ?: @"");
     self.title = title;
     self.orientationMask = mask;
 

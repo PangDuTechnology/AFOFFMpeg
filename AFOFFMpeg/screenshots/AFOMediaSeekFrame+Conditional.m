@@ -10,6 +10,8 @@
 #import "AFOMediaErrorCodeManager.h"
 #include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
+#include <libavutil/error.h>
+#include <errno.h>
 
 static const char *AFOFFmpegOpenPathCStringSeek(NSString *path) {
     if (path.length == 0) {
@@ -28,43 +30,51 @@ static const char *AFOFFmpegOpenPathCStringSeek(NSString *path) {
                         formatContext:(struct AVFormatContext *)avFormatContext
                          codecContext:(struct AVCodecContext *)avCodecContext
                                 block:(MediaSeekFrameBlock) block{
+    (void)avFormatContext;
+    AVFormatContext *fmt_ctx = NULL;
     __block NSInteger videoStream = -1;
     const char *pathC = AFOFFmpegOpenPathCStringSeek(path);
-    ///------ Open video file.
-    if(!pathC || avformat_open_input(&avFormatContext, pathC, NULL, NULL) != 0){
-        block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeReadFailure],0, avFormatContext);
+    int openRet = (!pathC) ? AVERROR(ENOENT) : avformat_open_input(&fmt_ctx, pathC, NULL, NULL);
+    if (openRet != 0) {
+        char errbuf[128];
+        av_strerror(openRet, errbuf, sizeof(errbuf));
+        NSLog(@"AFOMediaSeekFrame+Conditional: avformat_open_input failed (%d) %s — path=%@", openRet, errbuf, path);
+        if (fmt_ctx) {
+            avformat_close_input(&fmt_ctx);
+        }
+        block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeReadFailure], 0, NULL);
         return;
     }
     ///------ Retrieve stream information.
-    if (avformat_find_stream_info(avFormatContext, NULL) < 0) {
-        // Couldn't find stream information.
-        block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeRetrieveStreamInformationFailure],0,avFormatContext);
+    if (avformat_find_stream_info(fmt_ctx, NULL) < 0) {
+        avformat_close_input(&fmt_ctx);
+        block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeRetrieveStreamInformationFailure], 0, NULL);
         return;
     }
     ///------ Dump information about file onto standard error.
 #if DEBUG
-    av_dump_format(avFormatContext, 0, pathC, 0);
+    av_dump_format(fmt_ctx, 0, pathC, 0);
 #endif
     ///------
-    [self audioVideoStreamFormat:avFormatContext block:^(NSInteger video) {
+    [self audioVideoStreamFormat:fmt_ctx block:^(NSInteger video) {
         if (video == -1){
-            block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeAllocateCodecContextFailure],0, avFormatContext);
+            block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeAllocateCodecContextFailure], 0, fmt_ctx);
             return ;
         }
         videoStream = video;
     }];
     ///------
-    [self avCodecDecoder:avCodecContext format:avFormatContext videoIndex:videoStream block:^(BOOL isTrue, BOOL isOpen) {
+    [self avCodecDecoder:avCodecContext format:fmt_ctx videoIndex:videoStream block:^(BOOL isTrue, BOOL isOpen) {
         if (!isTrue && isOpen) {
-            block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeAllocateCodecContextFailure],videoStream, avFormatContext);
+            block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeAllocateCodecContextFailure], videoStream, fmt_ctx);
             return;
         }
         if (isTrue && !isOpen) {
-            block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeOpenDecoderFailure],videoStream, avFormatContext);
+            block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeOpenDecoderFailure], videoStream, fmt_ctx);
             return;
         }
     }];
-    block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorNone],videoStream,avFormatContext);
+    block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorNone], videoStream, fmt_ctx);
 }
 #pragma mark ------ first video or audio Fault tolerance
 + (NSInteger)audioVideoStream:(enum AVMediaType)type

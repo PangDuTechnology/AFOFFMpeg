@@ -12,6 +12,8 @@
 #include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
 #include <libavutil/pixfmt.h>
+#include <libavutil/error.h>
+#include <errno.h>
 #include <libavcodec/videotoolbox.h>
 #include <libavutil/hwcontext.h>
 #include <libavutil/hwcontext_videotoolbox.h>
@@ -123,9 +125,13 @@ static enum AVPixelFormat AFOHWVideoToolboxGetFormat(AVCodecContext *s, const en
         if (error.code == 0) {
             AFOMediaLog(@"AFOConfigurationManager: Initializing FFmpeg contexts for stream: %ld", (long)stream);
             ///------------ video（需先 find_stream_info 再读 streams[index]，否则 codecpar 可能无效）
-            AVFormatContext *avFormatContext = avformat_alloc_context();
+            AVFormatContext *avFormatContext = NULL;
             const char *pathC = AFOConfigurationFFmpegPathCString(strPath);
-            if (!pathC || avformat_open_input(&avFormatContext, pathC, NULL, NULL) != 0) {
+            int openRet = (!pathC) ? AVERROR(ENOENT) : avformat_open_input(&avFormatContext, pathC, NULL, NULL);
+            if (openRet != 0) {
+                char errbuf[128];
+                av_strerror(openRet, errbuf, sizeof(errbuf));
+                NSLog(@"AFOConfigurationManager: avformat_open_input failed (%d) %s — path=%@", openRet, errbuf, strPath);
                 AFOConfigurationCloseFormatContext(&avFormatContext);
                 configured(nil, nil, nil, 0, 0, nil, nil);
                 return;
