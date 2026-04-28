@@ -19,16 +19,6 @@
 #import "AFOMediaPlayViewModel.h"
 #import "AFOMediaView.h"
 
-/// Pod 实际指向的 `../../AFORouter` 头文件未必包含扩展属性；在播放器内用静态池延长调度器生命周期，避免依赖 AFORouter 私有 API。
-static NSMutableArray<AFOTotalDispatchManager *> *AFOMediaPlayController_retainedDispatchManagers(void) {
-    static NSMutableArray<AFOTotalDispatchManager *> *pool;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        pool = [NSMutableArray array];
-    });
-    return pool;
-}
-
 @interface AFOMediaPlayController ()<AFOSchedulerPassValueDelegate>
 @property (nonatomic, strong) AFOTotalDispatchManager       *mediaManager;
 @property (nonatomic, copy)   NSString                   *strPath;

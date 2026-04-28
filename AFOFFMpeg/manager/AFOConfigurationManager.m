@@ -28,8 +28,7 @@ static void getSPSAndPPSFromExtraData(const uint8_t *extradata, int extradata_si
         return;
     }
 
-    // NAL unit length size is at extradata[4]
-    uint8_t nal_length_size = (extradata[4] & 0x03) + 1;
+    // extradata[4] holds lengthSizeMinusOne for slice NAL lengths in packed samples; extracting SPS/PPS here uses explicit 16-bit lengths below.
 
     const uint8_t *p = extradata + 6; // Move past configurationVersion, AVCProfileIndication, profile_compatibility, AVCLevelIndication, lengthSizeMinusOne
     const uint8_t *end = extradata + extradata_size;

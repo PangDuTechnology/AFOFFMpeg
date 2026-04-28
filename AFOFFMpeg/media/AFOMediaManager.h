@@ -13,6 +13,7 @@
 #define AFOMediaLog(fmt, ...) 
 #endif
 #import <UIKit/UIKit.h>
+#import <CoreVideo/CoreVideo.h>
 
 struct AVFormatContext;
 struct AVCodecContext;
@@ -27,25 +28,28 @@ struct AVCodecContext;
 - (void)videoDidPauseDelegate:(BOOL)isPaused;
 @end
 /**
- <#Description#>
+ 视频解码回调。
 
- @param error <#error description#>
- @param image <#image description#>
- @param totalTime <#totalTime description#>
- @param currentTime <#currentTime description#>
- @param totalSeconds <#totalSeconds description#>
- @param cuttentSeconds <#cuttentSeconds description#>
+ @param error 解码或读帧出错时非 nil；成功时通常为 nil。
+ @param pixelBuffer 解码后的视频帧（CVPixelBuffer）。
+ @param totalTime UI 展示的时长文案。
+ @param currentTime UI 展示的当前进度文案。
+ @param totalSeconds 总时长（秒）。
+ @param cuttentSeconds 当前已过秒（与声明中命名一致）。
+ @param isVideoEnd 是否为最后一帧/流结束标志。
  */
-typedef void(^displayVedioFrameBlock)(NSError *error,
+typedef void(^displayVedioFrameBlock)(NSError * _Nullable error,
                                       CVPixelBufferRef _Nullable pixelBuffer,
-                                      NSString *totalTime,
-                                      NSString *currentTime,
+                                      NSString * _Nullable totalTime,
+                                      NSString * _Nullable currentTime,
                                       NSInteger totalSeconds,
                                       NSUInteger cuttentSeconds,
                                       BOOL isVideoEnd);
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface AFOMediaManager : NSObject
-- (instancetype)initWithDelegate:(id<AFOPlayMediaManager>)delegate;
+- (instancetype)initWithDelegate:(nullable id<AFOPlayMediaManager>)delegate;
 /**
  <#Description#>
  @param formatContext <#avFormatContext description#>
@@ -53,10 +57,10 @@ typedef void(^displayVedioFrameBlock)(NSError *error,
  @param index <#index description#>
  @param block <#block description#>
  */
-- (void)displayVedioFormatContext:(struct AVFormatContext *)formatContext
-                     codecContext:(struct AVCodecContext *)codecContext
+- (void)displayVedioFormatContext:(struct AVFormatContext * _Nullable)formatContext
+                     codecContext:(struct AVCodecContext * _Nullable)codecContext
                             index:(NSInteger)index
-                            block:(displayVedioFrameBlock)block;
+                            block:(displayVedioFrameBlock _Nonnull)block;
 
 /// 暂停/恢复解码帧泵（仅影响视频帧读取节奏）。
 - (void)setSuspended:(BOOL)suspended;
@@ -64,3 +68,5 @@ typedef void(^displayVedioFrameBlock)(NSError *error,
 - (void)cancelFramePump;
 
 @end
+
+NS_ASSUME_NONNULL_END

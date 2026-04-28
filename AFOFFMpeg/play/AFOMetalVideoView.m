@@ -27,7 +27,6 @@ typedef struct {
 
 @interface AFOMetalVideoView () <MTKViewDelegate>
 
-@property (nonatomic, strong) id<MTLDevice> device;
 @property (nonatomic, strong) id<MTLCommandQueue> commandQueue;
 @property (nonatomic, strong) id<MTLRenderPipelineState> pipelineState;
 @property (nonatomic, strong) id<MTLBuffer> vertices;
