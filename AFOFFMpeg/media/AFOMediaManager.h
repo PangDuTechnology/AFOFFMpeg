@@ -12,7 +12,7 @@
 #else
 #define AFOMediaLog(fmt, ...) 
 #endif
-#include <UIKit/UIKit.h>
+#import <UIKit/UIKit.h>
 
 struct AVFormatContext;
 struct AVCodecContext;
