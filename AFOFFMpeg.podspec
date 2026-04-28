@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
 
   # ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   s.name         = "AFOFFMpeg"
-  s.version      = "0.1.10"
+  s.version      = "0.1.11"
   s.summary      = "decoding."
 
   # This description is used to generate tags and improve search results.
