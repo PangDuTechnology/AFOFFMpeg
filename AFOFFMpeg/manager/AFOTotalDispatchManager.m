@@ -12,6 +12,8 @@
 #import "AFOMediaManager.h"
 #import "AFOAudioManager.h"
 
+#include <libavformat/avformat.h>
+
 @interface AFOTotalDispatchManager ()<AFOPlayMediaManager>
 @property (nonatomic, assign)            NSInteger  videoStream;
 @property (nonatomic, assign)            NSInteger  audioStream;
@@ -20,9 +22,6 @@
 @property (nonnull, nonatomic, strong)   AFOMediaManager  *videoManager;
 @end
 @implementation AFOTotalDispatchManager
-+ (void)initialize{
-    av_register_all();
-}
 #pragma mark ------ init
 - (instancetype)init{
     if (self = [super init]) {
@@ -61,7 +60,7 @@
         AFOMediaLog(@"AFOTotalDispatchManager: configurationStreamPath finished, start codec setup with resolved streams.");
         ///--- play audio
         if (self.audioStream >= 0) {
-            [AFOConfigurationManager configurationForPath:strPath stream:self.audioStream block:^(AVCodec * _Nullable codec, AVFormatContext * _Nullable format, AVCodecContext * _Nullable context, NSInteger videoStream, NSInteger audioStream, NSData * _Nullable sps, NSData * _Nullable pps) {
+            [AFOConfigurationManager configurationForPath:strPath stream:self.audioStream block:^(struct AVCodec * _Nullable codec, struct AVFormatContext * _Nullable format, struct AVCodecContext * _Nullable context, NSInteger videoStream, NSInteger audioStream, NSData * _Nullable sps, NSData * _Nullable pps) {
                 if (!format || !context) {
                     return;
                 }
@@ -81,7 +80,7 @@
         }
 
         ///------ display video
-        [AFOConfigurationManager configurationForPath:strPath stream:self.videoStream block:^(AVCodec * _Nonnull codec, AVFormatContext * _Nonnull format, AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream, NSData * _Nullable sps, NSData * _Nullable pps) {
+        [AFOConfigurationManager configurationForPath:strPath stream:self.videoStream block:^(struct AVCodec * _Nonnull codec, struct AVFormatContext * _Nonnull format, struct AVCodecContext * _Nonnull context, NSInteger videoStream, NSInteger audioStream, NSData * _Nullable sps, NSData * _Nullable pps) {
             AFOMediaLog(@"AFOTotalDispatchManager: Received AFOConfigurationManager video callback. format: %p, context: %p", format, context);
             StrongObject(self);
             if (!self) {
@@ -97,11 +96,11 @@
                 return;
             }
             AFOMediaLog(@"AFOTotalDispatchManager: Calling videoManager displayVedioFormatContext. format: %p, context: %p", format, context);
-            [self.videoManager displayVedioFormatContext:format codecContext:context index:self.videoStream block:^(NSError *error, CVPixelBufferRef pixelBuffer, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds, BOOL isVideoEnd) {
+            [self.videoManager displayVedioFormatContext:format codecContext:context index:self.videoStream block:^(NSError *frameError, CVPixelBufferRef framePixelBuffer, NSString *totalTime, NSString *currentTime, NSInteger totalSeconds, NSUInteger cuttentSeconds, BOOL isVideoEnd) {
                 AFOMediaLog(@"AFOTotalDispatchManager: AFOConfigurationManager callback for video. format: %p, context: %p", format, context);
-                NSLog(@"AFOTotalDispatchManager: pixelBuffer received: %p", pixelBuffer);
+                NSLog(@"AFOTotalDispatchManager: pixelBuffer received: %p", framePixelBuffer);
                 if (block) {
-                    block(error,pixelBuffer,totalTime,currentTime,totalSeconds,cuttentSeconds, isVideoEnd);
+                    block(frameError, framePixelBuffer, totalTime, currentTime, totalSeconds, cuttentSeconds, isVideoEnd);
                 }
             }];
         }];

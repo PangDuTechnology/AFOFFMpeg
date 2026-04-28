@@ -11,6 +11,11 @@
 #import "AFOMediaThumbnail.h"
 #import "AFOMediaConditional.h"
 #import "AFOMediaYUV.h"
+
+#include <libavformat/avformat.h>
+#include <libavcodec/avcodec.h>
+#include <libavutil/dict.h>
+
 @interface AFOMediaSeekFrame (){
     AVCodec             *avcodec;
     AVFormatContext     *avFormatContext;
@@ -28,7 +33,6 @@
 #pragma mark ------------ init
 - (instancetype)init{
     if (self = [super init]) {
-        av_register_all();
         ///---
         _videoStream = -1;
         avFormatContext = avformat_alloc_context();
