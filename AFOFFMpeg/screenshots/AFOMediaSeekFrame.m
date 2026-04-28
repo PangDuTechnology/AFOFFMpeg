@@ -12,7 +12,6 @@
 #include <libavutil/imgutils.h>
 #include <libavutil/dict.h>
 #include <libavutil/error.h>
-#include <errno.h>
 
 #import "AFOMediaSeekFrame.h"
 #import <AFOFoundation/AFOFoundation.h>
@@ -21,18 +20,6 @@
 #import "AFOMediaConditional.h"
 #import "AFOMediaYUV.h"
 #import "AFOMediaErrorString.h"
-
-static const char *AFOFFmpegOpenPathCStringFrame(NSString *path) {
-    if (path.length == 0) {
-        return NULL;
-    }
-    NSString *standard = path.stringByStandardizingPath;
-    const char *fs = standard.fileSystemRepresentation;
-    if (fs && fs[0] != '\0') {
-        return fs;
-    }
-    return standard.UTF8String;
-}
 
 @interface AFOMediaSeekFrame (){
     AVCodec *avcodec;
@@ -110,18 +97,17 @@ static const char *AFOFFmpegOpenPathCStringFrame(NSString *path) {
         notifyFail();
         return;
     }
-    ///------ Open video file（由 avformat_open_input 内部分配 context，勿预先 alloc）
+    ///------ Open video file（由 avformat_open_input 内部分配 context，勿预先 alloc）    
     NSString *fullMediaPath = [AFOMediaSeekFrame vedioAddress:path name:name];
-    const char *openPath = AFOFFmpegOpenPathCStringFrame(fullMediaPath);
     if (avFormatContext) {
         avformat_close_input(&avFormatContext);
         avFormatContext = NULL;
     }
-    int openRet = (!openPath) ? AVERROR(ENOENT) : avformat_open_input(&avFormatContext, openPath, NULL, NULL);
+    int openRet = [AFOMediaConditional openLocalPathToFormatContext:fullMediaPath outContext:&avFormatContext];
     if (openRet != 0) {
         char errbuf[128];
         av_strerror(openRet, errbuf, sizeof(errbuf));
-        NSLog(@"AFOMediaSeekFrame: avformat_open_input failed (%d) %s — path=%@", openRet, errbuf, fullMediaPath);
+        NSLog(@"AFOMediaSeekFrame: 无法打开 (%d) %s — path=%@", openRet, errbuf, fullMediaPath);
         notifyFail();
         return;
     }

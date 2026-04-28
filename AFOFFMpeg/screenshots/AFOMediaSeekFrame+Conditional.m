@@ -7,23 +7,11 @@
 //
 
 #import "AFOMediaSeekFrame+Conditional.h"
+#import "AFOMediaConditional.h"
 #import "AFOMediaErrorCodeManager.h"
 #include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
 #include <libavutil/error.h>
-#include <errno.h>
-
-static const char *AFOFFmpegOpenPathCStringSeek(NSString *path) {
-    if (path.length == 0) {
-        return NULL;
-    }
-    NSString *standard = path.stringByStandardizingPath;
-    const char *fs = standard.fileSystemRepresentation;
-    if (fs && fs[0] != '\0') {
-        return fs;
-    }
-    return standard.UTF8String;
-}
 
 @implementation AFOMediaSeekFrame (Conditional)
 + (void)mediaSesourcesConditionalPath:(NSString *)path
@@ -33,16 +21,12 @@ static const char *AFOFFmpegOpenPathCStringSeek(NSString *path) {
     (void)avFormatContext;
     AVFormatContext *fmt_ctx = NULL;
     __block NSInteger videoStream = -1;
-    const char *pathC = AFOFFmpegOpenPathCStringSeek(path);
-    int openRet = (!pathC) ? AVERROR(ENOENT) : avformat_open_input(&fmt_ctx, pathC, NULL, NULL);
+    int openRet = [AFOMediaConditional openLocalPathToFormatContext:path outContext:&fmt_ctx];
     if (openRet != 0) {
         char errbuf[128];
         av_strerror(openRet, errbuf, sizeof(errbuf));
-        NSLog(@"AFOMediaSeekFrame+Conditional: avformat_open_input failed (%d) %s — path=%@", openRet, errbuf, path);
-        if (fmt_ctx) {
-            avformat_close_input(&fmt_ctx);
-        }
-        block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeReadFailure], 0, NULL);
+        NSLog(@"AFOMediaSeekFrame+Conditional: 无法打开 (%d) %s — path=%@", openRet, errbuf, path);
+        block([AFOMediaErrorCodeManager errorCode:AFOPlayMediaErrorCodeReadFailure libavformatOpenReturn:openRet path:path], 0, NULL);
         return;
     }
     ///------ Retrieve stream information.
@@ -53,7 +37,7 @@ static const char *AFOFFmpegOpenPathCStringSeek(NSString *path) {
     }
     ///------ Dump information about file onto standard error.
 #if DEBUG
-    av_dump_format(fmt_ctx, 0, pathC, 0);
+    av_dump_format(fmt_ctx, 0, path.UTF8String ?: "", 0);
 #endif
     ///------
     [self audioVideoStreamFormat:fmt_ctx block:^(NSInteger video) {

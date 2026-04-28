@@ -9,6 +9,21 @@
 #import "AFOMediaPlaybackEngine.h"
 #import <AFOFoundation/AFOFoundation.h>
 
+static NSString *AFOPlaybackVisibleErrorMessage(NSError *error) {
+    if (!error) {
+        return @"播放器解码失败";
+    }
+    id custom = error.userInfo[NSLocalizedDescriptionKey];
+    if ([custom isKindOfClass:[NSString class]] && [(NSString *)custom length] > 0) {
+        return (NSString *)custom;
+    }
+    NSString *ld = error.localizedDescription;
+    if (ld.length > 0) {
+        return ld;
+    }
+    return [NSString stringWithFormat:@"%@ (%ld)", error.domain, (long)error.code];
+}
+
 /// 路由或外部可能传入 file:// URL；FFmpeg 与 fileExistsAtPath 需要标准 POSIX 路径。
 static NSString *AFONormalizeLocalPlayPath(NSString *raw) {
     if (raw.length == 0) {
@@ -78,9 +93,11 @@ static NSString *AFONormalizeLocalPlayPath(NSString *raw) {
         }
         return;
     }
-    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+    BOOL isDir = NO;
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir];
+    if (!exists || isDir) {
         if (self.onError) {
-            self.onError(@"视频文件不存在");
+            self.onError(isDir ? @"无法播放：路径指向文件夹" : @"视频文件不存在");
         }
         return;
     }
@@ -100,7 +117,8 @@ static NSString *AFONormalizeLocalPlayPath(NSString *raw) {
         }
         if (error) {
             if (self.onError) {
-                self.onError(error.localizedDescription ?: @"播放器解码失败");
+                NSLog(@"AFOPlayback error domain=%@ code=%ld userInfo=%@", error.domain, (long)error.code, error.userInfo);
+                self.onError(AFOPlaybackVisibleErrorMessage(error));
             }
             return;
         }

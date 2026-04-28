@@ -13,23 +13,10 @@
 #include <libavcodec/avcodec.h>
 #include <libavutil/pixfmt.h>
 #include <libavutil/error.h>
-#include <errno.h>
 #include <libavcodec/videotoolbox.h>
 #include <libavutil/hwcontext.h>
 #include <libavutil/hwcontext_videotoolbox.h>
 #import "AFOMediaManager.h"
-// 与 AFOMediaConditional 一致：向 FFmpeg 传与文件系统一致的 C 路径。
-static const char *AFOConfigurationFFmpegPathCString(NSString *path) {
-    if (path.length == 0) {
-        return NULL;
-    }
-    NSString *standard = path.stringByStandardizingPath;
-    const char *fs = standard.fileSystemRepresentation;
-    if (fs && fs[0] != '\0') {
-        return fs;
-    }
-    return standard.UTF8String;
-}
 
 static void AFOConfigurationCloseFormatContext(AVFormatContext **ctx) {
     if (ctx && *ctx) {
@@ -126,12 +113,11 @@ static enum AVPixelFormat AFOHWVideoToolboxGetFormat(AVCodecContext *s, const en
             AFOMediaLog(@"AFOConfigurationManager: Initializing FFmpeg contexts for stream: %ld", (long)stream);
             ///------------ video（需先 find_stream_info 再读 streams[index]，否则 codecpar 可能无效）
             AVFormatContext *avFormatContext = NULL;
-            const char *pathC = AFOConfigurationFFmpegPathCString(strPath);
-            int openRet = (!pathC) ? AVERROR(ENOENT) : avformat_open_input(&avFormatContext, pathC, NULL, NULL);
+            int openRet = [AFOMediaConditional openLocalPathToFormatContext:strPath outContext:&avFormatContext];
             if (openRet != 0) {
                 char errbuf[128];
                 av_strerror(openRet, errbuf, sizeof(errbuf));
-                NSLog(@"AFOConfigurationManager: avformat_open_input failed (%d) %s — path=%@", openRet, errbuf, strPath);
+                NSLog(@"AFOConfigurationManager: 无法打开文件 (%d) %s — path=%@", openRet, errbuf, strPath);
                 AFOConfigurationCloseFormatContext(&avFormatContext);
                 configured(nil, nil, nil, 0, 0, nil, nil);
                 return;

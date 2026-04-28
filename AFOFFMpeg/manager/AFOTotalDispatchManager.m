@@ -32,10 +32,21 @@
 - (void)displayVedioForPath:(NSString *)strPath
                       block:(displayVedioFrameBlock)playbackBlock{
     NSLog(@"AFOTotalDispatchManager: displayVedioForPath called for path: %@", strPath);
-    if (strPath.length == 0 || ![[NSFileManager defaultManager] fileExistsAtPath:strPath]) {
+    if (strPath.length == 0) {
         NSError *pathError = [NSError errorWithDomain:@"AFOTotalDispatchManager"
                                                  code:-1
                                              userInfo:@{NSLocalizedDescriptionKey: @"视频文件不存在或路径为空"}];
+        if (playbackBlock) {
+            playbackBlock(pathError, nil, nil, nil, 0, 0, NO);
+        }
+        return;
+    }
+    BOOL isDir = NO;
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:strPath isDirectory:&isDir];
+    if (!exists || isDir) {
+        NSError *pathError = [NSError errorWithDomain:@"AFOTotalDispatchManager"
+                                                 code:-1
+                                             userInfo:@{NSLocalizedDescriptionKey: isDir ? @"路径为文件夹或无效" : @"视频文件不存在或路径为空"}];
         if (playbackBlock) {
             playbackBlock(pathError, nil, nil, nil, 0, 0, NO);
         }
