@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AFOMediaView : UIView
 - (instancetype)initWithFrame:(CGRect)frame delegate:(id)delegate;
-- (void)settingMovieImage:(UIImage *)image
+- (void)settingMovieImage:(UIImage * _Nullable)image
                 totalTime:(NSString *)totalTime
               currentTime:(NSString *)currentTime
                     total:(NSInteger)total

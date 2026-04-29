@@ -41,7 +41,7 @@
     }];
 }
 #pragma mark ------ 设置图片
-- (void)settingMovieImage:(UIImage *)image
+- (void)settingMovieImage:(UIImage * _Nullable)image
                 totalTime:(NSString *)totalTime
               currentTime:(NSString *)currentTime
                     total:(NSInteger)total
