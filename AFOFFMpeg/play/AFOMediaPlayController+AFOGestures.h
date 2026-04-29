@@ -7,6 +7,9 @@
 //
 
 #import "AFOMediaPlayController.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
 @class AFOMetalVideoView;
 @class AFOMediaView;
 @interface AFOMediaPlayController (AFOGestures)
@@ -15,3 +18,5 @@
 @property (nonatomic, strong) AFOMediaView *mediaOverlayView;
 - (void)addMeidaView;
 @end
+
+NS_ASSUME_NONNULL_END

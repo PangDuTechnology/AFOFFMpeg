@@ -69,7 +69,7 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = {
     'OTHER_LDFLAGS' => '$(inherited) -ObjC',
     # AFOFFMpegLib/AFOlibyuv 等为第三方头；-Wdocumentation 等会在 trunk/spec lint（未加 allow-warnings）时被记为告警失败
-    'OTHER_CFLAGS' => '$(inherited) -Wno-documentation -Wno-documentation-deprecated-sync -Wno-strict-prototypes',
+    'OTHER_CFLAGS' => '$(inherited) -Wno-documentation -Wno-documentation-deprecated-sync -Wno-strict-prototypes -Wno-nullability-completeness',
     'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES',
   }
   s.user_target_xcconfig = {

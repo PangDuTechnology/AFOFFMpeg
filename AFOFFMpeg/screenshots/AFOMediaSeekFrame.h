@@ -8,15 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void(^mediaSeekFrameBlock)(BOOL isWrite,
+NS_ASSUME_NONNULL_BEGIN
+
+typedef void (^mediaSeekFrameBlock)(BOOL isWrite,
                                    BOOL isCutting);
-typedef void(^mediaSeekFrameDetailBlock)(BOOL isWrite,
-                                         BOOL isCutting,
-                                         NSString *createTime,
-                                         NSString *vedioName,
-                                         NSString *imageName,
-                                         int width,
-                                         int height);
+typedef void (^mediaSeekFrameDetailBlock)(BOOL isWrite,
+                                          BOOL isCutting,
+                                          NSString *createTime,
+                                          NSString *vedioName,
+                                          NSString *imageName,
+                                          int width,
+                                          int height);
 @interface AFOMediaSeekFrame : NSObject
 + (instancetype)vedioName:(NSString *)name
                      path:(NSString *)path
@@ -24,3 +26,5 @@ typedef void(^mediaSeekFrameDetailBlock)(BOOL isWrite,
                     plist:(NSString *)plist
                     block:(mediaSeekFrameDetailBlock)block;
 @end
+
+NS_ASSUME_NONNULL_END

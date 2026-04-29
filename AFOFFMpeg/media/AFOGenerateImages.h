@@ -9,15 +9,17 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 struct AVFrame;
 struct AVCodecContext;
 struct SwsContext;
 
-typedef void(^generateSwsContextBlock)(struct SwsContext *context, NSError *error);
+typedef void (^generateSwsContextBlock)(struct SwsContext * _Nullable context, NSError * _Nullable error);
 
-typedef void(^generateImageBlock)(UIImage *image, NSError *error);
+typedef void (^generateImageBlock)(UIImage * _Nullable image, NSError * _Nullable error);
 
-typedef void(^avframeWithContextBlock)(struct AVFrame *frame, uint8_t *buffer);
+typedef void (^avframeWithContextBlock)(struct AVFrame * _Nonnull frame, uint8_t * _Nonnull buffer);
 
 @interface AFOGenerateImages : NSObject
 
@@ -35,3 +37,5 @@ typedef void(^avframeWithContextBlock)(struct AVFrame *frame, uint8_t *buffer);
                   outSize:(CGSize)outSize
                     block:(generateImageBlock)block;
 @end
+
+NS_ASSUME_NONNULL_END

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol AFOMediaViewDelegate
 @optional
 - (void)buttonTouchActionDelegate:(BOOL)isSuspended;
@@ -23,3 +25,5 @@
 - (void)settingPlayButtonPause;
 - (void)settingBottomViewShowOrHidden:(void (^)(UIView *view))block;
 @end
+
+NS_ASSUME_NONNULL_END

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface AFOMediaTimer : NSObject
 + (NSInteger)yearDuration:(int64_t)douration;
 + (NSInteger)monthDurtaion:(int64_t)douration;
@@ -20,3 +22,5 @@
 + (NSString *)currentTime:(int64_t)douration;
 + (NSInteger)totalNumberSeconds:(int64_t)douration;
 @end
+
+NS_ASSUME_NONNULL_END

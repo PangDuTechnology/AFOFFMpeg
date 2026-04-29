@@ -13,9 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 struct AVFormatContext;
 struct AVCodecContext;
 
-typedef void(^MediaSeekFrameBlock)(NSError * error,
+typedef void (^MediaSeekFrameBlock)(NSError * _Nonnull error,
                                    NSInteger videoIndex,
-                                   struct AVFormatContext *formatContext);
+                                   struct AVFormatContext * _Nullable formatContext);
 
 @interface AFOMediaSeekFrame (Conditional)
 + (void)mediaSesourcesConditionalPath:(NSString *)path

@@ -29,9 +29,9 @@ typedef void (^AFOCodecConfiguredBlock)(
                       stream:(NSInteger)stream
                        block:(AFOCodecConfiguredBlock)configured;
 + (void)configurationStreamPath:(NSString *)strPath
-                          block:(void(^)(NSError *error,
-                                         NSInteger videoIndex,
-                                         NSInteger audioIndex))block;
+                          block:(void (^)(NSError * _Nonnull error,
+                                          NSInteger videoIndex,
+                                          NSInteger audioIndex))block;
 @end
 
 NS_ASSUME_NONNULL_END

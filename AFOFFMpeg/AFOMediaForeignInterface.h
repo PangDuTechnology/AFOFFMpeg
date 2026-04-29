@@ -7,6 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  <#Description#>
 
@@ -17,18 +20,12 @@
  @param width <#width description#>
  @param height <#height description#>
  */
-typedef void(^mediaSeekFrameQueueBlock)(BOOL isHave,
-                                        
-                                        NSString *createTime,
-                                        
-                                        NSString *vedioName,
-                                        
-                                        NSString *imageName,
-                                        
-                                        int width,
-                                        
-                                        int height
-                                        );
+typedef void (^mediaSeekFrameQueueBlock)(BOOL isHave,
+                                         NSString *createTime,
+                                         NSString *vedioName,
+                                         NSString *imageName,
+                                         int width,
+                                         int height);
 @interface AFOMediaForeignInterface : NSObject
 /**
  <#Description#>
@@ -52,5 +49,6 @@ typedef void(^mediaSeekFrameQueueBlock)(BOOL isHave,
                         sqlite:(NSString *)sqlitePath
                          block:(mediaSeekFrameQueueBlock)block;
 
-
 @end
+
+NS_ASSUME_NONNULL_END

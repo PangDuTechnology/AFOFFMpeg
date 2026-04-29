@@ -19,8 +19,8 @@ struct AVFrame;
                    height:(int)inHeight
                     scale:(int)scale
                     block:(void (^)(UIImage * _Nullable image, NSError * _Nullable error))block;
-- (void)dispatchAVFrame:(struct AVFrame*) frame
-                  block:(void (^)(UIImage *image))block;
+- (void)dispatchAVFrame:(struct AVFrame *)frame
+                  block:(void (^)(UIImage * _Nullable image))block;
 @end
 
 NS_ASSUME_NONNULL_END

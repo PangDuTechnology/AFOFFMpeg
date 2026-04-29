@@ -8,6 +8,10 @@
 
 #import "AFOMediaPlayController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface AFOMediaPlayController (AFOOrientation)
 - (void)settingControllerOrientation;
 @end
+
+NS_ASSUME_NONNULL_END

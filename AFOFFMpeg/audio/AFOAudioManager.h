@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 struct AVFormatContext;
 struct AVCodecContext;
 
@@ -26,3 +28,5 @@ struct AVCodecContext;
 /// 停止并释放音频资源（不可直接恢复，需重新配置）
 - (void)stopAudio;
 @end
+
+NS_ASSUME_NONNULL_END

@@ -8,12 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// FFmpeg `AVFormatContext`：勿在公开头中包含 libavformat（静态 framework 会因非模块化 include 导致 lint/trunk 失败）。
 struct AVFormatContext;
 
-typedef void(^MediaConditionalBlock)(NSError *error,
-                                     NSInteger videoIndex,
-                                     NSInteger audioIndex);
+typedef void (^MediaConditionalBlock)(NSError * _Nonnull error,
+                                      NSInteger videoIndex,
+                                      NSInteger audioIndex);
 
 @interface AFOMediaConditional : NSObject
 
@@ -21,5 +23,7 @@ typedef void(^MediaConditionalBlock)(NSError *error,
 + (int)openLocalPathToFormatContext:(NSString *)path outContext:(struct AVFormatContext * _Nullable * _Nonnull)outCtx;
 
 + (void)mediaSesourcesConditionalPath:(NSString *)path
-                                block:(MediaConditionalBlock) block;
+                                block:(MediaConditionalBlock _Nonnull)block;
 @end
+
+NS_ASSUME_NONNULL_END

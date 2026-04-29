@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol AFOMediaControlViewDelegate
 @optional
 - (void)buttonTouchActionDelegate:(BOOL)isSuspended;
@@ -22,3 +24,5 @@
             current:(NSInteger)current
               block:(void (^)(BOOL isEnd))block;
 @end
+
+NS_ASSUME_NONNULL_END

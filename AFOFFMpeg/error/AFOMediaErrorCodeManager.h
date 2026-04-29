@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "AFOMediaErrorString.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface AFOMediaErrorCodeManager : NSObject
 
 /**
@@ -22,3 +24,5 @@
 /// 读取失败时可传入 `avformat_open_input` 的返回值（负数），便于界面与日志显示 FFmpeg 原因。
 + (NSError *)errorCode:(AFOPlayMediaErrorCode)errorCode libavformatOpenReturn:(int)fferr path:(nullable NSString *)path;
 @end
+
+NS_ASSUME_NONNULL_END

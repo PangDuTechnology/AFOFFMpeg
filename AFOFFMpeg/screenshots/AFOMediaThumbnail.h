@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface AFOMediaThumbnail : NSObject
 /**
  <#Description#>
@@ -35,3 +37,5 @@
  */
 + (NSString *)imageNameFromPath:(NSString *)path name:(NSString *)name;
 @end
+
+NS_ASSUME_NONNULL_END
