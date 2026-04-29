@@ -47,7 +47,7 @@ static const char *AFOFFmpegOpenPathCString(NSString *path) {
 
 @implementation AFOMediaConditional
 
-+ (int)openLocalPathToFormatContext:(NSString *)path outContext:(AVFormatContext *__nullable *__nonnull)outCtx {
++ (int)openLocalPathToFormatContext:(NSString *)path outContext:(struct AVFormatContext *__nullable *__nonnull)outCtx {
     if (!outCtx || path.length == 0) {
         return AVERROR(EINVAL);
     }
